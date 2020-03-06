@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Pictoevents</string>
+    <string name="captureImageButtonDesc">Capture image button</string>
+    <string name="openCamera">Open camera</string>
+</resources>

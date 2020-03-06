@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1024883328108",
+    "firebase_url": "https://pictoevents-1a825.firebaseio.com",
+    "project_id": "pictoevents-1a825",
+    "storage_bucket": "pictoevents-1a825.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024883328108:android:aef27303eecfddce1dc449",
+        "android_client_info": {
+          "package_name": "com.example.pictoevents"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024883328108-aub8s0im6pdlb6ljq0p49hklgpnmf0fv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjdNNF7MyIXjkyzRhj6QZezAYybrJGsOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024883328108-aub8s0im6pdlb6ljq0p49hklgpnmf0fv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
