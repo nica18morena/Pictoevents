@@ -25,7 +25,7 @@ import java.util.*
 
 class OCREngineFreeOCR : IOCREngine
 {
-    private val TAG: String = OCREngineTesseract::class.java.getSimpleName()
+    private val TAG: String = OCREngineFreeOCR::class.java.getSimpleName()
     private val LANG = "eng"
     private val JPG = "jpg"
     private val OCRAPIKEY = "858bc9797c88957"
@@ -58,7 +58,7 @@ class OCREngineFreeOCR : IOCREngine
 
     fun createJsonBody(): String
     {
-        val JSONObj: JSONObject = JSONObject()
+        val JSONObj = JSONObject()
         JSONObj.put("apikey", OCRAPIKEY)
         JSONObj.put("filetype", JPG )
         JSONObj.put("language", LANG)
@@ -120,7 +120,7 @@ class OCREngineFreeOCR : IOCREngine
         Log.d(TAG, "OcrEngine: Response sent")
         val (resdata, reserror) = response.third
 
-        var extractedText : String
+        val extractedText : String
         if(resdata != null)
         {
             val test = resdata.obj()

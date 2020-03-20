@@ -18,6 +18,10 @@ import androidx.camera.core.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import com.example.pictoevents.Calendar.CalendarObject
+import com.example.pictoevents.Calendar.CalendarObjectFormatter
+import com.example.pictoevents.Calendar.CalendarObjectsGenerator
+import com.example.pictoevents.Calendar.PictoCalendar
 import com.example.pictoevents.OCREngine.IOCREngine
 import com.example.pictoevents.OCREngine.OCREngineFreeOCR
 import com.example.pictoevents.Util.FileManager
@@ -215,8 +219,8 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
     private fun uploadFileToStorage(file: File)
     {
-        var cloudStorageRef = cloudStorage.reference
-        var uploadTask = cloudStorageRef.putFile(Uri.fromFile(file))
+        val cloudStorageRef = cloudStorage.reference
+        val uploadTask = cloudStorageRef.putFile(Uri.fromFile(file))
 
         uploadTask.addOnFailureListener{
             Log.e(TAG, "File did not upload successfully: $it")
@@ -233,10 +237,19 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
     fun createCalEvent()
     {
-        val text = OCREngine.getOCRResults()
+        val text = OCREngine.getOCRResults() // Get OCR text
+        val generateCalendarObjects = CalendarObjectsGenerator(text)
+        generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components
 
-        //TODO: Add text to contract class for data
+        val calendar = PictoCalendar(this)// Instance of PictoCalander to get the calendar ID
+        calendar.checkCalendars()// This finds all calendars and assigned the calendarID to the Picto cal
 
-        //TODO: Call to create Cal event
+        val formatter = generateCalendarObjects.getObjectFormatter() // Get the formatter to format all the data
+        val calObject = CalendarObject(formatter.getFormattedHour(),formatter.getFormattedMin(), 0,
+            formatter.getFormattedDay(), formatter.getFormattedMonth(), formatter.getFormattedYear(),
+            formatter.getFormattedAMPM(), calendar.getCalId())
+        // TODO: Create the cal event
+        calendar.setCalObj(calObject)
+        calendar.buildCalEvent()
     }
 }
