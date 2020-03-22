@@ -11,8 +11,7 @@ class CalendarObjectsGenerator(val ocrText: String)
     private var formatter = CalendarObjectFormatter()
     private fun tokenizeText(): List<String>
     {
-        val tokens = this.ocrText.split(" ")
-        return tokens
+        return this.ocrText.split(" ","\n")
     }
 
     fun identifyCalendarComponents() {
@@ -57,40 +56,40 @@ class CalendarObjectsGenerator(val ocrText: String)
             }
 
             if(hasDatePattern){
-                if(!formatter.monthFromDate.equals("") &&
-                    !formatter.dayFromDate.equals("") &&
-                    !formatter.yearFromDate.equals("")){
+                if(formatter.monthFromDate.equals("") &&
+                    formatter.dayFromDate.equals("") &&
+                    formatter.yearFromDate.equals("")){
                     this.decomposeDate(word)
                 }
             }
             else if(hasTimePattern){
-                if(!formatter.hourFromTime.equals("") &&
-                    !formatter.minFromTime.equals("")){
+                if(formatter.hourFromTime.equals("") &&
+                    formatter.minFromTime.equals("")){
                     this.decomposeTime(word)
                 }
             }
             else if(hasYearPattern){
-                if(!formatter.fullYear.equals("")){
+                if(formatter.fullYear.equals("")){
                     this.decomposeYear(word)
                 }
             }
             else if(hasDaysPattern){
-                if(!formatter.dayOfMonth.equals("")){
+                if(formatter.dayOfMonth.equals("")){
                     this.decomposeDay(word)
                 }
             }
             else if(hasAMPMPattern){
-                if(!formatter.ampm.equals("")){
+                if(formatter.ampm.equals("")){
                     this.decomposeAMPM(word)
                 }
             }
             else if(matchWeek){
-                if(!formatter.weekdayName.equals("")){
+                if(formatter.weekdayName.equals("")){
                     this.decomposeWeek(word)
                 }
             }
             else if(matchMonth){
-                if(!formatter.monthName.equals("")){
+                if(formatter.monthName.equals("")){
                     this.decomposeMonth(word)
                 }
             }
@@ -156,11 +155,11 @@ class CalendarObjectsGenerator(val ocrText: String)
 
             return false
         }
-        if (word.size <= 2 && word[0].matches("\\w".toRegex())) {
+        if (word[0].length <= 2 && word[0].matches("\\w".toRegex())) {
             //Is a word less than 2 chars
             return false
         }
-        if (word.size > 7 && word[0].matches("[^0-9]".toRegex())) {
+        if (word[0].length > 7 && word[0].matches("[^0-9]".toRegex())) {
             //Is a word with more than 7 chars (contains no numbers)
             return false
         }

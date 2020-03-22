@@ -32,7 +32,7 @@ import java.util.concurrent.Executors
 // Request permission
 private const val REQUEST_CODE_PERMISSIONS = 10
 // Array of all permissions specified in the manifest file
-private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR, Manifest.permission.INTERNET)
 //Class variables
 private val TAG: String? = MainActivity::class.java.simpleName
 //private val file = File(Environment.getExternalStorageDirectory().toString() + "/Pictoevents_${System.currentTimeMillis()}.jpg")
