@@ -25,24 +25,26 @@ import com.example.pictoevents.Calendar.PictoCalendar
 import com.example.pictoevents.OCREngine.IOCREngine
 import com.example.pictoevents.OCREngine.OCREngineFreeOCR
 import com.example.pictoevents.Util.FileManager
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import java.io.File
 import java.util.concurrent.Executors
 
 // Request permission
 private const val REQUEST_CODE_PERMISSIONS = 10
 // Array of all permissions specified in the manifest file
-private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR, Manifest.permission.INTERNET)
+private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_CALENDAR,
+    Manifest.permission.WRITE_CALENDAR, Manifest.permission.INTERNET)
 //Class variables
 private val TAG: String? = MainActivity::class.java.simpleName
 //private val file = File(Environment.getExternalStorageDirectory().toString() + "/Pictoevents_${System.currentTimeMillis()}.jpg")
 //private val fileBase = File(Environment.getExternalStorageDirectory().toString() + "/Pictoevents/")
 //private val OCREngine: IOCREngine = OCREngineTesseract()
-private val OCREngine: IOCREngine =
-    OCREngineFreeOCR()
+private val OCREngine: IOCREngine = OCREngineFreeOCR()
 //private val fileManager = FileManager()
 //private const val storageBucket = "gs://pictoevents"
-private val cloudStorage = FirebaseStorage.getInstance()
+private val cloudStorage = Firebase.storage
 class MainActivity : AppCompatActivity(), LifecycleOwner {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,7 +113,9 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
             FileManager.setFileBase(fileBase)
             FileManager.prepareDirectory(
                 FileManager.getFileBase())
-            val imageFile = File(FileManager.getFileBase(), "/${System.currentTimeMillis()}.jpg")
+            val imageName = "${System.currentTimeMillis()}.jpg"
+            FileManager.setFileName(imageName)
+            val imageFile = File(FileManager.getFileBase(), "/$imageName")
 
             imageCapture.takePicture(imageFile, executor,
                 object : ImageCapture.OnImageSavedListener {
@@ -219,7 +223,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
     private fun uploadFileToStorage(file: File)
     {
-        val cloudStorageRef = cloudStorage.reference
+        val cloudStorageRef = cloudStorage.reference.child("images/${FileManager.getFileName()}")
         val uploadTask = cloudStorageRef.putFile(Uri.fromFile(file))
 
         uploadTask.addOnFailureListener{

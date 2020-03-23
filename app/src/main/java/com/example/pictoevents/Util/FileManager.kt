@@ -8,6 +8,7 @@ object FileManager {
     private val TAG: String = FileManager::class.java.getSimpleName()
     private lateinit var fileBase : File
     private lateinit var dataPath : String
+    private lateinit var fileName : String
     private var cloudURL : Uri? = null
 
     fun prepareDirectory(_path: String) {
@@ -51,5 +52,13 @@ object FileManager {
 
     fun setDataPath(_dataPath : String){
         dataPath = _dataPath
+    }
+
+    fun setFileName(fName: String){
+        fileName = fName
+    }
+
+    fun getFileName() : String{
+        return fileName
     }
 }

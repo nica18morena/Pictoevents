@@ -44,7 +44,7 @@ class PictoCalendar (val context: Context){
                         "Calendar names: $displayName"
                     )
                     if (displayName != null && displayName.isNotEmpty()
-                        && displayName == "Pictoevent events")
+                        && displayName == CALENDAR_NAME)
                     {
                         calID = calCursor.getLong(0)
                     }
