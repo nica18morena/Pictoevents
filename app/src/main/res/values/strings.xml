@@ -2,4 +2,7 @@
     <string name="app_name">Pictoevents</string>
     <string name="captureImageButtonDesc">Capture image button</string>
     <string name="openCamera">Open camera</string>
+    <string name="addEvent_Camera">Add event with camera</string>
+    <string name="addEvent_Manual">Add event</string>
+    <string name="viewFiles">View image/ocr files</string>
 </resources>

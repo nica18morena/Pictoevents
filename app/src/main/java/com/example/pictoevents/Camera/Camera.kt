@@ -1,77 +1,27 @@
-package com.example.pictoevents
+package com.example.pictoevents.Camera
 
-import android.Manifest
+import android.app.Application
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
-import android.os.Bundle
 import android.util.Log
 import android.util.Size
-import android.view.Surface
-import android.view.TextureView
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.*
-import androidx.core.app.ActivityCompat
+import androidx.camera.camera2.Camera2Config
+import androidx.camera.core.CameraXConfig
+import androidx.camera.core.PreviewConfig
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
 import com.example.pictoevents.Calendar.CalendarObject
-import com.example.pictoevents.Calendar.CalendarObjectFormatter
 import com.example.pictoevents.Calendar.CalendarObjectsGenerator
 import com.example.pictoevents.Calendar.PictoCalendar
-import com.example.pictoevents.OCREngine.IOCREngine
-import com.example.pictoevents.OCREngine.OCREngineFreeOCR
 import com.example.pictoevents.Util.FileManager
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
 import java.io.File
-import java.util.concurrent.Executors
 
-// Request permission
-private const val REQUEST_CODE_PERMISSIONS = 10
-// Array of all permissions specified in the manifest file
-private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_CALENDAR,
-    Manifest.permission.WRITE_CALENDAR, Manifest.permission.INTERNET)
-//Class variables
-private val TAG: String? = MainActivity::class.java.simpleName
-//private val file = File(Environment.getExternalStorageDirectory().toString() + "/Pictoevents_${System.currentTimeMillis()}.jpg")
-//private val fileBase = File(Environment.getExternalStorageDirectory().toString() + "/Pictoevents/")
-//private val OCREngine: IOCREngine = OCREngineTesseract()
-private val OCREngine: IOCREngine = OCREngineFreeOCR()
-//private val fileManager = FileManager()
-//private const val storageBucket = "gs://pictoevents"
-private val cloudStorage = Firebase.storage
-class MainActivity : AppCompatActivity(), LifecycleOwner {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        //Line 53 -69 is camera related. can comment out for now to get the UI going
-        /*viewFinder = findViewById(R.id.view_finder)
-
-        // Request camera permissions
-        if (allPermissionsGranted()) {
-            viewFinder.post { startCamera() }
-        } else {
-            ActivityCompat.requestPermissions(
-                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
-        }
-
-        // Every time the provided texture view changes, recompute layout
-        viewFinder.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            updateTransform()
-        }*/
-        Log.d(TAG,"Camera created")
-       // This cALL IS PREMAture here processOCR()
-    }
-
-    // Add this after onCreate
-    private val executor = Executors.newSingleThreadExecutor()
-    private lateinit var viewFinder: TextureView
+class Camera : Application(), CameraXConfig.Provider {
+    private val TAG: String = Camera::class.java.getSimpleName()
 
     private fun startCamera() {
         // Create configuration object for the viewfinder use case
@@ -154,26 +104,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         CameraX.bindToLifecycle(this, preview, imageCapture)
     }
 
-    private fun updateTransform() {
-        val matrix = Matrix()
-
-        // Compute the center of the view finder
-        val centerX = viewFinder.width / 2f
-        val centerY = viewFinder.height / 2f
-
-        // Correct preview output to account for display rotation
-        val rotationDegrees = when(viewFinder.display.rotation) {
-            Surface.ROTATION_0 -> 0
-            Surface.ROTATION_90 -> 90
-            Surface.ROTATION_180 -> 180
-            Surface.ROTATION_270 -> 270
-            else -> return
-        }
-        matrix.postRotate(-rotationDegrees.toFloat(), centerX, centerY)
-
-        // Finally, apply transformations to our TextureView
-        viewFinder.setTransform(matrix)
-    }
+    private fun updateTransform()
 
     /**
      * Process result from permission request dialog box, has the request

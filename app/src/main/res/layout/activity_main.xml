@@ -7,25 +7,25 @@
     tools:context=".MainActivity">
 
     <!-- Open camera button-->
-    <Button
+    <!--<Button
         android:id="@+id/open_camera_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/openCamera"/>
+        android:text="@string/openCamera"/>-->
     <!-- Camera preview-->
-    <TextureView
+   <!-- <TextureView
         android:id="@+id/view_finder"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/capture_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />-->
     <!-- Camera capture button-->
-    <ImageButton
+   <!--  <ImageButton
         android:id="@+id/capture_button"
         android:layout_width="80dp"
         android:layout_height="90dp"
@@ -34,6 +34,48 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_camera" />-->
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="345dp"
+        android:layout_height="387dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25" />
+
+    <ImageButton
+        android:id="@+id/camera_imageButton"
+        android:layout_width="109dp"
+        android:layout_height="70dp"
+        android:contentDescription="@string/addEvent_Camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/addEvent_imageButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
+    <ImageButton
+        android:id="@+id/addEvent_imageButton"
+        android:layout_width="109dp"
+        android:layout_height="70dp"
+        android:contentDescription="@string/addEvent_Manual"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/files_imageButton"
+        app:layout_constraintStart_toEndOf="@+id/camera_imageButton"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView"
+        app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+
+    <ImageButton
+        android:id="@+id/files_imageButton"
+        android:layout_width="109dp"
+        android:layout_height="70dp"
+        android:contentDescription="@string/viewFiles"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addEvent_imageButton"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView"
+        app:srcCompat="@android:drawable/sym_contact_card" />
 </androidx.constraintlayout.widget.ConstraintLayout>

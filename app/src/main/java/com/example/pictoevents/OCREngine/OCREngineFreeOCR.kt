@@ -9,12 +9,14 @@ package com.example.pictoevents.OCREngine
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import com.example.pictoevents.Util.FileManager
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.json.responseJson
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 //import org.junit.runner.Request.method
 //import java.awt.PageAttributes.MediaType
 import java.io.File
@@ -87,7 +89,13 @@ class OCREngineFreeOCR : IOCREngine
         if( path != null)
         {
             val bytes = path.readBytes()
-            val base64 = Base64.getEncoder().encodeToString(bytes)
+            val b = BitmapFactory.decodeByteArray(bytes, 0, bytes.lastIndex)
+            val bitmap = Bitmap.createScaledBitmap(b, 720, 1080, false)
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            val bytes2 = stream.toByteArray()
+            val base64 = Base64.getEncoder().encodeToString(bytes2)
+            //val base64 = Base64.getEncoder().encodeToString(bytes)
             return base64
         }
         return "Image is null"
@@ -108,14 +116,17 @@ class OCREngineFreeOCR : IOCREngine
             .upload()
             .add{ FileDataPart(getImageFileLocation(),contentType = "application/octet-stream") }
             .responseJson()*/
+
+        val image = this.convertImageToBase64(getImageFileLocation())
         val imageURL = FileManager.getCloudImageURL().toString()
         val response = Fuel.post(URL.toString(), listOf("apikey" to OCRAPIKEY,
-            "filetype" to JPG,
+            //"filetype" to JPG,
             "language" to LANG,
             "detectOrientation" to true,
             "OCREngine" to "2",
-            "url" to "https://firebasestorage.googleapis.com/v0/b/pictoevents-1a825.appspot.com/o/paymentsOrtho11-26.PNG?alt=media&token=20e7c49b-7346-4685-a8cb-0620f953c2f7"))
-            //"url" to imageURL))
+            // "URL Hardcoded:"//"url" to "https://firebasestorage.googleapis.com/v0/b/pictoevents-1a825.appspot.com/o/paymentsOrtho11-26.PNG?alt=media&token=20e7c49b-7346-4685-a8cb-0620f953c2f7"))
+            // "URL with Image://"url" to imageURL))
+            "base64Image" to "data:image/png;base64,$image"))
             .responseJson()
         Log.d(TAG, "OcrEngine: Response sent")
         val (resdata, reserror) = response.third
@@ -209,5 +220,14 @@ class OCREngineFreeOCR : IOCREngine
     override fun getOCRResults() : String
     {
         return this.ocrText
+    }
+
+    fun resizeImage(path: File?):Bitmap
+    {
+        val bitOps = BitmapFactory.Options()
+        var bitmap = BitmapFactory.decodeFile(path.toString(), bitOps)
+        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width, bitmap.height, true)
+        val size = bitmap.byteCount
+        return bitmap
     }
 }
