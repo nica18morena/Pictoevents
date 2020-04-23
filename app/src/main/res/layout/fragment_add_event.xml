@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UI.AddEventFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="676dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/Title" />
+
+        <EditText
+            android:id="@+id/start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Start date"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/start" />
+
+        <EditText
+            android:id="@+id/startDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Date"
+            android:ems="10"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/StartTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Time"
+            android:ems="10"
+            android:inputType="time" />
+
+        <EditText
+            android:id="@+id/end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/End" />
+
+        <EditText
+            android:id="@+id/endDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/endTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="time" />
+
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:visibility="visible"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="@color/design_default_color_on_primary"
+        app:itemTextColor="@color/design_default_color_on_primary"
+        app:menu="@menu/save_cancel_nav" />
+</FrameLayout>

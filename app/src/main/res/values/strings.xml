@@ -2,7 +2,18 @@
     <string name="app_name">Pictoevents</string>
     <string name="captureImageButtonDesc">Capture image button</string>
     <string name="openCamera">Open camera</string>
-    <string name="addEvent_Camera">Add event with camera</string>
-    <string name="addEvent_Manual">Add event</string>
-    <string name="viewFiles">View image/ocr files</string>
+    <string name="addEvent_Camera">Camera</string>
+    <string name="add_edit_Event">Edit events</string>
+    <string name="viewFiles">Files</string>
+    <string name="calendar">Calendar</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="Title">Event title</string>
+    <string name="start">Start</string>
+    <string name="End">End</string>
+    <string name="Date">Date</string>
+    <string name="Time">Time</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

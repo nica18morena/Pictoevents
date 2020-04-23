@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/cameraFragment"
+        android:icon="@drawable/ic_camera"
+        android:title="@string/addEvent_Camera"/>
+
+    <item
+        android:id="@+id/addEventFragment"
+        android:icon="@drawable/ic_calendar_edit"
+        android:title="@string/add_edit_Event"/>
+
+    <item
+        android:id="@+id/calendarFragment"
+        android:icon="@drawable/ic_calendar_month"
+        android:title="@string/calendar"/>
+
+    <item
+        android:id="@+id/filesFragment"
+        android:icon="@drawable/ic_folder_multiple"
+        android:title="@string/viewFiles"/>
+
+</menu>
