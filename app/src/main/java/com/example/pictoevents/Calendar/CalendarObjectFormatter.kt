@@ -36,18 +36,18 @@ class CalendarObjectFormatter {
             formattedMonth = monthFromDate
         }
 
-        return Integer.parseInt(formattedMonth) - 1
+        return Integer.parseInt(formattedMonth) //- 1 //Dont know/ remember why this is offset
     }
 
     fun getFormattedDay(): Int{
         var formattedDay = "-1"
         if(dayOfMonth.isNotEmpty()){
-            formattedDay = if(dayOfMonth.length == 4) dayOfMonth.replace("(st|nd|rd|th)".toRegex(), "") else dayOfMonth
+            formattedDay = if(dayOfMonth.length == 4) dayOfMonth.replace("(st|nd|rd|th)".toRegex(), "") else dayOfMonth.replace("(,|\\.)".toRegex(),"")
         }
         if(dayFromDate.isNotEmpty()){
             formattedDay = dayFromDate
         }
-        if(dayOfMonth.isNotEmpty()){
+        if(dayOfMonth.isNotEmpty() && formattedDay == "-1"){
             when (formattedDay) {
                 "1" -> formattedDay = "01"
                 "2" -> formattedDay = "02"

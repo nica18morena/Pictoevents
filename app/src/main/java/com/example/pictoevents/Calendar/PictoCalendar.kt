@@ -39,7 +39,7 @@ class PictoCalendar (val context: Context){
             if (calCursor.moveToFirst()) {
                 do {
                     val displayName = calCursor.getString(1)
-                    Log.i(
+                    Log.d(
                         ContentValues.TAG,
                         "Calendar names: $displayName"
                     )
@@ -111,16 +111,20 @@ class PictoCalendar (val context: Context){
         builder.appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
         return builder
     }
-
+//check if this needs to be called if already have calID
     private fun getCalendarID(builder: Uri.Builder,
                               cv: ContentValues): Long {
-        val uri = getContentResolver().insert(builder.build(), cv)
-        calID = uri.lastPathSegment.toLong()
-        return calID
+
+        if(this.getCalId() == 0L) {
+            val uri = getContentResolver().insert(builder.build(), cv)
+            calID = uri.lastPathSegment.toLong()
+        }
+
+        return this.getCalId()
     }
 
     private fun initializeCalendar(): Calendar{
-        // Todo: need a null check for any of these values
+
         val calendar = GregorianCalendar()
 
         calendar.setTimeZone(TimeZone.getDefault())
@@ -138,6 +142,8 @@ class PictoCalendar (val context: Context){
 
     private fun createCalEvents(cal: Calendar): ContentValues{
         val cv = ContentValues()
+        val timeinMillS = cal.timeInMillis
+
         cv.put(CalendarContract.Events.DTSTART, cal.timeInMillis)
         cv.put(CalendarContract.Events.DTEND, cal.timeInMillis)
         cv.put(CalendarContract.Events.TITLE, TITLE)

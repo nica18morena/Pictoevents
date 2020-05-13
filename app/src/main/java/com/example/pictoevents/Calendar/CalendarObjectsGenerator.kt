@@ -18,7 +18,7 @@ class CalendarObjectsGenerator(val ocrText: String)
 
         val iterator = this.tokenizeText().listIterator()
         for (words in iterator ){
-            val wordSplit = words.split(",'")
+            var wordSplit = words.split(",'")
 
             if (!this.isValid(wordSplit)){
                 // No need to proceed with the other code if
@@ -26,7 +26,8 @@ class CalendarObjectsGenerator(val ocrText: String)
                 continue
             }
 
-            val word = wordSplit[0].toLowerCase()
+            val word = wordSplit[0].toLowerCase()//.replace(",","")
+
             // Preset pattern to default/ false
             val hasDatePattern = this.findDatePattern(word)
             val hasAMPMPattern = this.findAMPMPattern(word)

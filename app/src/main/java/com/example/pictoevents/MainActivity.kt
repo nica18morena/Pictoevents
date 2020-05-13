@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
+import androidx.camera.core.impl.ImageCaptureConfig
+import androidx.camera.core.impl.PreviewConfig
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
@@ -96,6 +98,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
         bottomNav?.setupWithNavController(navController)
     }
+    /* //Old camera related code comment out starts here
     // Add this after onCreate
     private val executor = Executors.newSingleThreadExecutor()
     private lateinit var viewFinder: TextureView
@@ -202,7 +205,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         // Finally, apply transformations to our TextureView
         viewFinder.setTransform(matrix)
     }
-
+*/ //This is to unblock the permisisons code
     /**
      * Process result from permission request dialog box, has the request
      * been granted? If yes, start Camera. Otherwise display a toast
@@ -210,9 +213,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                viewFinder.post { startCamera() }
-            } else {
+            if (!allPermissionsGranted()) {
                 Toast.makeText(this,
                     "Permissions not granted by the user.",
                     Toast.LENGTH_SHORT).show()
@@ -228,6 +229,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         ContextCompat.checkSelfPermission(
             baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
+    /* //This is to re-block the remaining camera code
 
     /** Create an instance of the OCR engine and process OCR*/
     private fun processOCR() {
@@ -283,5 +285,5 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         // TODO: Create the cal event
         calendar.setCalObj(calObject)
         calendar.buildCalEvent()
-    }
+    }*/ //End comment out of old camera stuff
 }
