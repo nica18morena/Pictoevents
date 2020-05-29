@@ -504,9 +504,12 @@ package com.example.pictoevents.UI
             val calObject = CalendarObject(formatter.getFormattedHour(),formatter.getFormattedMin(), 0,
                 formatter.getFormattedDay(), formatter.getFormattedMonth(), formatter.getFormattedYear(),
                 formatter.getFormattedAMPM(), calendar.getCalId())
-            // TODO: Create the cal event
+            Log.d(TAG, "Calendar object has values: ${calObject.toString()}")
             calendar.setCalObj(calObject)
             calendar.buildCalEvent()
+
+            //Create txt file
+            FileManager.createOCRTextFile(text)
         }
         /**
          * Our custom image analysis class.

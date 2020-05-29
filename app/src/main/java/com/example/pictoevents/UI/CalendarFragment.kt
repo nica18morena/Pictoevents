@@ -47,7 +47,6 @@ class CalendarFragment : Fragment() {
 
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
         val selectedDate = calendarView.date
-
         /*calendarView.setOnDateChangeListener{view, year, month, dayOfMonth ->
             val msg = "Date changed"
             Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()

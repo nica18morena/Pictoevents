@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
             updateTransform()
         }
         Log.d(TAG,"Camera created")*/
+        createDirectory()
     }
     private fun setupBottomNavMenu(navController : NavController){
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
@@ -228,6 +229,14 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
             baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun createDirectory()
+    {
+        val fileBase = File(this.externalMediaDirs.first(), "/")
+        FileManager.setFileBase(fileBase)
+        FileManager.prepareDirectory(
+            FileManager.getFileBase())
     }
     /* //This is to re-block the remaining camera code
 

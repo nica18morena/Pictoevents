@@ -23,12 +23,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pictoevents.R
+import java.io.File
 
 class DirectoryEntryAdapter(
     private val clickListeners: ClickListeners
 ) : RecyclerView.Adapter<DirectoryEntryAdapter.ViewHolder>() {
 
-    private val directoryEntries = mutableListOf<CachingDocumentFile>()
+    private val directoryEntries = mutableListOf<File>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -45,8 +46,8 @@ class DirectoryEntryAdapter(
                 R.drawable.ic_file_black_24dp
             }
 
-            fileName.text = item.name
-            mimeType.text = item.type ?: ""
+            fileName.text = item.nameWithoutExtension
+            mimeType.text = item.extension ?: ""
             imageView.setImageResource(itemDrawableRes)
 
             root.setOnClickListener {
@@ -61,7 +62,7 @@ class DirectoryEntryAdapter(
 
     override fun getItemCount() = directoryEntries.size
 
-    fun setEntries(newList: List<CachingDocumentFile>) {
+    fun setEntries(newList: List<File>) {
         synchronized(directoryEntries) {
             directoryEntries.clear()
             directoryEntries.addAll(newList)
@@ -81,6 +82,6 @@ class DirectoryEntryAdapter(
 }
 
 interface ClickListeners {
-    fun onDocumentClicked(clickedDocument: CachingDocumentFile)
-    fun onDocumentLongClicked(clickedDocument: CachingDocumentFile)
+    fun onDocumentClicked(clickedDocument: File)
+    fun onDocumentLongClicked(clickedDocument: File)
 }

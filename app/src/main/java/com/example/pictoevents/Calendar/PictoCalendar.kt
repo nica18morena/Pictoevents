@@ -118,7 +118,7 @@ class PictoCalendar (val context: Context){
         if(this.getCalId() == 0L) {
             val uri = getContentResolver().insert(builder.build(), cv)
             calID = uri.lastPathSegment.toLong()
-        }
+       }
 
         return this.getCalId()
     }
@@ -128,14 +128,35 @@ class PictoCalendar (val context: Context){
         val calendar = GregorianCalendar()
 
         calendar.setTimeZone(TimeZone.getDefault())
-        calendar.set(Calendar.YEAR, calObj.year)
-        calendar.set(Calendar.MONTH, calObj.month)
-        calendar.set(Calendar.DAY_OF_MONTH, calObj.dayOfMonth)
-        calendar.set(Calendar.HOUR, calObj.hour)
-        calendar.set(Calendar.MINUTE, calObj.minute)
-        calendar.set(Calendar.SECOND, calObj.second)
+        if (calObj.year != 0){
+            calendar.set(Calendar.YEAR, calObj.year)
+        }
+
+        if(calObj.month != 0){
+            calendar.set(Calendar.MONTH, calObj.month - 1)
+        }
+
+        if(calObj.dayOfMonth != 0){
+            calendar.set(Calendar.DAY_OF_MONTH, calObj.dayOfMonth)
+        }
+
+        if(calObj.hour != 0){
+            calendar.set(Calendar.HOUR, calObj.hour)
+        }
+
+        if(calObj.minute != 0){
+            calendar.set(Calendar.MINUTE, calObj.minute)
+        }
+
+        if(calObj.second != 0){
+            calendar.set(Calendar.SECOND, calObj.second)
+        }
+
         calendar.set(Calendar.AM_PM, calObj.AmPm)
-        Log.d(TAG, "Event: ${calendar.toString()}")
+        Log.d(TAG, "Event: ${calendar.toString()}\n" +
+                "Month: ${calObj.month}, Day: ${calObj.dayOfMonth},\n" +
+                "Year: ${calObj.year}, Hour: ${calObj.hour},\n" +
+                "Min: ${calObj.minute}, AMPM: ${calObj.AmPm}")
 
         return calendar
     }

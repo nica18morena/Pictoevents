@@ -61,4 +61,10 @@ object FileManager {
     fun getFileName() : String{
         return fileName
     }
+
+    fun createOCRTextFile(ocrText: String) {
+
+        val fileName = getFileName().replace(".png", ".txt")
+        return File(getFileBase(), "/$fileName").writeText(ocrText)
+    }
 }

@@ -40,14 +40,14 @@ class CalendarObjectFormatter {
     }
 
     fun getFormattedDay(): Int{
-        var formattedDay = "-1"
+        var formattedDay = "0"
         if(dayOfMonth.isNotEmpty()){
-            formattedDay = if(dayOfMonth.length == 4) dayOfMonth.replace("(st|nd|rd|th)".toRegex(), "") else dayOfMonth.replace("(,|\\.)".toRegex(),"")
+            formattedDay = if(dayOfMonth.length == 4) dayOfMonth.replace("(st|nd|rd|th)".toRegex(), "") else dayOfMonth.replace("(,|\\\\.)".toRegex(),"")
         }
         if(dayFromDate.isNotEmpty()){
             formattedDay = dayFromDate
         }
-        if(dayOfMonth.isNotEmpty() && formattedDay == "-1"){
+        if(dayOfMonth.isNotEmpty() && formattedDay == "0"){
             when (formattedDay) {
                 "1" -> formattedDay = "01"
                 "2" -> formattedDay = "02"
@@ -74,15 +74,17 @@ class CalendarObjectFormatter {
             if(yearFromDate.length == 4){
                 formattedYear = yearFromDate
             }
+            return Integer.parseInt(formattedYear)
         }
         else if(fullYear.isNotEmpty()){
             formattedYear = fullYear
+            return Integer.parseInt(formattedYear)
         }
-        return Integer.parseInt(formattedYear)
+        return 0
     }
 
     fun getFormattedHour(): Int{
-        var formattedHour = "-1"
+        var formattedHour = "0"
         if(hourFromTime.isNotEmpty()){
             if(ampm.isNotEmpty()){
                 when (ampm){
@@ -98,7 +100,7 @@ class CalendarObjectFormatter {
     }
 
     fun getFormattedMin(): Int{
-        var formattedMin = "-1"
+        var formattedMin = "0"
         if(minFromTime.isNotEmpty()){
             formattedMin = minFromTime
         }
@@ -109,7 +111,7 @@ class CalendarObjectFormatter {
     }
 
     fun getFormattedAMPM(): Int{
-        var formattedAMPM = "-1"
+        var formattedAMPM = "0"
         if(ampm.isNotEmpty()){
             when(ampm){
                 "am"-> formattedAMPM = "0"
