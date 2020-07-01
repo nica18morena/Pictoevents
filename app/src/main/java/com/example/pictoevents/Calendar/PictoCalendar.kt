@@ -55,6 +55,35 @@ class PictoCalendar (val context: Context){
         }
     }
 
+    fun getAllCalendarEvents() : MutableList<String> {
+        val eventList: MutableList<String> = mutableListOf()
+        val calCursor: Cursor?
+        val projection = arrayOf(
+            CalendarContract.Events.TITLE,
+            CalendarContract.Events.DTSTART,
+            CalendarContract.Events.DURATION,
+            CalendarContract.Events.DESCRIPTION
+        )
+        try {
+            calCursor = this.context.getContentResolver().query(
+                CalendarContract.Events.CONTENT_URI,
+                projection,
+                CalendarContract.Events.CALENDAR_ID + " = ${calID}",
+                null,
+                CalendarContract.Events.DTSTART + " ASC"
+            )
+            if (calCursor.moveToFirst()) {
+                do {
+                    val eventInfo = "${calCursor.getString(0)},${calCursor.getString(1)},${calCursor.getString(2)},${calCursor.getString(3)}"
+                    eventList.add(eventInfo)
+
+                } while (calCursor.moveToNext())
+            }
+        } catch (e: SecurityException) {
+            Log.e(ContentValues.TAG, "Error occurred: " + e.stackTrace)
+        }
+        return eventList
+    }
     fun getCalId (): Long{
         return calID
     }

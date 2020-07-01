@@ -5,8 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".UI.CalendarFragment">
 
-    <CalendarView
+    <com.example.pictoevents.UI.CalendarView.PictoCalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+   <!-- <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" /> -->
 </FrameLayout>

@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.Toast
+import com.example.pictoevents.Calendar.PictoCalendar
 
 import com.example.pictoevents.R
+import com.example.pictoevents.UI.CalendarView.PictoCalendarView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,8 +47,10 @@ class CalendarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
+        val pictoCalendar = PictoCalendar.instance()
+        val calendarView = view.findViewById<PictoCalendarView>(R.id.calendarView)
         val selectedDate = calendarView.date
+        calendarView.setCalendarList()
         /*calendarView.setOnDateChangeListener{view, year, month, dayOfMonth ->
             val msg = "Date changed"
             Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
