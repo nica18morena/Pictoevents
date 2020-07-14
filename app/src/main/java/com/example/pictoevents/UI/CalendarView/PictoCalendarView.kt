@@ -2,6 +2,7 @@ package com.example.pictoevents.UI.CalendarView
 
 import android.R.attr
 import android.content.Context
+import android.database.sqlite.SQLiteDatatypeMismatchException
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PointF
@@ -23,21 +24,23 @@ class PictoCalendarView(context: Context, attrs: AttributeSet) : CalendarView(co
     //scale small indicator by screen density
     private val smallIndicatorRadius = 2.5f * screenDensity
     private lateinit var calendarList : List<String>
+    private lateinit var dates : LongArray
 
     //makes easier to find radius
     //val bigCircleIndicatorRadius = getInterpolatedBigCircleIndicator();
     override fun onDraw(canvas: Canvas){
-
+        this.drawEvents(canvas)
+        super.onDraw(canvas)
     }
 
     fun drawEvents(
-        canvas: Canvas?,
-        currentMonthToDrawCalender: Calendar,
-        offset: Int,
-        eventList: List<Events>
+        canvas: Canvas?
+        //currentMonthToDrawCalender: Calendar,
+        //offset: Int,
+        //eventList: List<Events>
     ) {
-        val currentMonth: Int = currentMonthToDrawCalender.get(Calendar.MONTH)
-        val uniqEvents: List<Events> = eventList
+        //val currentMonth: Int = currentMonthToDrawCalender.get(Calendar.MONTH)
+        val uniqEvents: List<String> = this.calendarList
      /*       eventsContainer.getEventsForMonthAndYear(
             currentMonth,
             currentMonthToDrawCalender.get(Calendar.YEAR)
