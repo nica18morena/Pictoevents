@@ -8,7 +8,10 @@ import java.util.regex.Pattern
 
 class CalendarObjectsGenerator(val ocrText: String)
 {
+    private val TARGETTITLELENGTH = 5
     private var formatter = CalendarObjectFormatter()
+    private var titleBucket: MutableList<String> = ArrayList()
+
     private fun tokenizeText(): List<String>
     {
         return this.ocrText.split(" ","\n")
@@ -20,86 +23,122 @@ class CalendarObjectsGenerator(val ocrText: String)
         for (words in iterator ){
             var wordSplit = words.split(",'")
 
-            if (!this.isValid(wordSplit)){
-                // No need to proceed with the other code if
-                // the word isn't valid, so move on to the next
-                continue
-            }
+            identifyDates(wordSplit)
+            identifyTitle(wordSplit)
+        }
+        this.composeTitle()
+    }
 
-            val word = wordSplit[0].toLowerCase()//.replace(",","")
+    private fun identifyDates(wordSplit: List<String>) {
+        if (!this.isValid(wordSplit)) {
+            // No need to proceed with the other code if
+            // the word isn't valid, so move on to the next
+            return
+        }
 
-            // Preset pattern to default/ false
-            val hasDatePattern = this.findDatePattern(word)
-            val hasAMPMPattern = this.findAMPMPattern(word)
-            var hasTimePattern = false
-            var hasYearPattern = false
-            var hasDaysPattern = false
-            var matchWeek = false
-            var matchMonth = false
+        val word = wordSplit[0].toLowerCase()//.replace(",","")
 
-            // Find if the string matches the patterns
-            if(!hasDatePattern){
-                hasTimePattern = this.findTimePattern(word)
-            }
-            if(!hasDatePattern && !hasTimePattern){
-                hasDaysPattern = this.findDayPattern(word)
+        // Preset pattern to default/ false
+        val hasDatePattern = this.findDatePattern(word)
+        val hasAMPMPattern = this.findAMPMPattern(word)
+        var hasTimePattern = false
+        var hasYearPattern = false
+        var hasDaysPattern = false
+        var matchWeek = false
+        var matchMonth = false
 
-                if(hasDatePattern && word.length > 4){
-                    hasDaysPattern = false
-                }
-            }
-            if(!hasDatePattern && !hasTimePattern && !hasDaysPattern){
-                hasYearPattern = this.findYearPattern(word)
-            }
-            if(!hasDatePattern && !hasTimePattern && !hasYearPattern && !hasDaysPattern){
-                matchWeek = WeekDictionary().weekDict().contains(word)
-                matchMonth = MonthDictionary().getMonthDict().contains(word)
-            }
+        // Find if the string matches the patterns
+        if (!hasDatePattern) {
+            hasTimePattern = this.findTimePattern(word)
+        }
+        if (!hasDatePattern && !hasTimePattern) {
+            hasDaysPattern = this.findDayPattern(word)
 
-            if(hasDatePattern){
-                if(formatter.monthFromDate.equals("") &&
-                    formatter.dayFromDate.equals("") &&
-                    formatter.yearFromDate.equals("")){
-                    this.decomposeDate(word)
-                }
-            }
-            else if(hasTimePattern){
-                if(formatter.hourFromTime.equals("") &&
-                    formatter.minFromTime.equals("")){
-                    this.decomposeTime(word)
-                }
-            }
-            else if(hasYearPattern){
-                if(formatter.fullYear.equals("")){
-                    this.decomposeYear(word)
-                }
-            }
-            else if(hasDaysPattern){
-                if(formatter.dayOfMonth.equals("")){
-                    this.decomposeDay(word)
-                }
-            }
-            else if(hasAMPMPattern){
-                if(formatter.ampm.equals("")){
-                    this.decomposeAMPM(word)
-                }
-            }
-            else if(matchWeek){
-                if(formatter.weekdayName.equals("")){
-                    this.decomposeWeek(word)
-                }
-            }
-            else if(matchMonth){
-                if(formatter.monthName.equals("")){
-                    this.decomposeMonth(word)
-                }
+            if (hasDatePattern && word.length > 4) {
+                hasDaysPattern = false
             }
         }
+        if (!hasDatePattern && !hasTimePattern && !hasDaysPattern) {
+            hasYearPattern = this.findYearPattern(word)
+        }
+        if (!hasDatePattern && !hasTimePattern && !hasYearPattern && !hasDaysPattern) {
+            matchWeek = WeekDictionary().weekDict().contains(word)
+            matchMonth = MonthDictionary().getMonthDict().contains(word)
+        }
+
+        if (hasDatePattern) {
+            if (formatter.monthFromDate.equals("") &&
+                formatter.dayFromDate.equals("") &&
+                formatter.yearFromDate.equals("")
+            ) {
+                this.decomposeDate(word)
+            }
+        } else if (hasTimePattern) {
+            if (formatter.hourFromTime.equals("") &&
+                formatter.minFromTime.equals("")
+            ) {
+                this.decomposeTime(word)
+            }
+        } else if (hasYearPattern) {
+            if (formatter.fullYear.equals("")) {
+                this.decomposeYear(word)
+            }
+        } else if (hasDaysPattern) {
+            if (formatter.dayOfMonth.equals("")) {
+                this.decomposeDay(word)
+            }
+        } else if (hasAMPMPattern) {
+            if (formatter.ampm.equals("")) {
+                this.decomposeAMPM(word)
+            }
+        } else if (matchWeek) {
+            if (formatter.weekdayName.equals("")) {
+                this.decomposeWeek(word)
+            }
+        } else if (matchMonth) {
+            if (formatter.monthName.equals("")) {
+                this.decomposeMonth(word)
+            }
+        }
+    }
+
+    private fun identifyTitle(wordSplit: List<String>){
+
+        if ( wordSplit.count() == 1){
+            titleBucket.add(wordSplit[0])
+        }
+        if ( wordSplit.count() > 1){
+            wordSplit.forEach{
+                if (this.findWordPattern(it)){
+                    titleBucket.add(it)
+                }}
+        }
+    }
+
+    private fun composeTitle(){
+        var titleString = ""
+
+        if (titleBucket.count() > TARGETTITLELENGTH){
+            // Need API to ID word parts ie noun, verb
+        }
+
+        titleBucket.forEach{ titleString = titleString + {it} + " "}
+
+        this.decomposeTitle(titleString)
     }
 
     fun getObjectFormatter(): CalendarObjectFormatter{
         return formatter
     }
+
+    private fun findWordPattern(word: String): Boolean{
+
+        val wordPattern = Pattern.compile(RegExPatterns.WORD)
+        val wordMatcher = wordPattern.matcher(word)
+
+        return this.foundMatch(wordMatcher)
+    }
+
     private fun findDatePattern(word: String): Boolean{
 
         val datePattern = Pattern.compile(RegExPatterns.DATE)
@@ -205,5 +244,9 @@ class CalendarObjectsGenerator(val ocrText: String)
 
     private fun decomposeWeek(week: String){
         formatter.weekdayName = week
+    }
+
+    private fun decomposeTitle(title: String){
+        formatter.title = title
     }
 }

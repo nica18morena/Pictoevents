@@ -13,7 +13,7 @@ import java.util.*
 class PictoCalendar (val context: Context){
     private val TAG = PictoCalendar::class.java.simpleName
     private var calID: Long = 0L
-    private val TITLE = "Event"
+    private var TITLE = "Event"
     private val ACCOUNT_NAME = "Pictoevents"
     private val CALENDAR_NAME = "Cal Pictoevents"
     private val CALENDAR_COLOR = 0xEA8561
@@ -179,6 +179,10 @@ class PictoCalendar (val context: Context){
 
         if(calObj.second != 0){
             calendar.set(Calendar.SECOND, calObj.second)
+        }
+
+        if(!(calObj.title.isEmpty() || calObj.title.isEmpty())){
+            TITLE = calObj.title
         }
 
         calendar.set(Calendar.AM_PM, calObj.AmPm)

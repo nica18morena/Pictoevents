@@ -3,11 +3,7 @@ package com.example.pictoevents.Calendar
 class CalendarObject(val hour: Int, val minute: Int, val second: Int, val dayOfMonth: Int,
                      val month: Int, val year: Int, val AmPm: Int, val calendarID: Long) {
 
-    private var title: String
-        get() = this.title
-        set(value){
-            this.title = value
-        }
+    var title: String = ""
 
     private var eventLocation: String
         get() = this.eventLocation

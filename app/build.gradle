@@ -32,6 +32,9 @@ android {
 }
 
 dependencies {
+    // Google cloud language
+    implementation 'com.google.cloud:google-cloud-language:1.101.0'
+
     //Firebase storage
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
     implementation 'com.google.firebase:firebase-auth:19.3.0'

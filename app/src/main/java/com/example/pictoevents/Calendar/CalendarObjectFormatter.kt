@@ -13,6 +13,7 @@ class CalendarObjectFormatter {
     var dayOfMonth = ""
     var fullYear = ""
     var weekdayName = ""
+    var title = ""
 
     fun getFormattedMonth(): Int{
         var formattedMonth = "0"
@@ -119,5 +120,9 @@ class CalendarObjectFormatter {
             }
         }
         return Integer.parseInt(formattedAMPM)
+    }
+
+    fun getFormattedTitle(): String{
+        return title
     }
 }
