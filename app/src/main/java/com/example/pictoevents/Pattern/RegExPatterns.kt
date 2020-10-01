@@ -7,5 +7,5 @@ object RegExPatterns {
     val YEAR = "^20[1-9][0-9]"
     val DAY = "^([0-3])?[0-9](st|nd|rd|th)?(,|\\\\.)?"
     val AMPM = "^(a|A|p|P)(m|M)$"
-    val WORD = "\\D"
+    val WORD = "[a-z,A-Z]"
 }

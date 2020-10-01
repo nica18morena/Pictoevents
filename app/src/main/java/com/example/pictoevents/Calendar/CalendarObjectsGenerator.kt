@@ -104,8 +104,15 @@ class CalendarObjectsGenerator(val ocrText: String)
 
     private fun identifyTitle(wordSplit: List<String>){
 
+        //val hasDatePattern = this.findWordPattern(word)
         if ( wordSplit.count() == 1){
-            titleBucket.add(wordSplit[0])
+            var word = wordSplit[0]
+            val hasWordPattern = this.findWordPattern(word)
+
+
+            if(hasWordPattern){
+                titleBucket.add(word)
+            }
         }
         if ( wordSplit.count() > 1){
             wordSplit.forEach{
@@ -122,7 +129,9 @@ class CalendarObjectsGenerator(val ocrText: String)
             // Need API to ID word parts ie noun, verb
         }
 
-        titleBucket.forEach{ titleString = titleString + {it} + " "}
+        for (word in titleBucket){
+            titleString = titleString + word + " "
+        }
 
         this.decomposeTitle(titleString)
     }

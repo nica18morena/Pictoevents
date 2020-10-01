@@ -181,7 +181,7 @@ class PictoCalendar (val context: Context){
             calendar.set(Calendar.SECOND, calObj.second)
         }
 
-        if(!(calObj.title.isEmpty() || calObj.title.isEmpty())){
+        if(calObj.title.isNotEmpty()){
             TITLE = calObj.title
         }
 

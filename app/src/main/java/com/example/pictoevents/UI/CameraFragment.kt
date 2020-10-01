@@ -493,7 +493,9 @@ package com.example.pictoevents.UI
 
         fun createCalEvent()
         {
-            val text = OCREngine.getOCRResults() // Get OCR text
+            //Sample temp text: Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020
+            val text = "Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020"
+            //val text = OCREngine.getOCRResults() // Get OCR text
             val generateCalendarObjects = CalendarObjectsGenerator(text)
             generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components
 
@@ -503,7 +505,7 @@ package com.example.pictoevents.UI
             val formatter = generateCalendarObjects.getObjectFormatter() // Get the formatter to format all the data
             val calObject = CalendarObject(formatter.getFormattedHour(),formatter.getFormattedMin(), 0,
                 formatter.getFormattedDay(), formatter.getFormattedMonth(), formatter.getFormattedYear(),
-                formatter.getFormattedAMPM(), calendar.getCalId())
+                formatter.getFormattedAMPM(), calendar.getCalId(), formatter.getFormattedTitle())
             Log.d(TAG, "Calendar object has values: ${calObject.toString()}")
             calendar.setCalObj(calObject)
             calendar.buildCalEvent()

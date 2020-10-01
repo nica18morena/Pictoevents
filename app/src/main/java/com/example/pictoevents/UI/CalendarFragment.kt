@@ -82,8 +82,9 @@ class CalendarFragment : Fragment() {
         if (list.size > 0 ){
             list.forEach {
                 var calendar: Calendar = Calendar.getInstance()
-                var tokens = it.split(",")
-                calendar.time = Date(tokens[1].toLong())
+                var tokens = it.split(",", " ")
+                var date = tokens[1].toString().replaceAfter(" ","")
+                calendar.time = Date(date.toLong())
 
                 events.add(EventDay(calendar, R.drawable.ic_face_24px))
             }
