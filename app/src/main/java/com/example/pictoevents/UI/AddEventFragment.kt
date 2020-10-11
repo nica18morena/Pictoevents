@@ -53,13 +53,13 @@ class AddEventFragment : Fragment() {
 
         val titleText = view.findViewById<EditText>(R.id.title)
 
-        val startText = view.findViewById<TextView>(R.id.start)
+        //val startText = view.findViewById<TextView>(R.id.start)
         val startDateText = view.findViewById<TextView>(R.id.startDateText)
         val startDate = view.findViewById<Button>(R.id.startDate)
         val startTimeText = view.findViewById<TextView>(R.id.startTimeText)
         val startTime = view.findViewById<Button>(R.id.startTime)
 
-        val endText = view.findViewById<TextView>(R.id.end)
+        //val endText = view.findViewById<TextView>(R.id.end)
         val endDateText = view.findViewById<TextView>(R.id.endDateText)
         val endDate = view.findViewById<Button>(R.id.endDate)
         val endTimeText = view.findViewById<TextView>(R.id.endTimeText)
