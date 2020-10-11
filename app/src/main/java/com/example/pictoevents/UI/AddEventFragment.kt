@@ -7,10 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.FragmentActivity
 
 import com.example.pictoevents.R
+import com.example.pictoevents.UI.AddEvent.DialogDatePickerFragment
+import com.example.pictoevents.UI.AddEvent.DialogTimePickerFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,16 +51,26 @@ class AddEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val titleText = view.findViewById<TextView>(R.id.title)
+        val titleText = view.findViewById<EditText>(R.id.title)
 
-        val startText = view.findViewById<EditText>(R.id.start)
+        val startText = view.findViewById<TextView>(R.id.start)
 
-        val startDate = view.findViewById<EditText>(R.id.startDate)
-        val startTime = view.findViewById<EditText>(R.id.StartTime)
-        val endText = view.findViewById<EditText>(R.id.end)
-        val endDate = view.findViewById<EditText>(R.id.endDate)
-        val endTime = view.findViewById<EditText>(R.id.endTime)
+        val startDate = view.findViewById<Button>(R.id.startDate)
+        val startTime = view.findViewById<Button>(R.id.StartTime)
+        val endText = view.findViewById<TextView>(R.id.end)
+        val endDate = view.findViewById<Button>(R.id.endDate)
+        val endTime = view.findViewById<Button>(R.id.endTime)
     }
+
+//    fun showTimePickerDialog(v: View) {
+//        DialogTimePickerFragment().show(this.childFragmentManager, "timePicker")
+//    }
+//
+//    fun showDatePickerDialog(v: View) {
+//        DialogDatePickerFragment().show(this.childFragmentManager, "datePicker")
+//    }
+
+
     // TODO: Rename method, update argument and hook method into UI event
     /*fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)

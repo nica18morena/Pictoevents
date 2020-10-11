@@ -8,6 +8,7 @@ import android.widget.CalendarView
 import androidx.fragment.app.Fragment
 import com.applandeo.materialcalendarview.EventDay
 import com.example.pictoevents.Calendar.PictoCalendar
+import com.example.pictoevents.Pattern.RegExPatterns
 import com.example.pictoevents.R
 import java.util.*
 import kotlin.collections.ArrayList
@@ -82,11 +83,17 @@ class CalendarFragment : Fragment() {
         if (list.size > 0 ){
             list.forEach {
                 var calendar: Calendar = Calendar.getInstance()
-                var tokens = it.split(",", " ")
-                var date = tokens[1].toString().replaceAfter(" ","")
-                calendar.time = Date(date.toLong())
+                var tokens = it.split(",")
+                //iterate through
+                for(token in tokens){
+                    if(!token.isNullOrEmpty() && !token.contains(RegExPatterns.WORD.toRegex())){
+                        var date = token.replaceAfter(" ","")
+                        calendar.time = Date(date.toLong())
 
-                events.add(EventDay(calendar, R.drawable.ic_face_24px))
+                        events.add(EventDay(calendar, R.drawable.ic_face_24px))
+                        break
+                    }
+                }
             }
         }
         return events

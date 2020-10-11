@@ -2,6 +2,7 @@ package com.example.pictoevents.Calendar
 
 import com.example.pictoevents.Dictionary.MonthDictionary
 import com.example.pictoevents.Dictionary.WeekDictionary
+import com.example.pictoevents.NaturalLangProc.AnalyzeEntities
 import com.example.pictoevents.Pattern.RegExPatterns
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -107,6 +108,7 @@ class CalendarObjectsGenerator(val ocrText: String)
         //val hasDatePattern = this.findWordPattern(word)
         if ( wordSplit.count() == 1){
             var word = wordSplit[0]
+            word = word.replace(",","")
             val hasWordPattern = this.findWordPattern(word)
 
 
@@ -124,13 +126,24 @@ class CalendarObjectsGenerator(val ocrText: String)
 
     private fun composeTitle(){
         var titleString = ""
+        var tempString = ""
+        var analyzeEntities = AnalyzeEntities()
 
         if (titleBucket.count() > TARGETTITLELENGTH){
             // Need API to ID word parts ie noun, verb
+            for (word in titleBucket) {
+                tempString = tempString + " " + word
+            }
+
+            var request = analyzeEntities.buildRequest(tempString)
+            //analyzeEntities.parseResponse(request)
+            // create title
         }
 
         for (word in titleBucket){
-            titleString = titleString + word + " "
+            if(word.length > 2){
+                titleString = titleString + word + " "
+            }
         }
 
         this.decomposeTitle(titleString)

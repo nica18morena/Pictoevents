@@ -30,7 +30,7 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8
     }
 
-    packagingOptions{
+    packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/INDEX.LIST'
     }

@@ -10,6 +10,7 @@ import android.util.Log
 import android.util.Size
 import android.view.Surface
 import android.view.TextureView
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,8 @@ import com.example.pictoevents.Calendar.CalendarObjectsGenerator
 import com.example.pictoevents.Calendar.PictoCalendar
 import com.example.pictoevents.OCREngine.IOCREngine
 import com.example.pictoevents.OCREngine.OCREngineFreeOCR
+import com.example.pictoevents.UI.AddEvent.DialogDatePickerFragment
+import com.example.pictoevents.UI.AddEvent.DialogTimePickerFragment
 import com.example.pictoevents.Util.FileManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.ktx.Firebase
@@ -295,4 +298,12 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         calendar.setCalObj(calObject)
         calendar.buildCalEvent()
     }*/ //End comment out of old camera stuff
+//
+    fun showTimePickerDialog(v: View) {
+        DialogTimePickerFragment().show(supportFragmentManager, "timePicker")
+    }
+
+    fun showDatePickerDialog(v: View) {
+        DialogDatePickerFragment().show(supportFragmentManager, "datePicker")
+    }
 }
