@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".UI.AddEventFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="676dp"
         android:orientation="vertical">
@@ -23,44 +23,85 @@
         <TextView
             android:id="@+id/start"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@id/title"
             android:text="@string/Start" />
+
+        <TextView
+            android:id="@+id/startDateText"
+            android:layout_width="135dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/start"
+             />
 
         <Button
             android:id="@+id/startDate"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Date"
-            android:onClick="showDatePickerDialog" />
+            android:layout_below="@id/start"
+            android:layout_marginStart="3dp"
+            android:layout_toEndOf="@id/startDateText"
+            android:onClick="showDatePickerDialog"
+            android:text="@string/Date" />
+
+        <TextView
+            android:id="@+id/startTimeText"
+            android:layout_width="135dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/startDateText"
+             />
 
         <Button
-            android:id="@+id/StartTime"
-            android:layout_width="match_parent"
+            android:id="@+id/startTime"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Time"
-            android:onClick="showTimePickerDialog"/>
+            android:layout_below="@id/startDate"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@id/startTimeText"
+            android:onClick="showTimePickerDialog"
+            android:text="@string/Time" />
 
         <TextView
             android:id="@+id/end"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@id/startTimeText"
             android:text="@string/End" />
+
+        <TextView
+            android:id="@+id/endDateText"
+            android:layout_width="135dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/end"
+             />
 
         <Button
             android:id="@+id/endDate"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Date"
-            android:onClick="showDatePickerDialog" />
+            android:layout_below="@id/end"
+            android:layout_toEndOf="@id/endDateText"
+            android:onClick="showDatePickerDialog"
+            android:text="@string/Date" />
+
+        <TextView
+            android:id="@+id/endTimeText"
+            android:layout_width="135dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/endDateText"
+            />
 
         <Button
             android:id="@+id/endTime"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Time"
-            android:onClick="showTimePickerDialog"/>
+            android:layout_below="@id/endDate"
+            android:layout_toEndOf="@id/endTimeText"
+            android:onClick="showTimePickerDialog"
+            android:text="@string/Time" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
