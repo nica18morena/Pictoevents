@@ -34,9 +34,8 @@ class AddEventFragment : Fragment() {
 
     /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        childFragmentManager.getFragment("requestKey"){key, bundle ->
+            val result = bundle.getString("bundleKey")
         }
     }*/
 
@@ -64,7 +63,14 @@ class AddEventFragment : Fragment() {
         val endDate = view.findViewById<Button>(R.id.endDate)
         val endTimeText = view.findViewById<TextView>(R.id.endTimeText)
         val endTime = view.findViewById<Button>(R.id.endTime)
+//
+//        var listener: DialogDatePickerFragment.OnDateRecievedListener{
+//            override fun onDateRecieved(year: Int, month: Int, day: Int) {
+//                startDateText.text = "$month/$day/$year"
+//            }
+//        }
     }
+
 
 //    fun showTimePickerDialog(v: View) {
 //        DialogTimePickerFragment().show(this.childFragmentManager, "timePicker")
@@ -74,7 +80,10 @@ class AddEventFragment : Fragment() {
 //        DialogDatePickerFragment().show(this.childFragmentManager, "datePicker")
 //    }
 
-
+    fun showDatePickerDialog(v: View) {
+        var datePickerFragment: DialogDatePickerFragment = DialogDatePickerFragment()
+        DialogDatePickerFragment().show(childFragmentManager, "datePicker")
+    }
     // TODO: Rename method, update argument and hook method into UI event
     /*fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)

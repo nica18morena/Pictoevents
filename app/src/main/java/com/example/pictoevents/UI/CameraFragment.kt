@@ -494,8 +494,8 @@ package com.example.pictoevents.UI
         fun createCalEvent()
         {
             //Sample temp text: Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020
-            val text = "Stephie and Jarrot wedding at 2:30 Pm, 9/19/2020"
-            //val text = OCREngine.getOCRResults() // Get OCR text
+            //val text = "Stephie and Jarrot wedding at 2:30 Pm, 9/19/2020"
+            val text = OCREngine.getOCRResults() // Get OCR text
             val generateCalendarObjects = CalendarObjectsGenerator(text)
             generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components
 

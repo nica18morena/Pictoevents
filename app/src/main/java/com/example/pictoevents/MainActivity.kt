@@ -83,12 +83,17 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
             FileManager.getFileBase())
     }
 
-    // Needed to make the add event fragment work when using the pickers
-    fun showTimePickerDialog(v: View) {
-        DialogTimePickerFragment().show(supportFragmentManager, "timePicker")
-    }
-
-    fun showDatePickerDialog(v: View) {
-        DialogDatePickerFragment().show(supportFragmentManager, "datePicker")
-    }
+    // Needed to make the add event fragment work when using the pickers: 10/11/20 trying to move it back to fragment
+//    fun showTimePickerDialog(v: View) {
+//        DialogTimePickerFragment().show(supportFragmentManager, "timePicker")
+//    }
+//
+//    fun showDatePickerDialog(v: View) {
+//        var datePickerFragment: DialogDatePickerFragment = DialogDatePickerFragment()
+//        DialogDatePickerFragment().show(supportFragmentManager, "datePicker")
+//    }
+//
+//    override fun onDateRecieved(year: Int, month: Int, day: Int) {
+//        TODO("Not yet implemented")
+//    }
 }
