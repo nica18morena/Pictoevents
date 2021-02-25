@@ -59,7 +59,9 @@ package com.example.pictoevents.UI
     import com.google.firebase.ktx.Firebase
     import com.google.firebase.storage.ktx.storage
     import kotlinx.coroutines.Dispatchers
+    import kotlinx.coroutines.GlobalScope
     import kotlinx.coroutines.launch
+    import kotlinx.coroutines.withContext
     import java.io.File
     import java.nio.ByteBuffer
     import java.text.SimpleDateFormat
@@ -312,8 +314,10 @@ package com.example.pictoevents.UI
                                 // Here start my custom code for OCR stuff
                                 OCREngine.setImageFileLocation(photoFile)
                                 //uploadFileToStorage(photoFile)- not needed for now
-                                processOCR()
-                                createCalEvent()
+                                GlobalScope.launch(Dispatchers.Default){
+                                    withContext(Dispatchers.Default) {processOCR()}
+                                    withContext(Dispatchers.Default) {createCalEvent()}
+                                }
                             }
                         })
 
@@ -321,7 +325,7 @@ package com.example.pictoevents.UI
             }
         }
 
-        private fun processOCR() {
+        private suspend fun processOCR() {
             //Check "this" info- may be the issue...
             //Setup file directory and context for OCR
             val dataPath = File(this.requireContext().externalMediaDirs.first(), "/tessdata")
@@ -360,7 +364,7 @@ package com.example.pictoevents.UI
             }
         }*/
 
-        fun createCalEvent()
+        suspend fun createCalEvent()
         {
             //Sample temp text: Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020
             //val text = "Stephie and Jarrot wedding at 2:30 Pm, 9/19/2020"
