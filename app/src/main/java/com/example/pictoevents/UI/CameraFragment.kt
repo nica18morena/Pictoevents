@@ -369,6 +369,11 @@ package com.example.pictoevents.UI
             //Sample temp text: Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020
             //val text = "Stephie and Jarrot wedding at 2:30 Pm, 9/19/2020"
             val text = OCREngine.getOCRResults() // Get OCR text
+            //Create txt file
+            GlobalScope.launch(Dispatchers.IO) {
+                withContext(Dispatchers.IO) { FileManager.createOCRTextFile(text) }
+            }
+
             val generateCalendarObjects = CalendarObjectsGenerator(text)
             generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components
 
@@ -382,9 +387,6 @@ package com.example.pictoevents.UI
             Log.d(TAG, "Calendar object has values: ${calObject.toString()}")
             calendar.setCalObj(calObject)
             calendar.buildCalEvent()
-
-            //Create txt file
-            FileManager.createOCRTextFile(text)
         }
 
         companion object {
