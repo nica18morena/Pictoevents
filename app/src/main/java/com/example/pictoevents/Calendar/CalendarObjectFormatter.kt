@@ -43,12 +43,12 @@ class CalendarObjectFormatter {
     fun getFormattedDay(): Int{
         var formattedDay = "0"
         if(dayOfMonth.isNotEmpty()){
-            formattedDay = if(dayOfMonth.length == 4) dayOfMonth.replace("(st|nd|rd|th)".toRegex(), "") else dayOfMonth.replace("(,|\\\\.)".toRegex(),"")
+            formattedDay = dayOfMonth.replace("[^0-9]".toRegex(), "")
         }
         if(dayFromDate.isNotEmpty()){
             formattedDay = dayFromDate
         }
-        if(dayOfMonth.isNotEmpty() && formattedDay == "0"){
+        if(dayOfMonth.isNotEmpty() && formattedDay != "0"){
             when (formattedDay) {
                 "1" -> formattedDay = "01"
                 "2" -> formattedDay = "02"

@@ -3,7 +3,6 @@ package com.example.pictoevents
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -14,8 +13,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.pictoevents.OCREngine.IOCREngine
 import com.example.pictoevents.OCREngine.OCREngineFreeOCR
-import com.example.pictoevents.UI.AddEvent.DialogDatePickerFragment
-import com.example.pictoevents.UI.AddEvent.DialogTimePickerFragment
 import com.example.pictoevents.Util.FileManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.ktx.Firebase
