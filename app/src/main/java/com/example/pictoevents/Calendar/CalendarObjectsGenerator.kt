@@ -7,6 +7,7 @@ import com.example.pictoevents.Dictionary.MonthDictionary
 import com.example.pictoevents.Dictionary.WeekDictionary
 import com.example.pictoevents.NaturalLangProc.AnalyzeEntities
 import com.example.pictoevents.Pattern.RegExPatterns
+import org.json.JSONObject
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -160,7 +161,7 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
         }
         val py = Python.getInstance()
         val titleGenerator = py.getModule("title_Generator")
-        val jsonTitles = titleGenerator.callAttr("generateTitle", ocrText)
+        val jsonTitles = JSONObject(titleGenerator.callAttr("generateTitle", ocrText).toString())
     }
 
     fun getObjectFormatter(): CalendarObjectFormatter{
