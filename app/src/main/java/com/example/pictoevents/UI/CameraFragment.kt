@@ -374,7 +374,7 @@ package com.example.pictoevents.UI
                 withContext(Dispatchers.IO) { FileManager.createOCRTextFile(text) }
             }
 
-            val generateCalendarObjects = CalendarObjectsGenerator(text)
+            val generateCalendarObjects = CalendarObjectsGenerator(text, this.requireContext())
             generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components
 
             val calendar = PictoCalendar(this.requireContext())// Instance of PictoCalander to get the calendar ID
