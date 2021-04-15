@@ -31,7 +31,7 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
             identifyDates(wordSplit)
             //identifyTitle(wordSplit) This generates a title, but not a smart one
         }
-        this.generateTitle()
+        //this.generateTitle() // This method is now public, needs to be called outside to generate dialog with options for title
         //this.composeTitle() //this method can be removed, was attempt to use Google library to analyze text
     }
 
@@ -154,14 +154,18 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
         this.decomposeTitle(titleString)
     }
 
-    private fun generateTitle(){
+    fun generateTitle(): JSONObject{
         //check if Python has been started
         if (! Python.isStarted()){
             Python.start(AndroidPlatform(context))
         }
         val py = Python.getInstance()
         val titleGenerator = py.getModule("title_Generator")
-        val jsonTitles = JSONObject(titleGenerator.callAttr("generateTitle", ocrText).toString())
+        return JSONObject(titleGenerator.callAttr("generateTitle", ocrText).toString())
+    }
+
+    fun setTitle(title : String){
+        this.decomposeTitle(title)
     }
 
     fun getObjectFormatter(): CalendarObjectFormatter{

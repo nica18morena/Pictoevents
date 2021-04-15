@@ -375,7 +375,12 @@ package com.example.pictoevents.UI
             }
 
             val generateCalendarObjects = CalendarObjectsGenerator(text, this.requireContext())
-            generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components
+            generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components except title
+            val titleOptions = generateCalendarObjects.generateTitle()// titleOptions needs to be passed into a dialog
+            //Present a dialog here?
+            //obtain dialog selected text
+            //need to update generateCalendarObjects title formatter with the selected title
+            //generateCalendarObjects.setTitle(selectedTitle) This generates errors right now
 
             val calendar = PictoCalendar(this.requireContext())// Instance of PictoCalander to get the calendar ID
             calendar.checkCalendars()// This finds all calendars and assigned the calendarID to the Picto cal
