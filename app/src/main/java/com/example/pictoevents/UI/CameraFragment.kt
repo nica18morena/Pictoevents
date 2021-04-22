@@ -378,6 +378,7 @@ package com.example.pictoevents.UI
             generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components except title
             val titleOptions = generateCalendarObjects.generateTitle()// titleOptions needs to be passed into a dialog
             //Present a dialog here?
+            TitleDialogFragment().show(childFragmentManager, TitleDialogFragment.TAG)
             //obtain dialog selected text
             //need to update generateCalendarObjects title formatter with the selected title
             //generateCalendarObjects.setTitle(selectedTitle) This generates errors right now

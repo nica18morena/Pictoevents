@@ -16,17 +16,18 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        python{
+        python {
             buildPython "C:/Users/jessi/AppData/Local/Programs/Python/Python39/python.exe"
         }
-        ndk{
+        ndk {
             abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
-        python{
-            pip{
+        python {
+            pip {
                 install "ujson"
                 install "spacy"
-                install "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz"//"spacy.en_core_web_sm"
+                install "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz"
+//"spacy.en_core_web_sm"
             }
         }
     }

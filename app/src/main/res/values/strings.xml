@@ -13,6 +13,9 @@
     <string name="End">End</string>
     <string name="Date">Date</string>
     <string name="Time">Time</string>
+    <string name="EventTitle">Event title</string>
+    <string name="TitleDialogMessage">Select or create a title</string>
+    <string name="TitleDialogConfirm">Confirm</string>
 
     <string name="error_no_activity">No activity found to open "%1$s".</string>
     <!-- TODO: Remove or change this placeholder text -->
