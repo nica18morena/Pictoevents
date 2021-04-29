@@ -156,7 +156,7 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
 
     fun generateTitle(): JSONObject{
         //check if Python has been started
-        if (! Python.isStarted()){
+        if (!Python.isStarted()){
             Python.start(AndroidPlatform(context))
         }
         val py = Python.getInstance()

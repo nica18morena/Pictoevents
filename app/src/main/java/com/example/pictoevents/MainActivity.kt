@@ -7,12 +7,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.pictoevents.OCREngine.IOCREngine
 import com.example.pictoevents.OCREngine.OCREngineFreeOCR
+import com.example.pictoevents.Repository.Repository
+import com.example.pictoevents.UI.TitleDialogFragment
 import com.example.pictoevents.Util.FileManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.ktx.Firebase
@@ -29,7 +32,7 @@ private val TAG: String? = MainActivity::class.java.simpleName
 private val OCREngine: IOCREngine = OCREngineFreeOCR()
 private val cloudStorage = Firebase.storage
 
-class MainActivity : AppCompatActivity(), LifecycleOwner {
+class MainActivity : AppCompatActivity(), LifecycleOwner, TitleDialogFragment.TitleDialogFragmentListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +81,14 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
         FileManager.setFileBase(fileBase)
         FileManager.prepareDirectory(
             FileManager.getFileBase())
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        val titleDialog = dialog as? TitleDialogFragment
+        val selection = titleDialog?.titleSelected
+        if (selection != null) {
+            Repository.eventTitle = selection
+        }
     }
 
     // Needed to make the add event fragment work when using the pickers: 10/11/20 trying to move it back to fragment

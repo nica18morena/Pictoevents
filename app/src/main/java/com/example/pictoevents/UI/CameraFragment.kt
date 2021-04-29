@@ -35,6 +35,7 @@ package com.example.pictoevents.UI
     import androidx.core.content.ContextCompat
     import androidx.core.net.toFile
     import androidx.core.view.setPadding
+    import androidx.fragment.app.DialogFragment
     import androidx.fragment.app.Fragment
     import androidx.lifecycle.lifecycleScope
     import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -55,6 +56,7 @@ package com.example.pictoevents.UI
     import com.example.pictoevents.OCREngine.IOCREngine
     import com.example.pictoevents.OCREngine.OCREngineFreeOCR
     import com.example.pictoevents.R
+    import com.example.pictoevents.Repository.Repository
     import com.example.pictoevents.Util.FileManager
     import com.google.firebase.ktx.Firebase
     import com.google.firebase.storage.ktx.storage
@@ -62,6 +64,7 @@ package com.example.pictoevents.UI
     import kotlinx.coroutines.GlobalScope
     import kotlinx.coroutines.launch
     import kotlinx.coroutines.withContext
+    import org.json.JSONObject
     import java.io.File
     import java.nio.ByteBuffer
     import java.text.SimpleDateFormat
@@ -375,13 +378,15 @@ package com.example.pictoevents.UI
             }
 
             val generateCalendarObjects = CalendarObjectsGenerator(text, this.requireContext())
-            generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components except title
             val titleOptions = generateCalendarObjects.generateTitle()// titleOptions needs to be passed into a dialog
-            //Present a dialog here?
-            TitleDialogFragment().show(childFragmentManager, TitleDialogFragment.TAG)
-            //obtain dialog selected text
+            //Present a dialog here
+            GlobalScope.launch(Dispatchers.Main){
+                withContext(Dispatchers.Main){ generateTitleDialog(titleOptions) }
+            }
+
             //need to update generateCalendarObjects title formatter with the selected title
-            //generateCalendarObjects.setTitle(selectedTitle) This generates errors right now
+            generateCalendarObjects.setTitle(Repository.eventTitle)
+            generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components except title
 
             val calendar = PictoCalendar(this.requireContext())// Instance of PictoCalander to get the calendar ID
             calendar.checkCalendars()// This finds all calendars and assigned the calendarID to the Picto cal
@@ -393,6 +398,14 @@ package com.example.pictoevents.UI
             Log.d(TAG, "Calendar object has values: ${calObject.toString()}")
             calendar.setCalObj(calObject)
             calendar.buildCalEvent()
+        }
+        private fun generateTitleDialog(titleOptions : JSONObject){
+            val args = Bundle()
+            args.putString("primary", titleOptions.optString("Primary"))
+            args.putString("secondary", titleOptions.optString("Secondary"))
+            val dialog = TitleDialogFragment()
+            dialog.arguments = args
+            dialog.show(childFragmentManager, TitleDialogFragment.TAG)
         }
 
         companion object {
