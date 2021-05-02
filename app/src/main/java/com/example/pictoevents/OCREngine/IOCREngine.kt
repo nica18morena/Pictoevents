@@ -28,16 +28,6 @@ interface IOCREngine{
      */
     fun getCaptureImageOutputUri(): Uri?
 
-    /**
-     * Set image location
-     */
-   fun setImageFileLocation(_imageLocation: File)
-
-    /**
-     * Get image location
-     */
-    fun getImageFileLocation(): File?
-
     fun setContext(_context: Context)
 
     fun getOCRResults(): String

@@ -72,21 +72,8 @@ class OCREngineTesseract : IOCREngine {
     }
 
     override fun getCaptureImageOutputUri(): Uri? {
-        return Uri.fromFile(getImageFileLocation())
+        return Uri.fromFile(FileManager.getImageFileLocation())
     }
-
-    /**
-     * Set image location
-     */
-    override fun setImageFileLocation(_imageLocation: File){
-         imageFile = _imageLocation
-     }
-     /**
-      * Get image location
-      */
-    override fun getImageFileLocation(): File?{
-         return imageFile
-     }
 
     override fun setContext(_context: Context) {
         activityContext = _context

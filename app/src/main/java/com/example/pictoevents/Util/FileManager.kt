@@ -9,6 +9,7 @@ object FileManager {
     private lateinit var fileBase : File
     private lateinit var dataPath : String
     private lateinit var fileName : String
+    private lateinit var imageFile: File
     private var cloudURL : Uri? = null
 
     fun prepareDirectory(_path: String) {
@@ -66,5 +67,14 @@ object FileManager {
 
         val fileName = getFileName().replace(".png", ".txt")
         return File(getFileBase(), "/$fileName").writeText(ocrText)
+    }
+
+    fun setImageFileLocation(_imageLocation: File)
+    {
+        imageFile = _imageLocation
+    }
+    fun getImageFileLocation(): File
+    {
+        return imageFile
     }
 }

@@ -7,6 +7,7 @@ import com.example.pictoevents.Dictionary.MonthDictionary
 import com.example.pictoevents.Dictionary.WeekDictionary
 import com.example.pictoevents.NaturalLangProc.AnalyzeEntities
 import com.example.pictoevents.Pattern.RegExPatterns
+import com.example.pictoevents.Repository.Repository
 import org.json.JSONObject
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -154,16 +155,6 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
         this.decomposeTitle(titleString)
     }
 
-    fun generateTitle(): JSONObject{
-        //check if Python has been started
-        if (!Python.isStarted()){
-            Python.start(AndroidPlatform(context))
-        }
-        val py = Python.getInstance()
-        val titleGenerator = py.getModule("title_Generator")
-        return JSONObject(titleGenerator.callAttr("generateTitle", ocrText).toString())
-    }
-
     fun setTitle(title : String){
         this.decomposeTitle(title)
     }
@@ -289,5 +280,17 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
 
     private fun decomposeTitle(title: String){
         formatter.title = title
+    }
+
+    companion object{
+        fun generateTitle(context: Context): JSONObject{
+            //check if Python has been started
+            if (!Python.isStarted()){
+                Python.start(AndroidPlatform(context))
+            }
+            val py = Python.getInstance()
+            val titleGenerator = py.getModule("title_Generator")
+            return JSONObject(titleGenerator.callAttr("generateTitle", Repository.text).toString())
+        }
     }
 }

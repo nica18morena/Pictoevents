@@ -55,6 +55,7 @@ package com.example.pictoevents.UI
     import com.example.pictoevents.MainActivity
     import com.example.pictoevents.OCREngine.IOCREngine
     import com.example.pictoevents.OCREngine.OCREngineFreeOCR
+    import com.example.pictoevents.Processor.TextProcessor
     import com.example.pictoevents.R
     import com.example.pictoevents.Repository.Repository
     import com.example.pictoevents.Util.FileManager
@@ -86,17 +87,14 @@ package com.example.pictoevents.UI
 
         private lateinit var container: ConstraintLayout
         private lateinit var viewFinder: PreviewView
-        private lateinit var outputDirectory: File
         private lateinit var broadcastManager: LocalBroadcastManager
         private lateinit var captureButton: ImageButton
         private var displayId: Int = -1
         private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
         private var preview: Preview? = null
         private var imageCapture: ImageCapture? = null
-        //private var imageAnalyzer: ImageAnalysis? = null
         private var camera: androidx.camera.core.Camera? = null
-        private val OCREngine: IOCREngine = OCREngineFreeOCR()
-        private val cloudStorage = Firebase.storage
+        //private var context: Context = this.requireContext()
 
         private val displayManager by lazy {
             requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -264,6 +262,7 @@ package com.example.pictoevents.UI
                 container.removeView(it)
             }*/
 
+            val textProcessor = TextProcessor(this.requireContext())
             // Listener for button used to capture photo
             //controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnClickListener {
                 captureButton.setOnClickListener{
@@ -315,11 +314,12 @@ package com.example.pictoevents.UI
                                 }
 
                                 // Here start my custom code for OCR stuff
-                                OCREngine.setImageFileLocation(photoFile)
+                                FileManager.setImageFileLocation(photoFile)
                                 //uploadFileToStorage(photoFile)- not needed for now
                                 GlobalScope.launch(Dispatchers.Default){
-                                    withContext(Dispatchers.Default) {processOCR()}
-                                    withContext(Dispatchers.Default) {createCalEvent()}
+                                    withContext(Dispatchers.Default) {textProcessor.processOCR()}
+                                    withContext(Dispatchers.Main){getTitle()}
+                                    withContext(Dispatchers.Default) {textProcessor.createCalEvent()}
                                 }
                             }
                         })
@@ -328,77 +328,15 @@ package com.example.pictoevents.UI
             }
         }
 
-        private suspend fun processOCR() {
-            //Check "this" info- may be the issue...
-            //Setup file directory and context for OCR
-            val dataPath = File(this.requireContext().externalMediaDirs.first(), "/tessdata")
-            FileManager.setDataPath(dataPath.toString())
-            FileManager.prepareDirectory(
-                FileManager.getDataPath())
-
-            OCREngine.setContext(this.requireContext())
-
-            //retrieve the image
-            //val bitmapUri = OCREngine.getCaptureImageOutputUri()
-            OCREngine.prepareOCREngine()
-
-            //process OCR- need bitmap...TODO: Bitmap is empty rn- need to properly create it
-            val bitmap = BitmapFactory.decodeFile(OCREngine.getImageFileLocation().toString())
-            //val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, bitmapUri)
-            val ocrText = OCREngine.extractText(bitmap)
-            Log.d(TAG, "OCR text is: $ocrText")
-        }
-        /*  This method is currenlty not in use: not uploading image to cloud, but just makeing it base64
-        private fun uploadFileToStorage(file: File)
+        suspend fun getTitle()
         {
-            val cloudStorageRef = cloudStorage.reference.child("images/${FileManager.getFileName()}")
-            val uploadTask = cloudStorageRef.putFile(Uri.fromFile(file))
-
-            uploadTask.addOnFailureListener{
-                Log.e(TAG, "File did not upload successfully: $it")
-            }.addOnSuccessListener{
-                Log.d(TAG, "File uploaded to cloud successfully")
-                cloudStorageRef.downloadUrl.addOnCompleteListener{task ->
-                    if(task.isSuccessful){
-                        val downloadUri = task.result
-                        FileManager.setCloudURL(downloadUri)
-                    }
-                }
-            }
-        }*/
-
-        suspend fun createCalEvent()
-        {
-            //Sample temp text: Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020
-            //val text = "Stephie and Jarrot wedding at 2:30 Pm, 9/19/2020"
-            val text = OCREngine.getOCRResults() // Get OCR text
-            //Create txt file
-            GlobalScope.launch(Dispatchers.IO) {
-                withContext(Dispatchers.IO) { FileManager.createOCRTextFile(text) }
-            }
-
-            val generateCalendarObjects = CalendarObjectsGenerator(text, this.requireContext())
-            val titleOptions = generateCalendarObjects.generateTitle()// titleOptions needs to be passed into a dialog
+            val titleOptions = CalendarObjectsGenerator.generateTitle(this.requireContext())// titleOptions needs to be passed into a dialog
             //Present a dialog here
             GlobalScope.launch(Dispatchers.Main){
                 withContext(Dispatchers.Main){ generateTitleDialog(titleOptions) }
             }
-
-            //need to update generateCalendarObjects title formatter with the selected title
-            generateCalendarObjects.setTitle(Repository.eventTitle)
-            generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components except title
-
-            val calendar = PictoCalendar(this.requireContext())// Instance of PictoCalander to get the calendar ID
-            calendar.checkCalendars()// This finds all calendars and assigned the calendarID to the Picto cal
-
-            val formatter = generateCalendarObjects.getObjectFormatter() // Get the formatter to format all the data
-            val calObject = CalendarObject(formatter.getFormattedHour(),formatter.getFormattedMin(), 0,
-                formatter.getFormattedDay(), formatter.getFormattedMonth(), formatter.getFormattedYear(),
-                formatter.getFormattedAMPM(), calendar.getCalId(), formatter.getFormattedTitle())
-            Log.d(TAG, "Calendar object has values: ${calObject.toString()}")
-            calendar.setCalObj(calObject)
-            calendar.buildCalEvent()
         }
+
         private fun generateTitleDialog(titleOptions : JSONObject){
             val args = Bundle()
             args.putString("primary", titleOptions.optString("Primary"))

@@ -166,7 +166,7 @@ class OCREngineFreeOCR : IOCREngine
             .add{ FileDataPart(getImageFileLocation(),contentType = "application/octet-stream") }
             .responseJson()*/
 
-        val image = this.convertImageToBase64(getImageFileLocation())
+        val image = this.convertImageToBase64(FileManager.getImageFileLocation())
         val imageURL = FileManager.getCloudImageURL().toString()
         Log.d(TAG, "Starting API request")
         FuelManager.instance.timeoutInMillisecond = 15000 //Default 10 sec
@@ -268,14 +268,6 @@ class OCREngineFreeOCR : IOCREngine
         return result.toString()
     }*/
 
-    override fun setImageFileLocation(_imageLocation: File)
-    {
-        imageFile = _imageLocation
-    }
-    override fun getImageFileLocation(): File
-    {
-        return imageFile
-    }
     fun setOCRResults(ocrText: String)
     {
         this.ocrText = ocrText
