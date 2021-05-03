@@ -24,7 +24,7 @@ class TextProcessor (val context: Context)
     private val cloudStorage = Firebase.storage
     private lateinit var outputDirectory: File
 
-    fun processOCR() {
+    suspend fun processOCR() {
 
         //Setup file directory and context for OCR
         val dataPath = File(context.externalMediaDirs.first(), "/tessdata")
@@ -41,8 +41,9 @@ class TextProcessor (val context: Context)
         //process OCR- need bitmap
         val bitmap = BitmapFactory.decodeFile(FileManager.getImageFileLocation().toString())
 
-        val ocrText = OCREngine.extractText(bitmap)
-        Log.d(TextProcessor.TAG, "OCR text is: $ocrText")
+        Repository.text = OCREngine.extractText(bitmap)
+        saveTextFile()
+        Log.d(TextProcessor.TAG, "OCR text is: ${Repository.text}")
     }
     /*  This method is currenlty not in use: not uploading image to cloud, but just makeing it base64
     private fun uploadFileToStorage(file: File)
@@ -63,11 +64,11 @@ class TextProcessor (val context: Context)
         }
     }*/
 
-    suspend fun getText()
+    private suspend fun saveTextFile()
     {
         //Sample temp text: Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020
         //val text = "Stephie and Jarrot wedding at 2:30 Pm, 9/19/2020"
-        Repository.text = OCREngine.getOCRResults() // Get OCR text
+        //Repository.text = OCREngine.getOCRResults() // Get OCR text
 
         //Create txt file
         GlobalScope.launch(Dispatchers.IO) {
@@ -77,7 +78,6 @@ class TextProcessor (val context: Context)
 
     suspend fun createCalEvent()
     {
-        getText()
         val generateCalendarObjects = CalendarObjectsGenerator(Repository.text, context)
         //need to update generateCalendarObjects title formatter with the selected title
         generateCalendarObjects.setTitle(Repository.eventTitle)

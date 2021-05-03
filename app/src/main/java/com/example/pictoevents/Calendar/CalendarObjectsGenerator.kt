@@ -1,12 +1,14 @@
 package com.example.pictoevents.Calendar
 
 import android.content.Context
+import android.util.Log
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import com.example.pictoevents.Dictionary.MonthDictionary
 import com.example.pictoevents.Dictionary.WeekDictionary
 import com.example.pictoevents.NaturalLangProc.AnalyzeEntities
 import com.example.pictoevents.Pattern.RegExPatterns
+import com.example.pictoevents.Processor.TextProcessor
 import com.example.pictoevents.Repository.Repository
 import org.json.JSONObject
 import java.util.regex.Matcher
@@ -130,7 +132,7 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
         }
     }
 
-    private fun composeTitle(){
+    /*private fun composeTitle(){
         var titleString = ""
         var tempString = ""
         var analyzeEntities = AnalyzeEntities()
@@ -153,7 +155,7 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
         }
 
         this.decomposeTitle(titleString)
-    }
+    }*/
 
     fun setTitle(title : String){
         this.decomposeTitle(title)
@@ -283,6 +285,8 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
     }
 
     companion object{
+        private const val TAG = "TextProcessor"
+
         fun generateTitle(context: Context): JSONObject{
             //check if Python has been started
             if (!Python.isStarted()){
@@ -290,7 +294,9 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
             }
             val py = Python.getInstance()
             val titleGenerator = py.getModule("title_Generator")
-            return JSONObject(titleGenerator.callAttr("generateTitle", Repository.text).toString())
+            val titles =  JSONObject(titleGenerator.callAttr("generateTitle", Repository.text).toString())
+            Log.d(CalendarObjectsGenerator.TAG, "Titles generated are: ${titles.toString()}")
+            return titles
         }
     }
 }

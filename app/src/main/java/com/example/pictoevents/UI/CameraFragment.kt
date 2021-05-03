@@ -1,19 +1,12 @@
 package com.example.pictoevents.UI
 
     import android.annotation.SuppressLint
-    import android.content.BroadcastReceiver
     import android.content.Context
-    import android.content.Intent
-    import android.content.IntentFilter
     import android.content.res.Configuration
-    import android.graphics.BitmapFactory
     //import android.graphics.Camera
-    import android.graphics.Color
-    import android.graphics.drawable.ColorDrawable
     import android.hardware.display.DisplayManager
     import android.media.MediaScannerConnection
     import android.net.Uri
-    import android.os.Build
     import android.os.Bundle
     import android.util.DisplayMetrics
     import android.util.Log
@@ -21,25 +14,18 @@ package com.example.pictoevents.UI
     import android.webkit.MimeTypeMap
     import android.widget.ImageButton
     import androidx.camera.core.AspectRatio
-    import androidx.camera.core.Camera
     import androidx.camera.core.CameraSelector
-    import androidx.camera.core.ImageAnalysis
     import androidx.camera.core.ImageCapture
     import androidx.camera.core.ImageCapture.Metadata
     import androidx.camera.core.ImageCaptureException
-    import androidx.camera.core.ImageProxy
     import androidx.camera.core.Preview
     import androidx.camera.lifecycle.ProcessCameraProvider
     import androidx.camera.view.PreviewView
     import androidx.constraintlayout.widget.ConstraintLayout
     import androidx.core.content.ContextCompat
     import androidx.core.net.toFile
-    import androidx.core.view.setPadding
-    import androidx.fragment.app.DialogFragment
     import androidx.fragment.app.Fragment
-    import androidx.lifecycle.lifecycleScope
     import androidx.localbroadcastmanager.content.LocalBroadcastManager
-    import androidx.navigation.Navigation
     //import com.android.example.cameraxbasic.KEY_EVENT_ACTION
     //import com.android.example.cameraxbasic.KEY_EVENT_EXTRA
     //import com.android.example.cameraxbasic.MainActivity
@@ -47,29 +33,17 @@ package com.example.pictoevents.UI
     //import com.android.example.cameraxbasic.utils.ANIMATION_FAST_MILLIS
     //import com.android.example.cameraxbasic.utils.ANIMATION_SLOW_MILLIS
     //import com.android.example.cameraxbasic.utils.simulateClick
-    import com.bumptech.glide.Glide
-    import com.bumptech.glide.request.RequestOptions
-    import com.example.pictoevents.Calendar.CalendarObject
     import com.example.pictoevents.Calendar.CalendarObjectsGenerator
-    import com.example.pictoevents.Calendar.PictoCalendar
-    import com.example.pictoevents.MainActivity
-    import com.example.pictoevents.OCREngine.IOCREngine
-    import com.example.pictoevents.OCREngine.OCREngineFreeOCR
     import com.example.pictoevents.Processor.TextProcessor
     import com.example.pictoevents.R
-    import com.example.pictoevents.Repository.Repository
     import com.example.pictoevents.Util.FileManager
-    import com.google.firebase.ktx.Firebase
-    import com.google.firebase.storage.ktx.storage
     import kotlinx.coroutines.Dispatchers
     import kotlinx.coroutines.GlobalScope
     import kotlinx.coroutines.launch
     import kotlinx.coroutines.withContext
     import org.json.JSONObject
     import java.io.File
-    import java.nio.ByteBuffer
     import java.text.SimpleDateFormat
-    import java.util.ArrayDeque
     import java.util.Locale
     import java.util.concurrent.ExecutorService
     import java.util.concurrent.Executors
@@ -317,9 +291,9 @@ package com.example.pictoevents.UI
                                 FileManager.setImageFileLocation(photoFile)
                                 //uploadFileToStorage(photoFile)- not needed for now
                                 GlobalScope.launch(Dispatchers.Default){
-                                    withContext(Dispatchers.Default) {textProcessor.processOCR()}
-                                    withContext(Dispatchers.Main){getTitle()}
-                                    withContext(Dispatchers.Default) {textProcessor.createCalEvent()}
+                                    textProcessor.processOCR()
+                                    loadTitleOptionsOntoDialog()
+                                    textProcessor.createCalEvent()
                                 }
                             }
                         })
@@ -328,9 +302,9 @@ package com.example.pictoevents.UI
             }
         }
 
-        suspend fun getTitle()
+        suspend fun loadTitleOptionsOntoDialog()
         {
-            val titleOptions = CalendarObjectsGenerator.generateTitle(this.requireContext())// titleOptions needs to be passed into a dialog
+            val titleOptions = CalendarObjectsGenerator.generateTitle(this.requireContext())
             //Present a dialog here
             GlobalScope.launch(Dispatchers.Main){
                 withContext(Dispatchers.Main){ generateTitleDialog(titleOptions) }
@@ -341,6 +315,8 @@ package com.example.pictoevents.UI
             val args = Bundle()
             args.putString("primary", titleOptions.optString("Primary"))
             args.putString("secondary", titleOptions.optString("Secondary"))
+            Log.d(CameraFragment.TAG, "Title options are: ${titleOptions.optString("Primary")}," +
+                    "${titleOptions.optString("Secondary")}")
             val dialog = TitleDialogFragment()
             dialog.arguments = args
             dialog.show(childFragmentManager, TitleDialogFragment.TAG)

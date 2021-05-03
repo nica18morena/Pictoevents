@@ -16,8 +16,6 @@ import com.example.pictoevents.Util.FileManager
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.json.responseJson
-import com.github.kittinunf.fuel.util.encodeBase64
-import okio.internal.commonToUtf8String
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 //import org.junit.runner.Request.method
@@ -165,7 +163,6 @@ class OCREngineFreeOCR : IOCREngine
             .upload()
             .add{ FileDataPart(getImageFileLocation(),contentType = "application/octet-stream") }
             .responseJson()*/
-
         val image = this.convertImageToBase64(FileManager.getImageFileLocation())
         val imageURL = FileManager.getCloudImageURL().toString()
         Log.d(TAG, "Starting API request")
