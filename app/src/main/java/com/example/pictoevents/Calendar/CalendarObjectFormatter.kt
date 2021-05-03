@@ -7,7 +7,6 @@ class CalendarObjectFormatter {
     var dayFromDate = ""
     var hourFromTime = ""
     var minFromTime = ""
-    var secFromTime = ""
     var ampm = ""
     var monthName = ""
     var dayOfMonth = ""

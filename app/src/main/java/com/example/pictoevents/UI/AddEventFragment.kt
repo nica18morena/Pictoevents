@@ -1,7 +1,5 @@
 package com.example.pictoevents.UI
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,12 +8,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatButton
-import androidx.fragment.app.FragmentActivity
 
 import com.example.pictoevents.R
 import com.example.pictoevents.UI.AddEvent.DialogDatePickerFragment
-import com.example.pictoevents.UI.AddEvent.DialogTimePickerFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,13 +26,6 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class AddEventFragment : Fragment() {
-
-    /*override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        childFragmentManager.getFragment("requestKey"){key, bundle ->
-            val result = bundle.getString("bundleKey")
-        }
-    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,22 +51,7 @@ class AddEventFragment : Fragment() {
         val endDate = view.findViewById<Button>(R.id.endDate)
         val endTimeText = view.findViewById<TextView>(R.id.endTimeText)
         val endTime = view.findViewById<Button>(R.id.endTime)
-//
-//        var listener: DialogDatePickerFragment.OnDateRecievedListener{
-//            override fun onDateRecieved(year: Int, month: Int, day: Int) {
-//                startDateText.text = "$month/$day/$year"
-//            }
-//        }
     }
-
-
-//    fun showTimePickerDialog(v: View) {
-//        DialogTimePickerFragment().show(this.childFragmentManager, "timePicker")
-//    }
-//
-//    fun showDatePickerDialog(v: View) {
-//        DialogDatePickerFragment().show(this.childFragmentManager, "datePicker")
-//    }
 
     fun showDatePickerDialog(v: View) {
         var datePickerFragment: DialogDatePickerFragment = DialogDatePickerFragment()

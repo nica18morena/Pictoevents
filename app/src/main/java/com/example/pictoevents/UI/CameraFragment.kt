@@ -26,13 +26,6 @@ package com.example.pictoevents.UI
     import androidx.core.net.toFile
     import androidx.fragment.app.Fragment
     import androidx.localbroadcastmanager.content.LocalBroadcastManager
-    //import com.android.example.cameraxbasic.KEY_EVENT_ACTION
-    //import com.android.example.cameraxbasic.KEY_EVENT_EXTRA
-    //import com.android.example.cameraxbasic.MainActivity
-    //import com.android.example.cameraxbasic.R
-    //import com.android.example.cameraxbasic.utils.ANIMATION_FAST_MILLIS
-    //import com.android.example.cameraxbasic.utils.ANIMATION_SLOW_MILLIS
-    //import com.android.example.cameraxbasic.utils.simulateClick
     import com.example.pictoevents.Calendar.CalendarObjectsGenerator
     import com.example.pictoevents.Processor.TextProcessor
     import com.example.pictoevents.R
@@ -55,7 +48,6 @@ package com.example.pictoevents.UI
      * Main fragment for this app. Implements all camera operations including:
      * - Viewfinder
      * - Photo taking
-     * - Image analysis
      */
     class CameraFragment : Fragment() {
 
@@ -68,7 +60,6 @@ package com.example.pictoevents.UI
         private var preview: Preview? = null
         private var imageCapture: ImageCapture? = null
         private var camera: androidx.camera.core.Camera? = null
-        //private var context: Context = this.requireContext()
 
         private val displayManager by lazy {
             requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -89,7 +80,6 @@ package com.example.pictoevents.UI
                 if (displayId == this@CameraFragment.displayId) {
                     Log.d(TAG, "Rotation changed: ${view.display.rotation}")
                     imageCapture?.targetRotation = view.display.rotation
-                    //imageAnalyzer?.targetRotation = view.display.rotation
                 }
             } ?: Unit
         }
@@ -238,7 +228,6 @@ package com.example.pictoevents.UI
 
             val textProcessor = TextProcessor(this.requireContext())
             // Listener for button used to capture photo
-            //controls.findViewById<ImageButton>(R.id.camera_capture_button).setOnClickListener {
                 captureButton.setOnClickListener{
                 // Get a stable reference of the modifiable image capture use case
                 imageCapture?.let { imageCapture ->

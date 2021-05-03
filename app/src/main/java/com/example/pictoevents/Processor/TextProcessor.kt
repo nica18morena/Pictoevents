@@ -21,7 +21,6 @@ import java.io.File
 class TextProcessor (val context: Context)
 {
     private val OCREngine: IOCREngine = OCREngineFreeOCR()
-    private val cloudStorage = Firebase.storage
     private lateinit var outputDirectory: File
 
     suspend fun processOCR() {
@@ -33,9 +32,6 @@ class TextProcessor (val context: Context)
             FileManager.getDataPath())
 
         OCREngine.setContext(context)
-
-        //retrieve the image
-        //val bitmapUri = OCREngine.getCaptureImageOutputUri()
         OCREngine.prepareOCREngine()
 
         //process OCR- need bitmap

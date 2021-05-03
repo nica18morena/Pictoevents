@@ -1,12 +1,5 @@
 package com.example.pictoevents.OCREngine
 
-//import okhttp3.MediaType
-//import okhttp3.OkHttpClient
-//import com.sun.xml.internal.ws.streaming.XMLStreamWriterUtil.getOutputStream
-//import jdk.nashorn.internal.objects.NativeObject.keys
-//import jdk.nashorn.internal.runtime.ScriptingFunctions.readLine
-//import sun.text.normalizer.UTF16.append
-
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -18,15 +11,10 @@ import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.json.responseJson
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-//import org.junit.runner.Request.method
-//import java.awt.PageAttributes.MediaType
 import java.io.File
 import java.net.URL
 import java.util.*
 import kotlin.math.round
-
-//import javax.swing.text.html.HTML.Tag.FORM
-
 
 class OCREngineFreeOCR : IOCREngine
 {
@@ -119,8 +107,7 @@ class OCREngineFreeOCR : IOCREngine
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.lastIndex)
             Log.d(TAG, "Image size ${bytes.size} \n " +
                     "Image h: ${bitmap.height} Image w: ${bitmap.width}")
-            //val bitmap = Bitmap.createScaledBitmap(b, 720, 1080, false)
-            //val bitmap = this.resizeImage(b)
+
             val stream = ByteArrayOutputStream()
             val quality = this.calculateImageFactor(bytes.size)
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream)
@@ -214,56 +201,6 @@ class OCREngineFreeOCR : IOCREngine
         this.setOCRResults(extractedText)
         return extractedText
     }
-
- /*   fun extractText2(_bitmap: Bitmap): String {
-
-        //val base64Image: String  = convertImageToBase64(getImageFileLocation())
-        with(URL.openConnection() as HttpsURLConnection)
-        {
-            this.requestMethod = "POST"
-            this.setRequestProperty("User-Agent", "Mozilla/5.0")
-            this.setRequestProperty("Accept-Language", "en-US,en;q=0.5")
-            this.setRequestProperty("Content-Type", "multipart/form-data")
-            val JSONObj: JSONObject = JSONObject()
-            JSONObj.put("apikey", OCRAPIKEY)
-            // Open file
-            getImageFileLocation()?.inputStream().use{
-                val bytes = it?.readBytes()
-                JSONObj.put("file", bytes)
-            }
-
-//            JSONObj.put("base64image", base64Image)
-            JSONObj.put("language", LANG)
-            JSONObj.put("detectOrientation", true)
-            JSONObj.put("OCREngine", 2)
-
-            this.doOutput = true
-            val wr = DataOutputStream(this.getOutputStream())
-            wr.writeBytes(extractTextFromJSON(JSONObj))
-            wr.flush()
-            wr.close()
-
-            extractText()
-        }
-        return getOCRResults()
-    }*/
-  /*  fun extractTextFromJSON(params: JSONObject): String
-    {
-        val result = StringBuilder()
-        var first = true
-
-        val itr: Iterator<String> = params.keys()
-
-        while (itr.hasNext()) {
-            val key = itr.next()
-            val value: Any = params.get(key)
-            if (first) first = false else result.append("&")
-            result.append(URLEncoder.encode(key, "UTF-8"))
-            result.append("=")
-            result.append(URLEncoder.encode(value.toString(), "UTF-8"))
-        }
-        return result.toString()
-    }*/
 
     fun setOCRResults(ocrText: String)
     {

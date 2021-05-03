@@ -20,7 +20,6 @@ import com.example.pictoevents.Util.FileManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import org.json.JSONObject
 import java.io.File
 
 // Request permission

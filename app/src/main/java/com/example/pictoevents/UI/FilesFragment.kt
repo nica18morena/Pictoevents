@@ -44,30 +44,16 @@ class FilesFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: DirectoryEntryAdapter
-
     private lateinit var viewModel: FilesFragmentViewModel
-
-    /*override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //openDirectory()
-//        var directoryUriTest = FileManager.getFileBase().toURI()
+
         var directoryUriTest2 = this.requireContext().externalMediaDirs
-//        var directoryUriTest3 = this.requireContext().getExternalFilesDirs(null)
-//        var directoryUriTest4 = this.requireContext().obbDirs
-        //var directorytest = this.requireContext().contentResolver.
-         directoryUri = DocumentFile.fromFile(directoryUriTest2[0]).uri
-        //directoryUri = this.requireContext().filesDir.toUri()//"content://com.android.providers.downloads.documents/tree/downloads".toUri()
-           //?: throw IllegalArgumentException("Must pass URI of directory to open")
+
+        directoryUri = DocumentFile.fromFile(directoryUriTest2[0]).uri
 
         viewModel = ViewModelProviders.of(this)
             .get(FilesFragmentViewModel::class.java)
@@ -82,7 +68,6 @@ class FilesFragment : Fragment() {
             }
 
             override fun onDocumentLongClicked(clickedDocument: File) {
-                //renameDocument(clickedDocument)
             }
         })
 
@@ -91,12 +76,6 @@ class FilesFragment : Fragment() {
         viewModel.documents.observe(this, Observer { documents ->
             documents?.let { adapter.setEntries(documents) }
         })
-
-        /*viewModel.openDirectory.observe(this, Observer { event ->
-            event.getContentIfNotHandled()?.let { directory ->
-                (activity as? MainActivity)?.showDirectoryContents(directory.uri)
-            }
-        })*/
 
         viewModel.openDocument.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let { document ->
@@ -169,86 +148,14 @@ class FilesFragment : Fragment() {
         startActivityForResult(intent, OPEN_DIRECTORY_REQUEST_CODE)
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == OPEN_DIRECTORY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-//            val directoryUri = data?.data ?: return
-//
-//            contentResolver.takePersistableUriPermission(
-//                directoryUri,
-//                Intent.FLAG_GRANT_READ_URI_PERMISSION
-//            )
-//            showDirectoryContents(directoryUri)
-//        }
-//    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    /*fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }*/
-
-    /*override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }*/
-
-    /*override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }*/
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    /*interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }*/
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         viewModel.loadDirectory()//(directoryUri)
     }
 
-    /*companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FilesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FilesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }*/
     companion object {
 
-        /**
-         * Convenience method for constructing a [DirectoryFragment] with the directory uri
-         * to display.
-         */
-        @JvmStatic
         fun newInstance(directoryUri: Uri) =
             FilesFragment().apply {
                 arguments = Bundle().apply {

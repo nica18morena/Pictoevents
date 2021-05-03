@@ -6,9 +6,7 @@ import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import com.example.pictoevents.Dictionary.MonthDictionary
 import com.example.pictoevents.Dictionary.WeekDictionary
-import com.example.pictoevents.NaturalLangProc.AnalyzeEntities
 import com.example.pictoevents.Pattern.RegExPatterns
-import com.example.pictoevents.Processor.TextProcessor
 import com.example.pictoevents.Repository.Repository
 import org.json.JSONObject
 import java.util.regex.Matcher
@@ -16,7 +14,6 @@ import java.util.regex.Pattern
 
 class CalendarObjectsGenerator(val ocrText: String, val context: Context)
 {
-    private val TARGETTITLELENGTH = 5
     private var formatter = CalendarObjectFormatter()
     private var titleBucket: MutableList<String> = ArrayList()
 
@@ -32,10 +29,7 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
             var wordSplit = words.split(",'")
 
             identifyDates(wordSplit)
-            //identifyTitle(wordSplit) This generates a title, but not a smart one
         }
-        //this.generateTitle() // This method is now public, needs to be called outside to generate dialog with options for title
-        //this.composeTitle() //this method can be removed, was attempt to use Google library to analyze text
     }
 
     private fun identifyDates(wordSplit: List<String>) {
@@ -131,31 +125,6 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
                 }}
         }
     }
-
-    /*private fun composeTitle(){
-        var titleString = ""
-        var tempString = ""
-        var analyzeEntities = AnalyzeEntities()
-
-        if (titleBucket.count() > TARGETTITLELENGTH){
-            // Need API to ID word parts ie noun, verb
-            for (word in titleBucket) {
-                tempString = tempString + " " + word
-            }
-
-            var request = analyzeEntities.buildRequest(tempString)
-            //analyzeEntities.parseResponse(request)
-            // create title
-        }
-
-        for (word in titleBucket){
-            if(word.length > 2){
-                titleString = titleString + word + " "
-            }
-        }
-
-        this.decomposeTitle(titleString)
-    }*/
 
     fun setTitle(title : String){
         this.decomposeTitle(title)

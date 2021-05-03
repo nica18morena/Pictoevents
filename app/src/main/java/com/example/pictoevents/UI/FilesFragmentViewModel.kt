@@ -17,7 +17,6 @@
 package com.example.pictoevents.UI
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -42,9 +41,7 @@ class FilesFragmentViewModel(application: Application) : AndroidViewModel(applic
     private val _openDocument = MutableLiveData<Event<File>>()
     val openDocument = _openDocument
 
-    fun loadDirectory(){//(directoryUri: Uri) {
-        //val documentsTree = DocumentFile.fromTreeUri(getApplication(), directoryUri) ?: return
-        //val childDocuments = documentsTree.listFiles(). .toCachingList()
+    fun loadDirectory(){
 
         val childDocuments = FileManager.getFileBase().listFiles().toList()//toURI()//.context.fileList().toList()
         printFileNames(childDocuments)
