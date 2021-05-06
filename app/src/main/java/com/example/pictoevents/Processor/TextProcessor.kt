@@ -37,6 +37,8 @@ class TextProcessor (val context: Context)
         //process OCR- need bitmap
         val bitmap = BitmapFactory.decodeFile(FileManager.getImageFileLocation().toString())
 
+        //Testing: Sample temp text: Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020
+        //Repository.text = "Stephie and Jarrot wedding at 2:30 Pm, 9/19/2020"
         Repository.text = OCREngine.extractText(bitmap)
         saveTextFile()
         Log.d(TextProcessor.TAG, "OCR text is: ${Repository.text}")
@@ -62,10 +64,6 @@ class TextProcessor (val context: Context)
 
     private suspend fun saveTextFile()
     {
-        //Sample temp text: Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020
-        //val text = "Stephie and Jarrot wedding at 2:30 Pm, 9/19/2020"
-        //Repository.text = OCREngine.getOCRResults() // Get OCR text
-
         //Create txt file
         GlobalScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.IO) { FileManager.createOCRTextFile(Repository.text) }

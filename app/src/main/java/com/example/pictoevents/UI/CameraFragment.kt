@@ -30,12 +30,10 @@ package com.example.pictoevents.UI
     import com.example.pictoevents.Processor.TextProcessor
     import com.example.pictoevents.R
     import com.example.pictoevents.Util.FileManager
-    import kotlinx.coroutines.Dispatchers
-    import kotlinx.coroutines.GlobalScope
-    import kotlinx.coroutines.launch
-    import kotlinx.coroutines.withContext
+    import kotlinx.coroutines.*
     import org.json.JSONObject
     import java.io.File
+    import java.lang.Runnable
     import java.text.SimpleDateFormat
     import java.util.Locale
     import java.util.concurrent.ExecutorService
@@ -280,9 +278,15 @@ package com.example.pictoevents.UI
                                 FileManager.setImageFileLocation(photoFile)
                                 //uploadFileToStorage(photoFile)- not needed for now
                                 GlobalScope.launch(Dispatchers.Default){
-                                    textProcessor.processOCR()
-                                    loadTitleOptionsOntoDialog()
-                                    textProcessor.createCalEvent()
+                                    launch(CoroutineName("ProcessOCR/ TitleDialog/ createEvent")){
+                                        textProcessor.processOCR()
+                                        Log.d(TAG, "========= 1 =========")
+                                        loadTitleOptionsOntoDialog()
+                                        Log.d(TAG, "========= 2 =========")
+                                        textProcessor.createCalEvent()
+                                        Log.d(TAG, "========= 3 =========")
+                                    }
+                                    Log.d(TAG,"**Done**")
                                 }
                             }
                         })
