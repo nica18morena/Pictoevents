@@ -3,6 +3,8 @@ package com.example.pictoevents.UI
     import android.annotation.SuppressLint
     import android.content.Context
     import android.content.res.Configuration
+    import android.graphics.Color
+    import android.graphics.drawable.ColorDrawable
     //import android.graphics.Camera
     import android.hardware.display.DisplayManager
     import android.media.MediaScannerConnection
@@ -58,6 +60,10 @@ package com.example.pictoevents.UI
         private var preview: Preview? = null
         private var imageCapture: ImageCapture? = null
         private var camera: androidx.camera.core.Camera? = null
+        private var cameraProvider: ProcessCameraProvider? = null
+        /** Milliseconds used for UI animations */
+        val ANIMATION_FAST_MILLIS = 50L
+        val ANIMATION_SLOW_MILLIS = 100L
 
         private val displayManager by lazy {
             requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -122,8 +128,8 @@ package com.example.pictoevents.UI
                 // Build UI controls
                 updateCameraUi()
 
-                // Bind use cases
-                bindCameraUseCases()
+                // Setup camera
+                setUpCamera()
             }
         }
 
@@ -140,6 +146,23 @@ package com.example.pictoevents.UI
             updateCameraUi()
         }
 
+        private fun setUpCamera() {
+            val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+            cameraProviderFuture.addListener(Runnable {
+
+                // CameraProvider
+                cameraProvider = cameraProviderFuture.get()
+
+                // Select lensFacing depending on the available cameras
+                lensFacing = when {
+                    hasBackCamera() -> CameraSelector.LENS_FACING_BACK
+                    else -> throw IllegalStateException("Back camera is unavailable")
+                }
+
+                // Build and bind the camera use cases
+                bindCameraUseCases()
+            }, ContextCompat.getMainExecutor(requireContext()))
+        }
         /** Declare and bind preview, capture and analysis use cases */
         private fun bindCameraUseCases() {
 
@@ -154,47 +177,44 @@ package com.example.pictoevents.UI
 
             // Bind the CameraProvider to the LifeCycleOwner
             val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
-            val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-            cameraProviderFuture.addListener(Runnable {
 
-                // CameraProvider
-                val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+            // CameraProvider
+            val cameraProvider: ProcessCameraProvider = cameraProvider
+                ?: throw IllegalStateException("Camera initialization failed.")
 
-                // Preview
-                preview = Preview.Builder()
-                    // We request aspect ratio but no resolution
-                    .setTargetAspectRatio(screenAspectRatio)
-                    // Set initial target rotation
-                    .setTargetRotation(rotation)
-                    .build()
+            // Preview
+            preview = Preview.Builder()
+                // We request aspect ratio but no resolution
+                .setTargetAspectRatio(screenAspectRatio)
+                // Set initial target rotation
+                .setTargetRotation(rotation)
+                .build()
 
-                // ImageCapture
-                imageCapture = ImageCapture.Builder()
-                    .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                    // We request aspect ratio but no resolution to match preview config, but letting
-                    // CameraX optimize for whatever specific resolution best fits our use cases
-                    .setTargetAspectRatio(screenAspectRatio)
-                    // Set initial target rotation, we will have to call this again if rotation changes
-                    // during the lifecycle of this use case
-                    .setTargetRotation(rotation)
-                    .build()
+            // ImageCapture
+            imageCapture = ImageCapture.Builder()
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                // We request aspect ratio but no resolution to match preview config, but letting
+                // CameraX optimize for whatever specific resolution best fits our use cases
+                .setTargetAspectRatio(screenAspectRatio)
+                // Set initial target rotation, we will have to call this again if rotation changes
+                // during the lifecycle of this use case
+                .setTargetRotation(rotation)
+                .build()
 
-                // Must unbind the use-cases before rebinding them
-                cameraProvider.unbindAll()
+            // Must unbind the use-cases before rebinding them
+            cameraProvider.unbindAll()
 
-                try {
-                    // A variable number of use-cases can be passed here -
-                    // camera provides access to CameraControl & CameraInfo
-                    camera = cameraProvider.bindToLifecycle(
-                        this, cameraSelector, preview, imageCapture)
+            try {
+                // A variable number of use-cases can be passed here -
+                // camera provides access to CameraControl & CameraInfo
+                camera = cameraProvider.bindToLifecycle(
+                    this, cameraSelector, preview, imageCapture)
 
-                    // Attach the viewfinder's surface provider to preview use case
-                    preview?.setSurfaceProvider(viewFinder.createSurfaceProvider(camera?.cameraInfo))
-                } catch(exc: Exception) {
-                    Log.e(TAG, "Use case binding failed", exc)
-                }
-
-            }, ContextCompat.getMainExecutor(requireContext()))
+                // Attach the viewfinder's surface provider to preview use case
+                preview?.setSurfaceProvider(viewFinder.createSurfaceProvider(camera?.cameraInfo))
+            } catch(exc: Exception) {
+                Log.e(TAG, "Use case binding failed", exc)
+            }
         }
 
         /**
@@ -226,7 +246,7 @@ package com.example.pictoevents.UI
 
             val textProcessor = TextProcessor(this.requireContext())
             // Listener for button used to capture photo
-                captureButton.setOnClickListener{
+            captureButton.setOnClickListener{
                 // Get a stable reference of the modifiable image capture use case
                 imageCapture?.let { imageCapture ->
 
@@ -274,6 +294,13 @@ package com.example.pictoevents.UI
                                     Log.d(TAG, "Image capture scanned into media store: $uri")
                                 }
 
+                                // Display flash animation to indicate that photo was captured
+                                container.postDelayed({
+                                    container.foreground = ColorDrawable(Color.WHITE)
+                                    container.postDelayed(
+                                        { container.foreground = null }, ANIMATION_FAST_MILLIS)
+                                }, ANIMATION_SLOW_MILLIS)
+
                                 // Here start my custom code for OCR stuff
                                 FileManager.setImageFileLocation(photoFile)
                                 //uploadFileToStorage(photoFile)- not needed for now
@@ -290,9 +317,12 @@ package com.example.pictoevents.UI
                                 }
                             }
                         })
-
                 }
             }
+        }
+
+        private fun hasBackCamera(): Boolean {
+            return cameraProvider?.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) ?: false
         }
 
         suspend fun loadTitleOptionsOntoDialog()

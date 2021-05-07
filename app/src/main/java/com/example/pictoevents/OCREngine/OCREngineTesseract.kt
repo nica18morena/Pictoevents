@@ -48,7 +48,7 @@ class OCREngineTesseract : IOCREngine {
     private fun copyTessDataFiles() {
         try {
             val fileList = activityContext.assets.list(TESSDATA)
-            for (fileName in fileList) {
+            for (fileName in fileList!!) {
                 val pathToDataFile: String = FileManager.getDataPath() + "/" + fileName
                 if (!File(pathToDataFile).exists()) {
                     val `in` =

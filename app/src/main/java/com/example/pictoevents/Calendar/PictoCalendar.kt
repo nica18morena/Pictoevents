@@ -1,12 +1,19 @@
 package com.example.pictoevents.Calendar
 
+import android.Manifest
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.provider.CalendarContract
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker.checkPermission
+import androidx.navigation.Navigation
+import com.example.pictoevents.R
 import java.lang.NullPointerException
 import java.util.*
 
@@ -36,7 +43,7 @@ class PictoCalendar (val context: Context){
                 null,
                 CalendarContract.Calendars._ID + " ASC"
             )
-            if (calCursor.moveToFirst()) {
+            if (calCursor!!.moveToFirst()) {
                 do {
                     val displayName = calCursor.getString(1)
                     Log.d(
@@ -72,7 +79,7 @@ class PictoCalendar (val context: Context){
                 null,
                 CalendarContract.Events.DTSTART + " ASC"
             )
-            if (calCursor.moveToFirst()) {
+            if (calCursor!!.moveToFirst()) {
                 do {
                     val eventInfo = "${calCursor.getString(0)},${calCursor.getString(1)},${calCursor.getString(2)},${calCursor.getString(3)}"
                     eventList.add(eventInfo)
@@ -146,7 +153,10 @@ class PictoCalendar (val context: Context){
 
         if(this.getCalId() == 0L) {
             val uri = getContentResolver().insert(builder.build(), cv)
-            calID = uri.lastPathSegment.toLong()
+            if (uri != null){
+                calID = uri.lastPathSegment!!.toLong()
+            }
+
        }
 
         return this.getCalId()
@@ -214,7 +224,14 @@ class PictoCalendar (val context: Context){
     }
 
     private fun getCalEventID(cv: ContentValues): Long{
-        val uri = this.getContentResolver().insert(CalendarContract.Events.CONTENT_URI, cv)
-        return uri.lastPathSegment.toLong()
+
+        if (context.checkSelfPermission(Manifest.permission.WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED){
+            val uri = this.getContentResolver().insert(CalendarContract.Events.CONTENT_URI, cv)
+            if (uri != null)
+            {
+                return uri.lastPathSegment!!.toLong()
+            }
+        }
+        return 0
     }
 }

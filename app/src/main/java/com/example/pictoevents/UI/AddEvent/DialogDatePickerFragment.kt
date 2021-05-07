@@ -36,7 +36,7 @@ class DialogDatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetLis
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         // Create a new instance of DatePickerDialog and return it
-        return DatePickerDialog(activity, this, year, month, day)
+        return DatePickerDialog(this.requireContext(), this, year, month, day)
     }
 
 //    override fun onAttach(context: Context) {
