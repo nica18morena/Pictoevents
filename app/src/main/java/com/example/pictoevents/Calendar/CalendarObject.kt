@@ -14,4 +14,7 @@ class CalendarObject(val hour: Int, val minute: Int, val second: Int, val dayOfM
         set(value){
             this.description = value
         }
+
+    override fun toString(): String ="Event hr: ${hour}, min: ${minute}, dayOfmonth: ${dayOfMonth}," +
+            " month: ${month}, year: ${year}, ampm: ${AmPm}, title: ${title}"
 }

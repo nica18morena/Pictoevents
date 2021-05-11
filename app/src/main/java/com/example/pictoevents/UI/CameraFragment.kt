@@ -31,7 +31,9 @@ package com.example.pictoevents.UI
     import com.example.pictoevents.Calendar.CalendarObjectsGenerator
     import com.example.pictoevents.Processor.TextProcessor
     import com.example.pictoevents.R
+    import com.example.pictoevents.Repository.Repository
     import com.example.pictoevents.Util.FileManager
+    import com.google.android.material.snackbar.Snackbar
     import kotlinx.coroutines.*
     import org.json.JSONObject
     import java.io.File
@@ -305,20 +307,30 @@ package com.example.pictoevents.UI
                                 FileManager.setImageFileLocation(photoFile)
                                 //uploadFileToStorage(photoFile)- not needed for now
                                 GlobalScope.launch(Dispatchers.Default){
-                                    launch(CoroutineName("ProcessOCR/ TitleDialog/ createEvent")){
-                                        textProcessor.processOCR()
-                                        Log.d(TAG, "========= 1 =========")
-                                        loadTitleOptionsOntoDialog()
-                                        Log.d(TAG, "========= 2 =========")
-                                        textProcessor.createCalEvent()
-                                        Log.d(TAG, "========= 3 =========")
+                                    coroutineScope{
+                                        launch(CoroutineName("ProcessOCR/ TitleDialog/ createEvent")){
+                                            textProcessor.processOCR()
+                                            Log.d(TAG, "========= 1 =========")
+                                            loadTitleOptionsOntoDialog()
+                                            Log.d(TAG, "========= 2 =========")
+                                            textProcessor.createCalEvent()
+                                            Log.d(TAG, "========= 3 =========")
+                                        }
                                     }
-                                    Log.d(TAG,"**Done**")
                                 }
+                                displaySnackbar()
+                                Log.d(TAG, "======== 4 ========")
+                                Log.d(TAG,"**Done**")
                             }
                         })
                 }
             }
+        }
+
+        fun displaySnackbar(){
+            Log.d(TAG, "++++++++ Start displaySnackbar() +++++++")
+            Snackbar.make(container, getString(R.string.event_created_notification,
+                Repository.eventTitle), Snackbar.LENGTH_LONG).show()
         }
 
         private fun hasBackCamera(): Boolean {
@@ -327,6 +339,7 @@ package com.example.pictoevents.UI
 
         suspend fun loadTitleOptionsOntoDialog()
         {
+            Log.d(TAG, "++++++++ Start loadTitleOptionsOntoDialog() +++++++")
             val titleOptions = CalendarObjectsGenerator.generateTitle(this.requireContext())
             //Present a dialog here
             GlobalScope.launch(Dispatchers.Main){

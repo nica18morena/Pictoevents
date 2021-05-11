@@ -25,6 +25,7 @@ class TextProcessor (val context: Context)
 
     suspend fun processOCR() {
 
+        Log.d(TAG, "++++++++ Start processOCR +++++++")
         //Setup file directory and context for OCR
         val dataPath = File(context.externalMediaDirs.first(), "/tessdata")
         FileManager.setDataPath(dataPath.toString())
@@ -38,8 +39,15 @@ class TextProcessor (val context: Context)
         val bitmap = BitmapFactory.decodeFile(FileManager.getImageFileLocation().toString())
 
         //Testing: Sample temp text: Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020
-        //Repository.text = "Stephie and Jarrot wedding at 2:30 Pm, 9/19/2020"
-        Repository.text = OCREngine.extractText(bitmap)
+        Repository.text = "INGTON | BOTHELL\n" +
+                "    NNUAL\n" +
+                "    ICEMENT\n" +
+                "    VIRTUALcOMMENCEMENT CEREMONY\n" +
+                "    SUNDAY-JUNE 13, 2021\n" +
+                "    UWB.EDUICOMMENCEMENT\n" +
+                "    1 p.m. (PST)-CEREMONY BEGINS\n" +
+                "    eremoniesandevents #uwbgrad21"
+        //Repository.text = OCREngine.extractText(bitmap)
         saveTextFile()
         Log.d(TextProcessor.TAG, "OCR text is: ${Repository.text}")
     }
@@ -72,6 +80,7 @@ class TextProcessor (val context: Context)
 
     suspend fun createCalEvent()
     {
+        Log.d(TAG, "++++++++ Start createCalEvent() +++++++")
         val generateCalendarObjects = CalendarObjectsGenerator(Repository.text, context)
         //need to update generateCalendarObjects title formatter with the selected title
         generateCalendarObjects.setTitle(Repository.eventTitle)

@@ -19,14 +19,14 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
 
     private fun tokenizeText(): List<String>
     {
-        return this.ocrText.split(" ","\n")
+        return this.ocrText.split(" ","\n","-")
     }
 
     fun identifyCalendarComponents() {
 
         val iterator = this.tokenizeText().listIterator()
         for (words in iterator ){
-            var wordSplit = words.split(",'")
+            var wordSplit = words.split("[,'-*]")
 
             identifyDates(wordSplit)
         }
@@ -39,7 +39,7 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
             return
         }
 
-        val word = wordSplit[0].toLowerCase()//.replace(",","")
+        val word = wordSplit[0].toLowerCase().replace(",","")
 
         // Preset pattern to default/ false
         val hasDatePattern = this.findDatePattern(word)
@@ -57,7 +57,7 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
         if (!hasDatePattern && !hasTimePattern) {
             hasDaysPattern = this.findDayPattern(word)
 
-            if (hasDatePattern && word.length > 4) {
+            if (hasDaysPattern && (word.length > 4 || !word.matches("[a-zA-Z]".toRegex()))) {
                 hasDaysPattern = false
             }
         }
@@ -105,6 +105,9 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
         }
     }
 
+    private fun isAllDigits(){
+
+    }
     private fun identifyTitle(wordSplit: List<String>){
 
         //val hasDatePattern = this.findWordPattern(word)

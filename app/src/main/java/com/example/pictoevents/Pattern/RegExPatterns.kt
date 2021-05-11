@@ -6,6 +6,6 @@ object RegExPatterns {
     val TIME = "([0|1])?[1-9][:]([0-5])?[0-9]"
     val YEAR = "^20[1-9][0-9]"
     val DAY = "^([0-3])?[0-9](st|nd|rd|th)?(,|\\\\.)?"
-    val AMPM = "^(a|A|p|P)(m|M)$"
+    val AMPM = "(a|A)(\\.?)(m|M)(\\.?)|(p|P)(\\.?)(m|M)(\\.?)"
     val WORD = "[a-z,A-Z]"
 }
