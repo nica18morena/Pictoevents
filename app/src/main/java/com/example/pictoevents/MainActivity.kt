@@ -3,6 +3,7 @@ package com.example.pictoevents
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -18,6 +19,7 @@ import com.example.pictoevents.Repository.Repository
 import com.example.pictoevents.UI.TitleDialogFragment
 import com.example.pictoevents.Util.FileManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
@@ -89,6 +91,13 @@ class MainActivity : AppCompatActivity(), LifecycleOwner, TitleDialogFragment.Ti
         if (selection != null) {
             Repository.eventTitle = selection
         }
+        displaySnackbar()
+    }
+
+    fun displaySnackbar(){
+        Log.d(TAG, "++++++++ Start displaySnackbar() +++++++")
+        Snackbar.make(findViewById(R.id.cameraFragment), getString(R.string.event_created_notification,
+            Repository.eventTitle), Snackbar.LENGTH_LONG).show()
     }
 
     // Needed to make the add event fragment work when using the pickers: 10/11/20 trying to move it back to fragment

@@ -105,9 +105,6 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
         }
     }
 
-    private fun isAllDigits(){
-
-    }
     private fun identifyTitle(wordSplit: List<String>){
 
         //val hasDatePattern = this.findWordPattern(word)
@@ -115,7 +112,6 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
             var word = wordSplit[0]
             word = word.replace(",","")
             val hasWordPattern = this.findWordPattern(word)
-
 
             if(hasWordPattern){
                 titleBucket.add(word)

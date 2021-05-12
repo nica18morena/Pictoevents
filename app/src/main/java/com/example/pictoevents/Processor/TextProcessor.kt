@@ -23,8 +23,8 @@ class TextProcessor (val context: Context)
     private val OCREngine: IOCREngine = OCREngineFreeOCR()
     private lateinit var outputDirectory: File
 
-    suspend fun processOCR() {
-
+    //suspend fun processOCR() {
+    fun processOCR() {
         Log.d(TAG, "++++++++ Start processOCR +++++++")
         //Setup file directory and context for OCR
         val dataPath = File(context.externalMediaDirs.first(), "/tessdata")
@@ -70,7 +70,8 @@ class TextProcessor (val context: Context)
         }
     }*/
 
-    private suspend fun saveTextFile()
+    //private suspend fun saveTextFile()
+    private fun saveTextFile()
     {
         //Create txt file
         GlobalScope.launch(Dispatchers.IO) {
@@ -78,7 +79,8 @@ class TextProcessor (val context: Context)
         }
     }
 
-    suspend fun createCalEvent()
+    //suspend fun createCalEvent()
+    fun createCalEvent()
     {
         Log.d(TAG, "++++++++ Start createCalEvent() +++++++")
         val generateCalendarObjects = CalendarObjectsGenerator(Repository.text, context)

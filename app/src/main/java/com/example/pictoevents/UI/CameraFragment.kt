@@ -306,20 +306,20 @@ package com.example.pictoevents.UI
                                 // Here start my custom code for OCR stuff
                                 FileManager.setImageFileLocation(photoFile)
                                 //uploadFileToStorage(photoFile)- not needed for now
-                                GlobalScope.launch(Dispatchers.Default){
-                                    coroutineScope{
-                                        launch(CoroutineName("ProcessOCR/ TitleDialog/ createEvent")){
+   //                             GlobalScope.launch(Dispatchers.Default){
+  //                                  coroutineScope{
+   //                                     launch(CoroutineName("ProcessOCR/ TitleDialog/ createEvent")){
                                             textProcessor.processOCR()
                                             Log.d(TAG, "========= 1 =========")
                                             loadTitleOptionsOntoDialog()
                                             Log.d(TAG, "========= 2 =========")
                                             textProcessor.createCalEvent()
                                             Log.d(TAG, "========= 3 =========")
-                                        }
-                                    }
-                                }
-                                displaySnackbar()
-                                Log.d(TAG, "======== 4 ========")
+                                            //displaySnackbar()
+                                            //Log.d(TAG, "======== 4 ========")
+  //                                      }
+   //                                 }
+    //                            }
                                 Log.d(TAG,"**Done**")
                             }
                         })
@@ -327,17 +327,18 @@ package com.example.pictoevents.UI
             }
         }
 
-        fun displaySnackbar(){
+        /*fun displaySnackbar(){
             Log.d(TAG, "++++++++ Start displaySnackbar() +++++++")
             Snackbar.make(container, getString(R.string.event_created_notification,
                 Repository.eventTitle), Snackbar.LENGTH_LONG).show()
-        }
+        }*/
 
         private fun hasBackCamera(): Boolean {
             return cameraProvider?.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) ?: false
         }
 
-        suspend fun loadTitleOptionsOntoDialog()
+        //suspend fun loadTitleOptionsOntoDialog()
+        fun loadTitleOptionsOntoDialog()
         {
             Log.d(TAG, "++++++++ Start loadTitleOptionsOntoDialog() +++++++")
             val titleOptions = CalendarObjectsGenerator.generateTitle(this.requireContext())

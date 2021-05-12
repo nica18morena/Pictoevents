@@ -57,6 +57,7 @@ class PictoCalendar (val context: Context){
                     }
                 } while (calCursor.moveToNext())
             }
+            calCursor.close()
         } catch (e: SecurityException) {
             Log.e(ContentValues.TAG, "Error occurred: " + e.stackTrace)
         }
@@ -86,6 +87,7 @@ class PictoCalendar (val context: Context){
 
                 } while (calCursor.moveToNext())
             }
+            calCursor.close()
         } catch (e: SecurityException) {
             Log.e(ContentValues.TAG, "Error occurred: " + e.stackTrace)
         }
@@ -154,9 +156,9 @@ class PictoCalendar (val context: Context){
         if(this.getCalId() == 0L) {
             val uri = getContentResolver().insert(builder.build(), cv)
             if (uri != null){
-                calID = uri.lastPathSegment!!.toLong()
+                calID = uri.lastPathSegment!!
+                    .toLong()
             }
-
        }
 
         return this.getCalId()
@@ -196,7 +198,7 @@ class PictoCalendar (val context: Context){
         }
 
         calendar.set(Calendar.AM_PM, calObj.AmPm)
-        Log.d(TAG, "Event: ${calendar.toString()}\n" +
+        Log.d(TAG, "Event: ${calObj.title}" +
                 "Month: ${calObj.month}, Day: ${calObj.dayOfMonth},\n" +
                 "Year: ${calObj.year}, Hour: ${calObj.hour},\n" +
                 "Min: ${calObj.minute}, AMPM: ${calObj.AmPm}")
