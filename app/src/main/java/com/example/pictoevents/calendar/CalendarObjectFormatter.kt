@@ -1,4 +1,4 @@
-package com.example.pictoevents.Calendar
+package com.example.pictoevents.calendar
 
 class CalendarObjectFormatter {
     // Raw values
@@ -42,7 +42,7 @@ class CalendarObjectFormatter {
     fun getFormattedDay(): Int{
         var formattedDay = "0"
         if(dayOfMonth.isNotEmpty()){
-            dayOfMonth = dayOfMonth.replace("\\D".toRegex(), "")
+            formattedDay = dayOfMonth.replace("\\D".toRegex(), "")
         }
         if(dayFromDate.isNotEmpty()){
             formattedDay = dayFromDate
@@ -62,7 +62,7 @@ class CalendarObjectFormatter {
             }
         }
 
-        return Integer.parseInt(formattedDay)
+        return Integer.parseInt(formattedDay) -1
     }
 
     fun getFormattedYear(): Int{
@@ -84,19 +84,20 @@ class CalendarObjectFormatter {
     }
 
     fun getFormattedHour(): Int{
-        var formattedHour = "0"
+        var formattedHour = 0
         if(hourFromTime.isNotEmpty()){
             if(ampm.isNotEmpty()){
+                ampm = ampm.replace(".","")
                 when (ampm){
-                    "am" -> formattedHour = hourFromTime
-                    "pm" -> formattedHour = hourFromTime + 12
+                    "am" -> formattedHour = Integer.parseInt(hourFromTime)
+                    "pm" -> formattedHour = Integer.parseInt(hourFromTime) + 12
                 }
             }
             else{
-                formattedHour = hourFromTime
+                formattedHour = Integer.parseInt(hourFromTime)
             }
         }
-        return Integer.parseInt(formattedHour)
+        return formattedHour
     }
 
     fun getFormattedMin(): Int{
@@ -113,6 +114,7 @@ class CalendarObjectFormatter {
     fun getFormattedAMPM(): Int{
         var formattedAMPM = "0"
         if(ampm.isNotEmpty()){
+            ampm = ampm.replace(".","")
             when(ampm){
                 "am"-> formattedAMPM = "0"
                 "pm"-> formattedAMPM = "1"

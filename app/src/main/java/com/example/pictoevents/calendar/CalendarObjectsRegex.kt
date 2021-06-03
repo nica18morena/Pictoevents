@@ -1,28 +1,21 @@
-package com.example.pictoevents.Calendar
+package com.example.pictoevents.calendar
 
-import android.content.Context
-import android.util.Log
-import com.chaquo.python.Python
-import com.chaquo.python.android.AndroidPlatform
 import com.example.pictoevents.Dictionary.MonthDictionary
 import com.example.pictoevents.Dictionary.WeekDictionary
 import com.example.pictoevents.Pattern.RegExPatterns
-import com.example.pictoevents.Repository.Repository
-import org.json.JSONObject
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-class CalendarObjectsGenerator(val ocrText: String, val context: Context)
+class CalendarObjectsRegex(val ocrText: String)
 {
     private var formatter = CalendarObjectFormatter()
-    private var titleBucket: MutableList<String> = ArrayList()
 
     private fun tokenizeText(): List<String>
     {
         return this.ocrText.split(" ","\n","-")
     }
 
-    fun identifyCalendarComponents() {
+    fun identifyCalendarComponents(): CalendarObjectFormatter {
 
         val iterator = this.tokenizeText().listIterator()
         for (words in iterator ){
@@ -30,6 +23,7 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
 
             identifyDates(wordSplit)
         }
+        return formatter
     }
 
     private fun identifyDates(wordSplit: List<String>) {
@@ -53,11 +47,15 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
         // Find if the string matches the patterns
         if (!hasDatePattern) {
             hasTimePattern = this.findTimePattern(word)
+
+            if (hasTimePattern && word.toInt() > 12){
+                hasTimePattern = false
+            }
         }
-        if (!hasDatePattern && !hasTimePattern) {
+        if (!hasDatePattern && !hasTimePattern) {//now matching 2021...should not
             hasDaysPattern = this.findDayPattern(word)
 
-            if (hasDaysPattern && (word.length > 4 || !word.matches("[a-zA-Z]".toRegex()))) {
+            if (hasDaysPattern && (word.length > 3 || word.matches("[a-zA-Z]".toRegex()))) {
                 hasDaysPattern = false
             }
         }
@@ -103,30 +101,6 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
                 this.decomposeMonth(word)
             }
         }
-    }
-
-    private fun identifyTitle(wordSplit: List<String>){
-
-        //val hasDatePattern = this.findWordPattern(word)
-        if ( wordSplit.count() == 1){
-            var word = wordSplit[0]
-            word = word.replace(",","")
-            val hasWordPattern = this.findWordPattern(word)
-
-            if(hasWordPattern){
-                titleBucket.add(word)
-            }
-        }
-        if ( wordSplit.count() > 1){
-            wordSplit.forEach{
-                if (this.findWordPattern(it)){
-                    titleBucket.add(it)
-                }}
-        }
-    }
-
-    fun setTitle(title : String){
-        this.decomposeTitle(title)
     }
 
     fun getObjectFormatter(): CalendarObjectFormatter{
@@ -197,7 +171,7 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
 
             return false
         }
-        if (word[0].length <= 2 && word[0].matches("\\w".toRegex())) {
+        if (word[0].length <= 2 && word[0].matches("[a-zA-Z]".toRegex())) {
             //Is a word less than 2 chars
             return false
         }
@@ -220,8 +194,9 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
     }
 
     private fun decomposeTime(time: String){
+        formatter.hourFromTime = time
         //Sample time 12:01
-        val stime = time.split(":")
+        val stime = time.split(":")// here i pass in a time value of 1- it needs to be formatted
         if(stime.size == 2){
             formatter.hourFromTime = stime[0]
             formatter.minFromTime = stime[1]
@@ -248,23 +223,7 @@ class CalendarObjectsGenerator(val ocrText: String, val context: Context)
         formatter.weekdayName = week
     }
 
-    private fun decomposeTitle(title: String){
-        formatter.title = title
-    }
-
     companion object{
-        private const val TAG = "TextProcessor"
-
-        fun generateTitle(context: Context): JSONObject{
-            //check if Python has been started
-            if (!Python.isStarted()){
-                Python.start(AndroidPlatform(context))
-            }
-            val py = Python.getInstance()
-            val titleGenerator = py.getModule("title_Generator")
-            val titles =  JSONObject(titleGenerator.callAttr("generateTitle", Repository.text).toString())
-            Log.d(CalendarObjectsGenerator.TAG, "Titles generated are: ${titles.toString()}")
-            return titles
-        }
+        private const val TAG = "CalendarObjectRegex"
     }
 }

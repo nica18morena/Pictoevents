@@ -22,6 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import org.json.JSONObject
 import java.io.File
 
 // Request permission
@@ -91,7 +92,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner, TitleDialogFragment.Ti
         if (selection != null) {
             Repository.eventTitle = selection
         }
-        displaySnackbar()
+        //displaySnackbar()
     }
 
     fun displaySnackbar(){
@@ -100,6 +101,16 @@ class MainActivity : AppCompatActivity(), LifecycleOwner, TitleDialogFragment.Ti
             Repository.eventTitle), Snackbar.LENGTH_LONG).show()
     }
 
+    fun generateTitleDialog(titleOptions : JSONObject){
+        val args = Bundle()
+        args.putString("primary", titleOptions.optString("Primary"))
+        args.putString("secondary", titleOptions.optString("Secondary"))
+        Log.d(TAG, "Title options are: ${titleOptions.optString("Primary")}," +
+                "${titleOptions.optString("Secondary")}")
+        val dialog = TitleDialogFragment()
+        dialog.arguments = args
+        dialog.show(supportFragmentManager, TitleDialogFragment.TAG)
+    }
     // Needed to make the add event fragment work when using the pickers: 10/11/20 trying to move it back to fragment
 //    fun showTimePickerDialog(v: View) {
 //        DialogTimePickerFragment().show(supportFragmentManager, "timePicker")

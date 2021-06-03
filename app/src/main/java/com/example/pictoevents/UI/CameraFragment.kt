@@ -28,12 +28,9 @@ package com.example.pictoevents.UI
     import androidx.core.net.toFile
     import androidx.fragment.app.Fragment
     import androidx.localbroadcastmanager.content.LocalBroadcastManager
-    import com.example.pictoevents.Calendar.CalendarObjectsGenerator
     import com.example.pictoevents.Processor.TextProcessor
     import com.example.pictoevents.R
-    import com.example.pictoevents.Repository.Repository
     import com.example.pictoevents.Util.FileManager
-    import com.google.android.material.snackbar.Snackbar
     import kotlinx.coroutines.*
     import org.json.JSONObject
     import java.io.File
@@ -306,20 +303,7 @@ package com.example.pictoevents.UI
                                 // Here start my custom code for OCR stuff
                                 FileManager.setImageFileLocation(photoFile)
                                 //uploadFileToStorage(photoFile)- not needed for now
-   //                             GlobalScope.launch(Dispatchers.Default){
-  //                                  coroutineScope{
-   //                                     launch(CoroutineName("ProcessOCR/ TitleDialog/ createEvent")){
-                                            textProcessor.processOCR()
-                                            Log.d(TAG, "========= 1 =========")
-                                            loadTitleOptionsOntoDialog()
-                                            Log.d(TAG, "========= 2 =========")
-                                            textProcessor.createCalEvent()
-                                            Log.d(TAG, "========= 3 =========")
-                                            //displaySnackbar()
-                                            //Log.d(TAG, "======== 4 ========")
-  //                                      }
-   //                                 }
-    //                            }
+                                textProcessor.processOCR()
                                 Log.d(TAG,"**Done**")
                             }
                         })
@@ -338,13 +322,12 @@ package com.example.pictoevents.UI
         }
 
         //suspend fun loadTitleOptionsOntoDialog()
-        fun loadTitleOptionsOntoDialog()
+        fun loadTitleOptionsOntoDialog(titleOptions: JSONObject)
         {
             Log.d(TAG, "++++++++ Start loadTitleOptionsOntoDialog() +++++++")
-            val titleOptions = CalendarObjectsGenerator.generateTitle(this.requireContext())
             //Present a dialog here
             GlobalScope.launch(Dispatchers.Main){
-                withContext(Dispatchers.Main){ generateTitleDialog(titleOptions) }
+                withContext(Dispatchers.Main){ generateTitleDialog(titleOptions) }//get selected text
             }
         }
 

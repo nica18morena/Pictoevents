@@ -1,34 +1,11 @@
 package com.example.pictoevents.UI
 
 import android.Manifest
-import android.content.Context
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.net.Uri
-import android.os.Bundle
-import android.os.Environment
-import android.util.Log
-import android.util.Size
-import android.view.*
-import android.widget.ImageButton
-import android.widget.Toast
-import androidx.camera.core.*
-import androidx.camera.core.impl.ImageCaptureConfig
-import androidx.camera.core.impl.PreviewConfig
 import androidx.fragment.app.Fragment
-import androidx.core.app.ActivityCompat
-import androidx.lifecycle.LifecycleOwner
-import com.example.pictoevents.Calendar.CalendarObject
-import com.example.pictoevents.Calendar.CalendarObjectsGenerator
-import com.example.pictoevents.Calendar.PictoCalendar
 import com.example.pictoevents.OCREngine.IOCREngine
 import com.example.pictoevents.OCREngine.OCREngineFreeOCR
-import com.example.pictoevents.R
-import com.example.pictoevents.Util.FileManager
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import java.io.File
-import java.util.concurrent.Executors
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -205,7 +182,7 @@ class CameraFragment_OG : Fragment() {
     fun createCalEvent()
     {
         val text = OCREngine.getOCRResults() // Get OCR text
-        val generateCalendarObjects = CalendarObjectsGenerator(text)
+        val generateCalendarObjects = CalendarObjectsRegex(text)
         generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components
 
         val calendar = PictoCalendar(this.requireContext())// Instance of PictoCalander to get the calendar ID

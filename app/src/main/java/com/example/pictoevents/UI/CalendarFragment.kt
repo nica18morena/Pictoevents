@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView
 import androidx.fragment.app.Fragment
 import com.applandeo.materialcalendarview.EventDay
-import com.example.pictoevents.Calendar.PictoCalendar
+import com.example.pictoevents.calendar.PictoCalendar
 import com.example.pictoevents.Pattern.RegExPatterns
 import com.example.pictoevents.R
 import java.util.*

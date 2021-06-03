@@ -1,4 +1,4 @@
-package com.example.pictoevents.Calendar
+package com.example.pictoevents.calendar
 
 import android.Manifest
 import android.content.ContentResolver
@@ -9,11 +9,6 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.CalendarContract
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker.checkPermission
-import androidx.navigation.Navigation
-import com.example.pictoevents.R
 import java.lang.NullPointerException
 import java.util.*
 

@@ -1,4 +1,4 @@
-package com.example.pictoevents.Calendar
+package com.example.pictoevents.calendar
 
 class CalendarObject(val hour: Int, val minute: Int, val second: Int, val dayOfMonth: Int,
                      val month: Int, val year: Int, val AmPm: Int, val calendarID: Long, val title: String) {

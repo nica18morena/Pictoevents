@@ -3,19 +3,17 @@ package com.example.pictoevents.Processor
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Log
-import com.example.pictoevents.Calendar.CalendarObject
-import com.example.pictoevents.Calendar.CalendarObjectsGenerator
-import com.example.pictoevents.Calendar.PictoCalendar
+import com.example.pictoevents.MainActivity
+import com.example.pictoevents.calendar.*
 import com.example.pictoevents.OCREngine.IOCREngine
 import com.example.pictoevents.OCREngine.OCREngineFreeOCR
 import com.example.pictoevents.Repository.Repository
 import com.example.pictoevents.Util.FileManager
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import java.io.File
 
 class TextProcessor (val context: Context)
@@ -47,11 +45,36 @@ class TextProcessor (val context: Context)
                 "    UWB.EDUICOMMENCEMENT\n" +
                 "    1 p.m. (PST)-CEREMONY BEGINS\n" +
                 "    eremoniesandevents #uwbgrad21"
-        //Repository.text = OCREngine.extractText(bitmap)
+        Repository.text = OCREngine.extractText(bitmap)//TODO: make this coroutine call
         saveTextFile()
-        Log.d(TextProcessor.TAG, "OCR text is: ${Repository.text}")
+        //GlobalScope.launch(Dispatchers.Default) {
+            // coroutineScope{
+            //launch(CoroutineName("ProcessOCR/ TitleDialog/ createEvent")){
+        val titleOptions = CalendarObjectTitle().generateTitles(context)
+            this.loadTitleOptionsOntoDialog(titleOptions)//TODO: This needs to somehow run in UI
+            Log.d(TAG, "========= 2 =========")
+            val formatter = identifyCalEvent()// wait for this to return
+            Log.d(TAG, "========= 3 =========")
+            //join all coroutines then proceed to next step
+            createCalEvent(formatter)
+            Log.d(TAG, "========= 4 =========")
+            //displaySnackbar()
+            //Log.d(TAG, "======== 5 ========")
+            //}
+            //}
+        //}
     }
-    /*  This method is currenlty not in use: not uploading image to cloud, but just makeing it base64
+
+    //suspend fun loadTitleOptionsOntoDialog()
+    fun loadTitleOptionsOntoDialog(titleOptions: JSONObject)
+    {
+        Log.d(TAG, "++++++++ Start loadTitleOptionsOntoDialog() +++++++")
+        //Present a dialog here
+        GlobalScope.launch(Dispatchers.Main){
+            withContext(Dispatchers.Main){ (context as MainActivity).generateTitleDialog(titleOptions) }//get selected text
+        }
+    }
+    /*  This method is currently not in use: not uploading image to cloud, but just makeing it base64
     private fun uploadFileToStorage(file: File)
     {
         val cloudStorageRef = cloudStorage.reference.child("images/${FileManager.getFileName()}")
@@ -79,22 +102,21 @@ class TextProcessor (val context: Context)
         }
     }
 
+    fun identifyCalEvent(): CalendarObjectFormatter{
+        Log.d(TAG, "++++++++ Start identifyCalEvent() +++++++")
+        val generateCalendarObjects = CalendarObjectsRegex(Repository.text)
+        val formatter = generateCalendarObjects.identifyCalendarComponents()
+        return formatter
+    }
     //suspend fun createCalEvent()
-    fun createCalEvent()
+    fun createCalEvent(formatter: CalendarObjectFormatter)
     {
-        Log.d(TAG, "++++++++ Start createCalEvent() +++++++")
-        val generateCalendarObjects = CalendarObjectsGenerator(Repository.text, context)
-        //need to update generateCalendarObjects title formatter with the selected title
-        generateCalendarObjects.setTitle(Repository.eventTitle)
-        generateCalendarObjects.identifyCalendarComponents() // identify from text all relevant components except title
-
         val calendar = PictoCalendar(this.context)// Instance of PictoCalander to get the calendar ID
         calendar.checkCalendars()// This finds all calendars and assigned the calendarID to the Picto cal
 
-        val formatter = generateCalendarObjects.getObjectFormatter() // Get the formatter to format all the data
         val calObject = CalendarObject(formatter.getFormattedHour(),formatter.getFormattedMin(), 0,
             formatter.getFormattedDay(), formatter.getFormattedMonth(), formatter.getFormattedYear(),
-            formatter.getFormattedAMPM(), calendar.getCalId(), formatter.getFormattedTitle())
+            formatter.getFormattedAMPM(), calendar.getCalId(), Repository.eventTitle)
         Log.d(TextProcessor.TAG, "Calendar object has values: ${calObject.toString()}")
         calendar.setCalObj(calObject)
         calendar.buildCalEvent()
