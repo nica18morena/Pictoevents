@@ -52,7 +52,7 @@ class CalendarObjectsRegex(val ocrText: String)
                 hasTimePattern = false
             }
         }
-        if (!hasDatePattern && !hasTimePattern) {//now matching 2021...should not
+        if (!hasDatePattern && !hasTimePattern) {
             hasDaysPattern = this.findDayPattern(word)
 
             if (hasDaysPattern && (word.length > 3 || word.matches("[a-zA-Z]".toRegex()))) {

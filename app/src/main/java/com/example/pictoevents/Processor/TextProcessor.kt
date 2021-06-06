@@ -9,10 +9,7 @@ import com.example.pictoevents.OCREngine.IOCREngine
 import com.example.pictoevents.OCREngine.OCREngineFreeOCR
 import com.example.pictoevents.Repository.Repository
 import com.example.pictoevents.Util.FileManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.io.File
 
@@ -37,42 +34,73 @@ class TextProcessor (val context: Context)
         val bitmap = BitmapFactory.decodeFile(FileManager.getImageFileLocation().toString())
 
         //Testing: Sample temp text: Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020
-        Repository.text = "INGTON | BOTHELL\n" +
+/*        //Repository.text = "INGTON | BOTHELL\n" +
                 "    NNUAL\n" +
                 "    ICEMENT\n" +
                 "    VIRTUALcOMMENCEMENT CEREMONY\n" +
                 "    SUNDAY-JUNE 13, 2021\n" +
                 "    UWB.EDUICOMMENCEMENT\n" +
                 "    1 p.m. (PST)-CEREMONY BEGINS\n" +
-                "    eremoniesandevents #uwbgrad21"
+                "    eremoniesandevents #uwbgrad21"*/
         Repository.text = OCREngine.extractText(bitmap)//TODO: make this coroutine call
         saveTextFile()
-        //GlobalScope.launch(Dispatchers.Default) {
-            // coroutineScope{
-            //launch(CoroutineName("ProcessOCR/ TitleDialog/ createEvent")){
+
         val titleOptions = CalendarObjectTitle().generateTitles(context)
-            this.loadTitleOptionsOntoDialog(titleOptions)//TODO: This needs to somehow run in UI
+        loadTitleOptionsOntoDialog(titleOptions)
+        Log.d(TAG, "========= 2 =========")
+        GlobalScope.launch(Dispatchers.Default) {
+            coroutineScope{
+                launch(){
+
+/*                    val job1 = launch{
+                        val titleOptions = CalendarObjectTitle().generateTitles(context)
+                        loadTitleOptionsOntoDialog(titleOptions)
+                        Log.d(TAG, "========= 2 =========")
+                    }*/
+
+                    delay(3000)
+                    val formatter = identifyCalEvent()// wait for this to return
+                    Log.d(TAG, "========= 3 =========")
+
+                    //job1.join()
+                    /*Hack start*/
+                    while(Repository.eventTitle == ""){
+                        Log.d(TAG, "Waiting for title")
+                    }
+                    /*Hack end*/
+                    createCalEvent(formatter)
+                    Log.d(TAG, "========= 4 =========")
+                    //displaySnackbar()
+                    //Log.d(TAG, "======== 5 ========")
+                }
+            }
+        }
+    }
+
+    /*//Ref: https://kotlinlang.org/docs/coroutines-basics.html#scope-builder-and-concurrency
+    fun executeOnOCR() = runBlocking{
+        processForTitleAndRegex()
+        Log.d(TAG,"Completed both title and regex OCR")
+    }
+    suspend processForTitleAndRegex() = coroutineScope{
+        launch{
+            val titleOptions = CalendarObjectTitle().generateTitles(context)
+            loadTitleOptionsOntoDialog(titleOptions)
             Log.d(TAG, "========= 2 =========")
+        }
+        launch{
             val formatter = identifyCalEvent()// wait for this to return
             Log.d(TAG, "========= 3 =========")
             //join all coroutines then proceed to next step
-            createCalEvent(formatter)
-            Log.d(TAG, "========= 4 =========")
-            //displaySnackbar()
-            //Log.d(TAG, "======== 5 ========")
-            //}
-            //}
-        //}
-    }
-
-    //suspend fun loadTitleOptionsOntoDialog()
-    fun loadTitleOptionsOntoDialog(titleOptions: JSONObject)
+            Log.d(TAG, "Formatter has: $formatter")
+        }
+    }*/
+    private fun loadTitleOptionsOntoDialog(titleOptions: JSONObject)
     {
         Log.d(TAG, "++++++++ Start loadTitleOptionsOntoDialog() +++++++")
+        (context as MainActivity).generateTitleDialog(titleOptions)
         //Present a dialog here
-        GlobalScope.launch(Dispatchers.Main){
-            withContext(Dispatchers.Main){ (context as MainActivity).generateTitleDialog(titleOptions) }//get selected text
-        }
+        //withContext(Dispatchers.Main){ (context as MainActivity).generateTitleDialog(titleOptions) }
     }
     /*  This method is currently not in use: not uploading image to cloud, but just makeing it base64
     private fun uploadFileToStorage(file: File)
@@ -102,7 +130,7 @@ class TextProcessor (val context: Context)
         }
     }
 
-    fun identifyCalEvent(): CalendarObjectFormatter{
+    suspend fun identifyCalEvent(): CalendarObjectFormatter{
         Log.d(TAG, "++++++++ Start identifyCalEvent() +++++++")
         val generateCalendarObjects = CalendarObjectsRegex(Repository.text)
         val formatter = generateCalendarObjects.identifyCalendarComponents()
@@ -111,13 +139,14 @@ class TextProcessor (val context: Context)
     //suspend fun createCalEvent()
     fun createCalEvent(formatter: CalendarObjectFormatter)
     {
-        val calendar = PictoCalendar(this.context)// Instance of PictoCalander to get the calendar ID
-        calendar.checkCalendars()// This finds all calendars and assigned the calendarID to the Picto cal
+        val calendar = PictoCalendar(this.context)
+        calendar.checkCalendars()
 
         val calObject = CalendarObject(formatter.getFormattedHour(),formatter.getFormattedMin(), 0,
             formatter.getFormattedDay(), formatter.getFormattedMonth(), formatter.getFormattedYear(),
             formatter.getFormattedAMPM(), calendar.getCalId(), Repository.eventTitle)
         Log.d(TextProcessor.TAG, "Calendar object has values: ${calObject.toString()}")
+
         calendar.setCalObj(calObject)
         calendar.buildCalEvent()
     }

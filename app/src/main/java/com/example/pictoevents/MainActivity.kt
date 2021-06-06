@@ -87,10 +87,12 @@ class MainActivity : AppCompatActivity(), LifecycleOwner, TitleDialogFragment.Ti
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment) {
+        Log.d(TAG, "Callback to main activity")
         val titleDialog = dialog as? TitleDialogFragment
         val selection = titleDialog?.titleSelected
         if (selection != null) {
             Repository.eventTitle = selection
+            Log.d(TAG, "This title was registered: ${Repository.eventTitle}")
         }
         //displaySnackbar()
     }

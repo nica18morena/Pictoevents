@@ -163,7 +163,7 @@ class PictoCalendar (val context: Context){
 
         val calendar = GregorianCalendar()
 
-        calendar.setTimeZone(TimeZone.getDefault())
+        calendar.timeZone = TimeZone.getDefault()
         if (calObj.year != 0){
             calendar.set(Calendar.YEAR, calObj.year)
         }
@@ -180,10 +180,6 @@ class PictoCalendar (val context: Context){
             calendar.set(Calendar.HOUR, calObj.hour)
         }
 
-        if(calObj.minute != 0){
-            calendar.set(Calendar.MINUTE, calObj.minute)
-        }
-
         if(calObj.second != 0){
             calendar.set(Calendar.SECOND, calObj.second)
         }
@@ -192,8 +188,16 @@ class PictoCalendar (val context: Context){
             TITLE = calObj.title
         }
 
-        calendar.set(Calendar.AM_PM, calObj.AmPm)
-        Log.d(TAG, "Event: ${calObj.title}" +
+        if(calObj.AmPm == 0){
+            calendar.set(Calendar.AM_PM, Calendar.AM)
+        }
+        else{
+            calendar.set(Calendar.AM_PM, Calendar.PM)
+        }
+        calendar.set(Calendar.MINUTE, calObj.minute)
+
+        //calendar.set(Calendar.AM_PM, calObj.AmPm)
+        Log.d(TAG, "Event: ${calObj.title} " +
                 "Month: ${calObj.month}, Day: ${calObj.dayOfMonth},\n" +
                 "Year: ${calObj.year}, Hour: ${calObj.hour},\n" +
                 "Min: ${calObj.minute}, AMPM: ${calObj.AmPm}")

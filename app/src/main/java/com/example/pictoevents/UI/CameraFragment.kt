@@ -15,6 +15,7 @@ package com.example.pictoevents.UI
     import android.view.*
     import android.webkit.MimeTypeMap
     import android.widget.ImageButton
+    import android.widget.ProgressBar
     import androidx.camera.core.AspectRatio
     import androidx.camera.core.CameraSelector
     import androidx.camera.core.ImageCapture
@@ -54,6 +55,7 @@ package com.example.pictoevents.UI
         private lateinit var viewFinder: PreviewView
         private lateinit var broadcastManager: LocalBroadcastManager
         private lateinit var captureButton: ImageButton
+        private lateinit var spinner: ProgressBar
         private var displayId: Int = -1
         private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
         private var preview: Preview? = null
@@ -109,6 +111,7 @@ package com.example.pictoevents.UI
             container = view as ConstraintLayout
             viewFinder = container.findViewById(R.id.view_finder)
             captureButton = container.findViewById(R.id.capture_button)
+            spinner = container.findViewById(R.id.spinner)
 
             // Initialize our background executor
             cameraExecutor = Executors.newSingleThreadExecutor()
@@ -303,8 +306,10 @@ package com.example.pictoevents.UI
                                 // Here start my custom code for OCR stuff
                                 FileManager.setImageFileLocation(photoFile)
                                 //uploadFileToStorage(photoFile)- not needed for now
+                                //spinner.visibility = VI
                                 textProcessor.processOCR()
                                 Log.d(TAG,"**Done**")
+                                //spinner.visibility = View.GONE
                             }
                         })
                 }

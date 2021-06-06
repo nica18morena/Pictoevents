@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.pictoevents.R
@@ -50,8 +51,10 @@ class TitleDialogFragment : DialogFragment() {
             })
             .setPositiveButton(getString(R.string.TitleDialogConfirm))
                 { dialog, which ->
+                    Log.d(TAG, "Which selected is: ${which}: $titleSelected")
                     val selection = titleSelected
                     Repository.eventTitle = selection
+                    Log.d(TAG, "Selection: $selection")
                     listener.onDialogPositiveClick(this)
                 }
             .create()
