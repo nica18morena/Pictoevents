@@ -43,20 +43,25 @@ class CalendarObjectsRegex(val ocrText: String)
         var hasDaysPattern = false
         var matchWeek = false
         var matchMonth = false
+        var hasBothAMPMTime = false
 
         // Find if the string matches the patterns
         if (!hasDatePattern) {
-            hasTimePattern = this.findTimePattern(word)
-
-            if (hasTimePattern && word.toInt() > 12){
-                hasTimePattern = false
-            }
-        }
-        if (!hasDatePattern && !hasTimePattern) {
             hasDaysPattern = this.findDayPattern(word)
 
             if (hasDaysPattern && (word.length > 3 || word.matches("[a-zA-Z]".toRegex()))) {
                 hasDaysPattern = false
+            }
+        }
+        if (!hasDatePattern && !hasDaysPattern) {
+            hasTimePattern = this.findTimePattern(word)
+
+            //Check if it also has ampm pattern
+            if(hasTimePattern && word.contains('m')){
+                hasBothAMPMTime = true
+            }
+            else if (hasTimePattern && (word.contains("\\D")|| word.toInt() > 12)){
+                hasTimePattern = false
             }
         }
         if (!hasDatePattern && !hasTimePattern && !hasDaysPattern) {
@@ -194,9 +199,15 @@ class CalendarObjectsRegex(val ocrText: String)
     }
 
     private fun decomposeTime(time: String){
-        formatter.hourFromTime = time
+        var time2 = time
+        //If time is both digit and am/pm time this needs to be formatted differently
+        if(time.contains(Regex("\\w"))){
+            formatter.ampm = Regex("\\d+").replace(time,"")
+            time2 = Regex("[a-zA-Z]").replace(time, "")
+        }
+        formatter.hourFromTime = time2
         //Sample time 12:01
-        val stime = time.split(":")// here i pass in a time value of 1- it needs to be formatted
+        val stime = time2.split(":")
         if(stime.size == 2){
             formatter.hourFromTime = stime[0]
             formatter.minFromTime = stime[1]

@@ -90,7 +90,11 @@ class CalendarObjectFormatter {
                 ampm = ampm.replace(".","")
                 when (ampm){
                     "am" -> formattedHour = Integer.parseInt(hourFromTime)
-                    "pm" -> formattedHour = Integer.parseInt(hourFromTime) + 12
+                    "pm" -> if (Integer.parseInt(hourFromTime) == 12) {
+                        formattedHour = Integer.parseInt(hourFromTime)
+                    }else{
+                        formattedHour = Integer.parseInt(hourFromTime) + 12
+                    }
                 }
             }
             else{
