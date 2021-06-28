@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pictoevents.Processor.TextProcessor
 import com.example.pictoevents.Processor.TextProcessor.TextProcessorListener
@@ -62,8 +63,10 @@ class progressFragment : Fragment(){
         textProcessor.setTextProcessorListener(object: TextProcessorListener{
             override fun onEventCreatedComplete(successful: Boolean) {
                 GlobalScope.launch(Dispatchers.Main){
-                    var progressSpinner = view?.findViewById<ProgressBar>(R.id.progressSpinner)
+                    val progressSpinner = view.findViewById<ProgressBar>(R.id.progressSpinner)
                     progressSpinner?.visibility = View.GONE
+                    val progressText = view.findViewById<TextView>(R.id.textView2)
+                    progressText.setText(R.string.eventCreatedText)
                     displaySnackbar()
                 }
             }
