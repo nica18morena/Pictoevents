@@ -14,6 +14,9 @@ import com.example.pictoevents.Processor.TextProcessor
 import com.example.pictoevents.Processor.TextProcessor.TextProcessorListener
 import com.example.pictoevents.Repository.Repository
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.ClassCastException
 
 // TODO: Rename parameter arguments, choose names that match
@@ -56,7 +59,15 @@ class progressFragment : Fragment(){
         container = view as FrameLayout
         val textProcessor = TextProcessor(this.requireContext())
         //listener = TextProcessorListener
-        //textProcessor.setTextProcessorListener(TextProcessorListener)
+        textProcessor.setTextProcessorListener(object: TextProcessorListener{
+            override fun onEventCreatedComplete(successful: Boolean) {
+                GlobalScope.launch(Dispatchers.Main){
+                    var progressSpinner = view?.findViewById<ProgressBar>(R.id.progressSpinner)
+                    progressSpinner?.visibility = View.GONE
+                    displaySnackbar()
+                }
+            }
+        })
         textProcessor.processOCR()
 
 /*        while(!Repository.eventCreationCompletedSuccessfully)
