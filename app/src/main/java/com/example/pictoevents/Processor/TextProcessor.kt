@@ -8,18 +8,30 @@ import com.example.pictoevents.calendar.*
 import com.example.pictoevents.OCREngine.IOCREngine
 import com.example.pictoevents.OCREngine.OCREngineFreeOCR
 import com.example.pictoevents.Repository.Repository
+import com.example.pictoevents.UI.TitleDialogFragment
 import com.example.pictoevents.Util.FileManager
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.io.File
 
-class TextProcessor (val context: Context)
+class TextProcessor (val context: Context)//Try the approach to pass in listener to constructor
 {
     private val OCREngine: IOCREngine = OCREngineFreeOCR()
     private lateinit var outputDirectory: File
+    internal lateinit var listener : TextProcessorListener
 
+    interface TextProcessorListener{
+        fun onEventCreatedComplete(successful : Boolean)
+    }
+
+    fun setTextProcessorListener(tplistener : TextProcessorListener){
+        listener = tplistener
+    }
     //suspend fun processOCR() {
     fun processOCR() {
+
+        //listener = TextProcessorListener
+
         Log.d(TAG, "++++++++ Start processOCR +++++++")
         //Setup file directory and context for OCR
         val dataPath = File(context.externalMediaDirs.first(), "/tessdata")
@@ -154,7 +166,8 @@ class TextProcessor (val context: Context)
         Log.d(TextProcessor.TAG, "Calendar object has values: ${calObject.toString()}")
 
         calendar.setCalObj(calObject)
-        calendar.buildCalEvent()
+        var completed = calendar.buildCalEvent()
+        listener.onEventCreatedComplete(completed)
     }
 
     companion object

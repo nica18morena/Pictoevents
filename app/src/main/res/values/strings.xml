@@ -19,6 +19,9 @@
     <string name="title_option_B">%1$s</string>
     <string name="title_option_Custom">Create later</string>
     <string name="event_created_notification">Event: %1s created</string>
+    <string name="retake">Retake</string>
+    <string name="ok">Ok</string>
+    <string name="progress">Please wait, identifying event information</string>
 
     <string name="error_no_activity">No activity found to open "%1$s".</string>
     <!-- TODO: Remove or change this placeholder text -->

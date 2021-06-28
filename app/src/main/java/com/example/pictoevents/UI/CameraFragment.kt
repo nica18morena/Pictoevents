@@ -29,6 +29,8 @@ package com.example.pictoevents.UI
     import androidx.core.net.toFile
     import androidx.fragment.app.Fragment
     import androidx.localbroadcastmanager.content.LocalBroadcastManager
+    import androidx.navigation.fragment.NavHostFragment.findNavController
+    import androidx.navigation.fragment.findNavController
     import com.example.pictoevents.Processor.TextProcessor
     import com.example.pictoevents.R
     import com.example.pictoevents.Util.FileManager
@@ -55,7 +57,7 @@ package com.example.pictoevents.UI
         private lateinit var viewFinder: PreviewView
         private lateinit var broadcastManager: LocalBroadcastManager
         private lateinit var captureButton: ImageButton
-        private lateinit var spinner: ProgressBar
+
         private var displayId: Int = -1
         private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
         private var preview: Preview? = null
@@ -111,7 +113,6 @@ package com.example.pictoevents.UI
             container = view as ConstraintLayout
             viewFinder = container.findViewById(R.id.view_finder)
             captureButton = container.findViewById(R.id.capture_button)
-            spinner = container.findViewById(R.id.spinner)
 
             // Initialize our background executor
             cameraExecutor = Executors.newSingleThreadExecutor()
@@ -246,7 +247,7 @@ package com.example.pictoevents.UI
                 container.removeView(it)
             }*/
 
-            val textProcessor = TextProcessor(this.requireContext())
+            //val textProcessor = TextProcessor(this.requireContext())
             // Listener for button used to capture photo
             captureButton.setOnClickListener{
                 // Get a stable reference of the modifiable image capture use case
@@ -306,21 +307,15 @@ package com.example.pictoevents.UI
                                 // Here start my custom code for OCR stuff
                                 FileManager.setImageFileLocation(photoFile)
                                 //uploadFileToStorage(photoFile)- not needed for now
-                                //spinner.visibility = VI
-                                textProcessor.processOCR()
-                                Log.d(TAG,"**Done**")
-                                //spinner.visibility = View.GONE
+
+                                findNavController().navigate(R.id.action_cameraFragment_to_image3)
                             }
                         })
                 }
             }
         }
 
-        /*fun displaySnackbar(){
-            Log.d(TAG, "++++++++ Start displaySnackbar() +++++++")
-            Snackbar.make(container, getString(R.string.event_created_notification,
-                Repository.eventTitle), Snackbar.LENGTH_LONG).show()
-        }*/
+
 
         private fun hasBackCamera(): Boolean {
             return cameraProvider?.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) ?: false

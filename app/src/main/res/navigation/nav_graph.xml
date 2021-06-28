@@ -13,7 +13,11 @@
         android:id="@+id/cameraFragment"
         android:name="com.example.pictoevents.UI.CameraFragment"
         android:label="fragment_camera"
-        tools:layout="@layout/fragment_camera" />
+        tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_image3"
+            app:destination="@id/image_frag" />
+    </fragment>
     <fragment
         android:id="@+id/addEventFragment"
         android:name="com.example.pictoevents.UI.AddEventFragment"
@@ -29,4 +33,20 @@
             app:destination="@id/placeholder" />
     </fragment>
     <fragment android:id="@+id/placeholder" />
+    <fragment
+        android:id="@+id/image_frag"
+        android:name="com.example.pictoevents.UI.image"
+        android:label="image" >
+        <action
+            android:id="@+id/action_image_frag_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_image_frag_to_progressFragment"
+            app:destination="@id/progressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/progressFragment"
+        android:name="com.example.pictoevents.progressFragment"
+        android:label="fragment_progress"
+        tools:layout="@layout/fragment_progress" />
 </navigation>
