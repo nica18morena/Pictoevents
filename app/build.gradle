@@ -7,11 +7,11 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.chaquo.python'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.example.pictoevents"
         minSdkVersion 26
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -56,12 +56,12 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-language:1.101.0'
 
     //Firebase storage
-    implementation 'com.google.firebase:firebase-analytics:17.3.0'
-    implementation 'com.google.firebase:firebase-auth:19.3.0'
-    implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.google.firebase:firebase-storage-ktx:20.0.0'
 
     //UI
-    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android.material:material:1.4.0-rc01'
     //implementation 'com.' // adding floating add button
     //implementation 'com.google.firebase:firebase-firestore:21.4.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -69,12 +69,12 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //Androidx Camera
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'androidx.core:core-ktx:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     // CameraX core library
-    def camerax_version = '1.0.0-beta03'
+    def camerax_version = '1.0.0-rc05'
     implementation "androidx.camera:camera-core:$camerax_version"
 
     // CameraX Camera2 extensions
@@ -84,11 +84,11 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
 
     // CameraX View class
-    implementation 'androidx.camera:camera-view:1.0.0-alpha10'
+    implementation 'androidx.camera:camera-view:1.0.0-alpha25'
 
     //Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
-    implementation "androidx.navigation:navigation-ui-ktx:2.3.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
 
     // Http library for REST
     implementation 'com.github.kittinunf.fuel:fuel:2.2.1'
@@ -102,22 +102,23 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation 'cz.adaptech.android:tesseract4android:2.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-rc01'
-    implementation 'androidx.fragment:fragment:1.2.0-rc01'
-    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-alpha02'
+    implementation 'androidx.fragment:fragment:1.4.0-alpha03'
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     implementation 'androidx.documentfile:documentfile:1.0.1'
 
-    implementation 'androidx.fragment:fragment-ktx:1.1.0'
+    implementation 'androidx.fragment:fragment-ktx:1.3.5'
 
     //implementation 'com.rmtheis:tess-two:9.0.0'
-
+    //Cardview
+    implementation("androidx.cardview:cardview:1.0.0")
     //Calendar view
     implementation 'com.applandeo:material-calendar-view:1.8.0-rc01'
     // Glide
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 }

@@ -214,7 +214,7 @@ package com.example.pictoevents.UI
                     this, cameraSelector, preview, imageCapture)
 
                 // Attach the viewfinder's surface provider to preview use case
-                preview?.setSurfaceProvider(viewFinder.createSurfaceProvider(camera?.cameraInfo))
+                preview?.setSurfaceProvider(viewFinder.surfaceProvider)
             } catch(exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
@@ -307,8 +307,9 @@ package com.example.pictoevents.UI
                                 // Here start my custom code for OCR stuff
                                 FileManager.setImageFileLocation(photoFile)
                                 //uploadFileToStorage(photoFile)- not needed for now
-
-                                findNavController().navigate(R.id.action_cameraFragment_to_image3)
+                                GlobalScope.launch(Dispatchers.Main) {
+                                    findNavController().navigate(R.id.action_cameraFragment_to_image3)
+                                }
                             }
                         })
                 }
