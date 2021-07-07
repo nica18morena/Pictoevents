@@ -58,6 +58,7 @@ class progressFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         //spinner = view.findViewById(R.id.spinner)
         container = view as FrameLayout
+
         val textProcessor = TextProcessor(this.requireContext())
         //listener = TextProcessorListener
         textProcessor.setTextProcessorListener(object: TextProcessorListener{
@@ -71,14 +72,16 @@ class progressFragment : Fragment(){
                 }
             }
         })
-        textProcessor.processOCR()
 
-/*        while(!Repository.eventCreationCompletedSuccessfully)
+        if(!Repository.manuallyCreatedEvent)
         {
-            Log.d(TAG, "Waiting for event creation success")
-        }*/
-        //displaySnackbar()
-    }
+            textProcessor.processOCR()
+        }
+        else{
+            textProcessor.processManuallyAddedEvent()
+            Repository.manuallyCreatedEvent = false
+        }
+   }
     /*override fun onEventCreatedComplete(successful: Boolean) {
         var progressSpinner = view?.findViewById<ProgressBar>(R.id.progressSpinner)
         progressSpinner?.visibility = View.GONE

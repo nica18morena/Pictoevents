@@ -7,10 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Switch
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
+import com.example.pictoevents.Processor.TextProcessor
 
 import com.example.pictoevents.R
+import com.example.pictoevents.Repository.Repository
 import com.example.pictoevents.UI.AddEvent.DialogDatePickerFragment
+import org.w3c.dom.Text
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,6 +43,29 @@ class AddEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val title = view.findViewById<EditText>(R.id.editText_Title)
+        val startDate = view.findViewById<EditText>(R.id.start_date)
+        val startTime = view.findViewById<EditText>(R.id.start_time)
+        val startAmPm = view.findViewById<Switch>(R.id.ampm_switch)
+        val endDate = view.findViewById<EditText>(R.id.endEnd_date)
+        val endTime = view.findViewById<EditText>(R.id.endEnd_time)
+        val endAmPm = view.findViewById<Switch>(R.id.endDate_ampm_switch)
+        //Buttons
+        view.findViewById<Button>(R.id.cancel_add_event).setOnClickListener {
+            findNavController().navigate(R.id.action_addEventFragment_to_calendarFragment)
+        }
+        view.findViewById<Button>(R.id.ok_add_event).setOnClickListener {
+            //Need to gather title, start date, start time, ampm, end date, end time and ampm
+
+            //set Repository.Text to string
+            Repository.manualText = "${startDate.text}, ${startTime.text}, ${startAmPm.text}"
+            Repository.eventTitle = title.text.toString()
+            //update manually added boolean to true
+            Repository.manuallyCreatedEvent = true
+            //call to textprocessor?- should call to text processor be in progress frag?
+
+            findNavController().navigate(R.id.action_addEventFragment_to_progressFragment)
+        }
 
     }
 

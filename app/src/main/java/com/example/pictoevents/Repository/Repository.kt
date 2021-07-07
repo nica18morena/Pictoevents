@@ -4,4 +4,6 @@ object Repository {
     var eventTitle = ""
     var text = ""
     var eventCreationCompletedSuccessfully = false;
+    var manuallyCreatedEvent = false;
+    var manualText = ""
 }

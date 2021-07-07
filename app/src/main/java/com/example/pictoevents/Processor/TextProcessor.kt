@@ -95,6 +95,21 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
         }
     }
 
+    fun processManuallyAddedEvent(){
+        GlobalScope.launch(Dispatchers.Main) {
+            val textSplit = Repository.manualText.split(",")
+
+            val date = textSplit[0]
+            val time = textSplit[1]
+            val ampm = textSplit[2]
+            val calendarObjManual = CalendarObjectsManual(date, time, ampm)
+            val formatter = calendarObjManual.formatCalendarComponents()
+            //val formatter = identifyCalEvent()// wait for this to return
+            Log.d(TAG, "========= 3 =========")
+            createCalEvent(formatter)
+            Log.d(TAG, "========= 4 =========")
+        }
+    }
     /*//Ref: https://kotlinlang.org/docs/coroutines-basics.html#scope-builder-and-concurrency
     fun executeOnOCR() = runBlocking{
         processForTitleAndRegex()
@@ -154,6 +169,10 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
         val formatter = generateCalendarObjects.identifyCalendarComponents()
         return formatter
     }
+
+/*    fun identifyCalEvent_manuallyCreated(): CalendarObjectFormatter{
+        return formatter
+    }*/
     //suspend fun createCalEvent()
     fun createCalEvent(formatter: CalendarObjectFormatter)
     {

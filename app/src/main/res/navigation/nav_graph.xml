@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_addEventFragment_to_calendarFragment"
             app:destination="@id/calendarFragment" />
+        <action
+            android:id="@+id/action_addEventFragment_to_progressFragment"
+            app:destination="@id/progressFragment" />
     </fragment>
     <fragment
         android:id="@+id/filesFragment"

@@ -60,7 +60,8 @@ class CalendarObjectsRegex(val ocrText: String)
             if(hasTimePattern && word.contains('m')){
                 hasBothAMPMTime = true
             }
-            else if (hasTimePattern && (word.contains("\\D")|| word.toInt() > 12)){
+            else if (hasTimePattern && (word.contains(Regex("[a-zA-Z]"))
+                        || (!word.contains(Regex("[:]")) && word.toInt() > 12))){
                 hasTimePattern = false
             }
         }
