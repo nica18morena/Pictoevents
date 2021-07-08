@@ -1,6 +1,8 @@
 package com.example.pictoevents.UI
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +33,17 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class AddEventFragment : Fragment() {
+    val dividerChar = "/"
 
+    private fun manageDateDivider(working: String, position : Int, start: Int, before: Int) : String{
+        if (working.length == position) {
+            return if (before <= position && start < position)
+                working + dividerChar
+            else
+                working.dropLast(1)
+        }
+        return working
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,6 +62,59 @@ class AddEventFragment : Fragment() {
         val endDate = view.findViewById<EditText>(R.id.endEnd_date)
         val endTime = view.findViewById<EditText>(R.id.endEnd_time)
         val endAmPm = view.findViewById<Switch>(R.id.endDate_ampm_switch)
+
+        //Date input listeners (TextWatcher)
+        val textWatcherStart = object: TextWatcher{
+            var edited = false
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun onTextChanged(p0: CharSequence?, start: Int, before: Int, count: Int) {
+                if (edited){
+                    edited = false
+                    return
+                }
+
+                var working = if (startDate.text.length >= 10) startDate.text.toString().substring(0,10)
+                else startDate.text.toString()
+
+                working = manageDateDivider(working, 2, start, before)
+                working = manageDateDivider(working, 5, start, before)
+
+                edited = true
+                startDate.setText(working)
+                startDate.setSelection(startDate.text.length)
+            }
+
+            override fun afterTextChanged(p0: Editable?) { }
+        }
+        startDate.addTextChangedListener(textWatcherStart);
+
+        val textWatcherEnd = object: TextWatcher{
+            var edited = false
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun onTextChanged(p0: CharSequence?, start: Int, before: Int, count: Int) {
+                if (edited){
+                    edited = false
+                    return
+                }
+
+                var working = if (endDate.text.length >= 10) endDate.text.toString().substring(0,10)
+                else endDate.text.toString()
+
+                working = manageDateDivider(working, 2, start, before)
+                working = manageDateDivider(working, 5, start, before)
+
+                edited = true
+                endDate.setText(working)
+                endDate.setSelection(endDate.text.length)
+            }
+
+            override fun afterTextChanged(p0: Editable?) { }
+        }
+        endDate.addTextChangedListener(textWatcherEnd);
         //Buttons
         view.findViewById<Button>(R.id.cancel_add_event).setOnClickListener {
             findNavController().navigate(R.id.action_addEventFragment_to_calendarFragment)
@@ -62,12 +127,12 @@ class AddEventFragment : Fragment() {
             Repository.eventTitle = title.text.toString()
             //update manually added boolean to true
             Repository.manuallyCreatedEvent = true
-            //call to textprocessor?- should call to text processor be in progress frag?
 
             findNavController().navigate(R.id.action_addEventFragment_to_progressFragment)
         }
 
     }
+
 
     fun showDatePickerDialog(v: View) {
         var datePickerFragment: DialogDatePickerFragment = DialogDatePickerFragment()
