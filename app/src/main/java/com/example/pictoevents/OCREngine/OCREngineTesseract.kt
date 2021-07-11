@@ -18,7 +18,7 @@ class OCREngineTesseract : IOCREngine {
     private lateinit var tessFile : String
     var imageFile: File? = null
 
-    override fun extractText(_bitmap: Bitmap): String {
+    override suspend fun extractText(_bitmap: Bitmap): String {
         val tessBaseAPI = TessBaseAPI()
 
         tessBaseAPI.init(FileManager.getFileBase().toString(), LANG)

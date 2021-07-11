@@ -28,7 +28,7 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
         listener = tplistener
     }
     //suspend fun processOCR() {
-    fun processOCR() {
+    suspend fun processOCR() {
 
         //listener = TextProcessorListener
 
@@ -54,14 +54,18 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
                 "    UWB.EDUICOMMENCEMENT\n" +
                 "    1 p.m. (PST)-CEREMONY BEGINS\n" +
                 "    eremoniesandevents #uwbgrad21"*/
-        Repository.text = OCREngine.extractText(bitmap)//TODO: make this coroutine call
-        /*Repository.text = "PCSC ''\n" +
-                "    SUMMER SCHOOL\n" +
-                "    REGISTRATION\n" +
-                "    .\n" +
-                "    OPENS MAY 3, 2021\n" +
-                "    AT 12PM"*/
-        saveTextFile()
+        val job = GlobalScope.launch(Dispatchers.IO){
+            Repository.text = OCREngine.extractText(bitmap)//TODO: make this coroutine call
+            /*Repository.text = "PCSC ''\n" +
+                    "    SUMMER SCHOOL\n" +
+                    "    REGISTRATION\n" +
+                    "    .\n" +
+                    "    OPENS MAY 3, 2021\n" +
+                    "    AT 12PM"*/
+            saveTextFile()
+        }
+
+        job.join()
 
         val titleOptions = CalendarObjectTitle().generateTitles(context)
         loadTitleOptionsOntoDialog(titleOptions)

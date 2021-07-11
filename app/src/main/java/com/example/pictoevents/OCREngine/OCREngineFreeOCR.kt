@@ -135,7 +135,7 @@ class OCREngineFreeOCR : IOCREngine
         return percentDelta.toInt()
     }
 
-    override fun extractText(_bitmap: Bitmap): String
+    override suspend fun extractText(_bitmap: Bitmap): String
     {
        /* //This version is using File type to send over to OCR
         val response = Fuel.post(URL.toString(), listOf("apikey" to OCRAPIKEY,

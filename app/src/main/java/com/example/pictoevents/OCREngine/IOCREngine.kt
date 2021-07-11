@@ -20,7 +20,7 @@ interface IOCREngine{
     /**
      * Extract text from the given input
      */
-    fun extractText(_bitmap: Bitmap): String
+    suspend fun extractText(_bitmap: Bitmap): String
     fun prepareOCREngine()
 
     /**

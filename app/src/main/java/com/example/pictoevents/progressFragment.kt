@@ -11,13 +11,12 @@ import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
 import com.example.pictoevents.Processor.TextProcessor
 import com.example.pictoevents.Processor.TextProcessor.TextProcessorListener
 import com.example.pictoevents.Repository.Repository
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.lang.ClassCastException
 
 // TODO: Rename parameter arguments, choose names that match
@@ -59,7 +58,33 @@ class progressFragment : Fragment(){
         //spinner = view.findViewById(R.id.spinner)
         container = view as FrameLayout
 
-        val textProcessor = TextProcessor(this.requireContext())
+        val context = this.requireContext()
+        viewLifecycleOwner.lifecycleScope.launch{
+            val textProcessor = TextProcessor(context)
+            //listener = TextProcessorListener
+            textProcessor.setTextProcessorListener(object: TextProcessorListener{
+                override fun onEventCreatedComplete(successful: Boolean) {
+                    GlobalScope.launch(Dispatchers.Main){
+                        val progressSpinner = view.findViewById<ProgressBar>(R.id.progressSpinner)
+                        progressSpinner?.visibility = View.GONE
+                        val progressText = view.findViewById<TextView>(R.id.textView2)
+                        progressText.setText(R.string.eventCreatedText)
+                        displaySnackbar()
+                    }
+                }
+            })
+
+            if(!Repository.manuallyCreatedEvent)
+            {
+                textProcessor.processOCR()
+            }
+            else{
+                textProcessor.processManuallyAddedEvent()
+                Repository.manuallyCreatedEvent = false
+            }
+        }
+
+        /*val textProcessor = TextProcessor(this.requireContext())
         //listener = TextProcessorListener
         textProcessor.setTextProcessorListener(object: TextProcessorListener{
             override fun onEventCreatedComplete(successful: Boolean) {
@@ -80,7 +105,7 @@ class progressFragment : Fragment(){
         else{
             textProcessor.processManuallyAddedEvent()
             Repository.manuallyCreatedEvent = false
-        }
+        }*/
    }
     /*override fun onEventCreatedComplete(successful: Boolean) {
         var progressSpinner = view?.findViewById<ProgressBar>(R.id.progressSpinner)
@@ -93,6 +118,7 @@ class progressFragment : Fragment(){
         Snackbar.make(container, getString(R.string.event_created_notification,
             Repository.eventTitle), Snackbar.LENGTH_LONG).show()
     }
+
     companion object {
         private const val TAG = "ProgressFragment"
         /**
