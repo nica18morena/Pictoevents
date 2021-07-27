@@ -12,6 +12,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.pictoevents.Processor.TextProcessor
 import com.example.pictoevents.Processor.TextProcessor.TextProcessorListener
 import com.example.pictoevents.Repository.Repository
@@ -68,7 +69,9 @@ class progressFragment : Fragment(){
                         val progressSpinner = view.findViewById<ProgressBar>(R.id.progressSpinner)
                         progressSpinner?.visibility = View.GONE
                         val progressText = view.findViewById<TextView>(R.id.textView2)
-                        progressText.setText(R.string.eventCreatedText)
+                        //progressText.setText(R.string.eventCreatedText)
+                        Repository.isNavigationFromProgressFrag = true
+                        findNavController().navigate(R.id.action_progressFragment_to_calendarFragment)
                         displaySnackbar()
                     }
                 }

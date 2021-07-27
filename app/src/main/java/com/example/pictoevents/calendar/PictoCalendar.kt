@@ -9,6 +9,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.CalendarContract
 import android.util.Log
+import com.example.pictoevents.Repository.Repository
 import java.lang.NullPointerException
 import java.util.*
 
@@ -106,8 +107,9 @@ class PictoCalendar (val context: Context){
             val cv = this.buildCalContentValues()
             val builder = this.generateCalendarBuilder()
             this.getCalendarID(builder, cv)
-            val cal = this.initializeCalendar()
-            val cv2 = this.createCalEvents(cal)
+            val calendar = this.initializeCalendar()
+            Repository.calendar = calendar
+            val cv2 = this.createCalEvents(calendar)
             this.getCalEventID(cv2)
         }
         catch(e: NullPointerException){

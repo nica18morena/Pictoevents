@@ -9,6 +9,7 @@ import com.applandeo.materialcalendarview.EventDay
 import com.example.pictoevents.calendar.PictoCalendar
 import com.example.pictoevents.Pattern.RegExPatterns
 import com.example.pictoevents.R
+import com.example.pictoevents.Repository.Repository
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -57,7 +58,11 @@ class CalendarFragment : Fragment() {
         val calendarView = view.findViewById<com.applandeo.materialcalendarview.CalendarView>(R.id.calendarView)
         calendarView.setEvents(events)
 
-        calendarView.setDate(calendar)
+        if(Repository.isNavigationFromProgressFrag){
+            calendarView.setDate(Repository.calendar)
+            Repository.isNavigationFromProgressFrag = false
+        }
+        else calendarView.setDate(calendar)
     }
 
     fun setCalendarEvents(list: MutableList<String>): MutableList<EventDay> {

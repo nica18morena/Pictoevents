@@ -33,7 +33,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class AddEventFragment : Fragment() {
-    val dividerChar = "/"
+    private val dividerChar = "/"
 
     private fun manageDateDivider(working: String, position : Int, start: Int, before: Int) : String{
         if (working.length == position) {

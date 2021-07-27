@@ -87,6 +87,7 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
                     //job1.join()
                     /*Hack start*/
                     while(Repository.eventTitle == ""){
+                        delay(1000)
                         Log.d(TAG, "Waiting for title")
                     }
                     /*Hack end*/

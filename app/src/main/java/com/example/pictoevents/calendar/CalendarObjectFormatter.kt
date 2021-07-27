@@ -62,7 +62,7 @@ class CalendarObjectFormatter {
             }
         }
 
-        return Integer.parseInt(formattedDay) -1
+        return Integer.parseInt(formattedDay)
     }
 
     fun getFormattedYear(): Int{
@@ -95,6 +95,7 @@ class CalendarObjectFormatter {
                     }else{
                         formattedHour = Integer.parseInt(hourFromTime) + 12
                     }
+                    else -> formattedHour = Integer.parseInt(hourFromTime)
                 }
             }
             else{
@@ -107,7 +108,7 @@ class CalendarObjectFormatter {
     fun getFormattedMin(): Int{
         var formattedMin = "0"
         if(minFromTime.isNotEmpty()){
-            formattedMin = minFromTime
+            formattedMin = minFromTime.replace(".","")
         }
         else{
             formattedMin = "00"

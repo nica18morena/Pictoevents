@@ -65,8 +65,8 @@ package com.example.pictoevents.UI
         private var camera: androidx.camera.core.Camera? = null
         private var cameraProvider: ProcessCameraProvider? = null
         /** Milliseconds used for UI animations */
-        val ANIMATION_FAST_MILLIS = 50L
-        val ANIMATION_SLOW_MILLIS = 100L
+        private val ANIMATION_FAST_MILLIS = 50L
+        private val ANIMATION_SLOW_MILLIS = 100L
 
         private val displayManager by lazy {
             requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
