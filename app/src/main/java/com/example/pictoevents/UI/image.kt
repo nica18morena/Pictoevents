@@ -52,6 +52,7 @@ class image : Fragment() {
         var bitmap = BitmapFactory.decodeFile(imageFile.toString())
         var imageView = view.findViewById<ImageView>(R.id.imageView2)
         imageView?.setImageBitmap(bitmap)
+        imageView?.rotation = 90f
         //Add buttons and listener actions
         view.findViewById<Button>(R.id.retake_button).setOnClickListener {
             findNavController().navigate(R.id.action_image_frag_to_cameraFragment)
