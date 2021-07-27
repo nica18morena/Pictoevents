@@ -62,7 +62,7 @@ class CalendarObjectsRegex(val ocrText: String)
             }
             else if (hasTimePattern && (word.contains(Regex("[a-zA-Z]"))
                         || (word.length > 7) //07:30pm
-                        || (word.contains(Regex("[%]")))
+                        || (word.contains(Regex("[%/]")))
                         || (!word.contains(Regex("[:]")) && word.toInt() > 12))){
                 hasTimePattern = false
             }

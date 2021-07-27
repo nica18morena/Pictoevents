@@ -11,7 +11,7 @@ class CalendarObjectsManual (val date: String, val time: String, val ampm: Strin
     }
 
     private fun identifyDate(){
-        val dateSplit = date.split("[//]")
+        val dateSplit = date.split("/")
 
         if (dateSplit.size == 3){
             formatter.monthFromDate = dateSplit[0]

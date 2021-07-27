@@ -46,22 +46,18 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
         val bitmap = BitmapFactory.decodeFile(FileManager.getImageFileLocation().toString())
 
         //Testing: Sample temp text: Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020
-/*        Repository.text = "INGTON | BOTHELL\n" +
-                "    NNUAL\n" +
-                "    ICEMENT\n" +
-                "    VIRTUALcOMMENCEMENT CEREMONY\n" +
-                "    SUNDAY-JUNE 13, 2021\n" +
-                "    UWB.EDUICOMMENCEMENT\n" +
-                "    1 p.m. (PST)-CEREMONY BEGINS\n" +
-                "    eremoniesandevents #uwbgrad21"*/
+        /*Repository.text = "16920 Pacitic Ave S\n" +
+                "    98387\n" +
+                "    (253) 537-4356\n" +
+                "    end 7/31/20\n" +
+                "    Starter\n" +
+                "    Annual Fecal Test Due 02/24/20\n" +
+                "    Special Reminder For:\n" +
+                "    Starter\n"*/
+
         val job = GlobalScope.launch(Dispatchers.IO){
             Repository.text = OCREngine.extractText(bitmap)//TODO: make this coroutine call
-            /*Repository.text = "PCSC ''\n" +
-                    "    SUMMER SCHOOL\n" +
-                    "    REGISTRATION\n" +
-                    "    .\n" +
-                    "    OPENS MAY 3, 2021\n" +
-                    "    AT 12PM"*/
+
             saveTextFile()
         }
 

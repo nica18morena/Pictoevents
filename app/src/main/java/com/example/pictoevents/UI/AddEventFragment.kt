@@ -123,7 +123,9 @@ class AddEventFragment : Fragment() {
             //Need to gather title, start date, start time, ampm, end date, end time and ampm
 
             //set Repository.Text to string
-            Repository.manualText = "${startDate.text}, ${startTime.text}, ${startAmPm.text}"
+            var ampmS = if(startAmPm.isChecked) startAmPm.textOn else startAmPm.textOff
+
+            Repository.manualText = "${startDate.text}, ${startTime.text}, ${ampmS}"
             Repository.eventTitle = title.text.toString()
             //update manually added boolean to true
             Repository.manuallyCreatedEvent = true

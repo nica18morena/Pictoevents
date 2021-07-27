@@ -85,6 +85,7 @@ class CalendarObjectFormatter {
 
     fun getFormattedHour(): Int{
         var formattedHour = 0
+        hourFromTime = hourFromTime.trim()
         if(hourFromTime.isNotEmpty()){
             if(ampm.isNotEmpty()){
                 ampm = ampm.replace(".","")
