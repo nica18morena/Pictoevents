@@ -34,6 +34,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class AddEventFragment : Fragment() {
     private val dividerChar = "/"
+    private val colonChar = ":"
 
     private fun manageDateDivider(working: String, position : Int, start: Int, before: Int) : String{
         if (working.length == position) {
@@ -44,6 +45,17 @@ class AddEventFragment : Fragment() {
         }
         return working
     }
+
+    private fun manageTimeDivider(working: String, position : Int, start: Int, before: Int) : String{
+        if (working.length == position) {
+            return if (before <= position && start < position)
+                working + colonChar
+            else
+                working.dropLast(1)
+        }
+        return working
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,7 +75,7 @@ class AddEventFragment : Fragment() {
         val endTime = view.findViewById<EditText>(R.id.endEnd_time)
         val endAmPm = view.findViewById<Switch>(R.id.endDate_ampm_switch)
 
-        //Date input listeners (TextWatcher)
+        //Date and time input listeners (TextWatcher)
         val textWatcherStart = object: TextWatcher{
             var edited = false
 
@@ -115,6 +127,57 @@ class AddEventFragment : Fragment() {
             override fun afterTextChanged(p0: Editable?) { }
         }
         endDate.addTextChangedListener(textWatcherEnd);
+
+        val textWatcherStartTime = object: TextWatcher{
+            var edited = false
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun onTextChanged(p0: CharSequence?, start: Int, before: Int, count: Int) {
+                if (edited){
+                    edited = false
+                    return
+                }
+
+                var working = if (startTime.text.length >= 5) startTime.text.toString().substring(0,5)
+                else startTime.text.toString()
+
+                working = manageTimeDivider(working, 2, start, before)
+
+                edited = true
+                startTime.setText(working)
+                startTime.setSelection(startTime.text.length)
+            }
+
+            override fun afterTextChanged(p0: Editable?) { }
+        }
+        startTime.addTextChangedListener(textWatcherStartTime);
+
+        val textWatcherEndTime = object: TextWatcher{
+            var edited = false
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun onTextChanged(p0: CharSequence?, start: Int, before: Int, count: Int) {
+                if (edited){
+                    edited = false
+                    return
+                }
+
+                var working = if (endTime.text.length >= 5) endTime.text.toString().substring(0,5)
+                else endTime.text.toString()
+
+                working = manageTimeDivider(working, 2, start, before)
+
+                edited = true
+                endTime.setText(working)
+                endTime.setSelection(endTime.text.length)
+            }
+
+            override fun afterTextChanged(p0: Editable?) { }
+        }
+        endTime.addTextChangedListener(textWatcherEndTime);
+
         //Buttons
         view.findViewById<Button>(R.id.cancel_add_event).setOnClickListener {
             findNavController().navigate(R.id.action_addEventFragment_to_calendarFragment)
