@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import okhttp3.Dispatcher
 import org.json.JSONObject
@@ -41,6 +42,7 @@ private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.
 private val TAG: String? = MainActivity::class.java.simpleName
 private val OCREngine: IOCREngine = OCREngineFreeOCR()
 private val cloudStorage = Firebase.storage
+private val mainScope = MainScope()
 
 class MainActivity : AppCompatActivity(), LifecycleOwner, TitleDialogFragment.TitleDialogFragmentListener {
 
@@ -61,7 +63,8 @@ class MainActivity : AppCompatActivity(), LifecycleOwner, TitleDialogFragment.Ti
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            GlobalScope.launch(Dispatchers.Main){
+            //GlobalScope.launch(Dispatchers.Main){
+            mainScope.launch(Dispatchers.Main){
                 if(destination.id == R.id.image_frag || destination.id == R.id.addEventFragment) {
                     bottomNav.visibility = View.GONE
                 } else {

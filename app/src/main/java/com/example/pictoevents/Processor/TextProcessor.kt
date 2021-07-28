@@ -16,6 +16,7 @@ import java.io.File
 
 class TextProcessor (val context: Context)//Try the approach to pass in listener to constructor
 {
+    private val textProcessorScope = MainScope()
     private val OCREngine: IOCREngine = OCREngineFreeOCR()
     private lateinit var outputDirectory: File
     internal lateinit var listener : TextProcessorListener
@@ -55,7 +56,8 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
                 "    Special Reminder For:\n" +
                 "    Starter\n"*/
 
-        val job = GlobalScope.launch(Dispatchers.IO){
+        val job = textProcessorScope.launch(Dispatchers.IO){
+        // val job = GlobalScope.launch(Dispatchers.IO){
             Repository.text = OCREngine.extractText(bitmap)//TODO: make this coroutine call
 
             saveTextFile()
@@ -66,7 +68,8 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
         val titleOptions = CalendarObjectTitle().generateTitles(context)
         loadTitleOptionsOntoDialog(titleOptions)
         Log.d(TAG, "========= 2 =========")
-        GlobalScope.launch(Dispatchers.Default) {
+        //GlobalScope.launch(Dispatchers.Default) {
+        textProcessorScope.launch(Dispatchers.Default) {
             coroutineScope{
                 launch(){
 
@@ -97,7 +100,8 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
     }
 
     fun processManuallyAddedEvent(){
-        GlobalScope.launch(Dispatchers.Main) {
+        //GlobalScope.launch(Dispatchers.Main) {
+        textProcessorScope.launch(Dispatchers.Main) {
             val textSplit = Repository.manualText.split(",")
 
             val date = textSplit[0]
@@ -159,7 +163,8 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
     private fun saveTextFile()
     {
         //Create txt file
-        GlobalScope.launch(Dispatchers.IO) {
+        //GlobalScope.launch(Dispatchers.IO) {
+            textProcessorScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.IO) { FileManager.createOCRTextFile(Repository.text) }
         }
     }

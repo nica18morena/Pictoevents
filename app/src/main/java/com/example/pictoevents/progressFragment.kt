@@ -34,8 +34,10 @@ class progressFragment : Fragment(){
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private val progressFragScope = MainScope()
     //private lateinit var spinner: ProgressBar
     private lateinit var container: FrameLayout
+
     //private lateinit var listener: TextProcessorListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +67,8 @@ class progressFragment : Fragment(){
             //listener = TextProcessorListener
             textProcessor.setTextProcessorListener(object: TextProcessorListener{
                 override fun onEventCreatedComplete(successful: Boolean) {
-                    GlobalScope.launch(Dispatchers.Main){
+                    //GlobalScope.launch(Dispatchers.Main){
+                    progressFragScope.launch(Dispatchers.Main){
                         val progressSpinner = view.findViewById<ProgressBar>(R.id.progressSpinner)
                         progressSpinner?.visibility = View.GONE
                         val progressText = view.findViewById<TextView>(R.id.textView2)
