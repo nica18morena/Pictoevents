@@ -35,7 +35,6 @@ class CalendarObjectsRegex(val ocrText: String)
 
         val word = wordSplit[0].toLowerCase().replace(",","")
 
-        // Preset pattern to default/ false
         val hasDatePattern = this.findDatePattern(word)
         val hasAMPMPattern = this.findAMPMPattern(word)
         var hasTimePattern = false
@@ -176,7 +175,6 @@ class CalendarObjectsRegex(val ocrText: String)
     private fun isValid(word: List<String>): Boolean {
         if (word.isEmpty() || word[0] == "") {
             //Contains nothing
-
             return false
         }
         if (word[0].length <= 2 && word[0].matches("[a-zA-Z]".toRegex())) {

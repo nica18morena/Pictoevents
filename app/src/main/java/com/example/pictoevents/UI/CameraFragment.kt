@@ -5,7 +5,6 @@ package com.example.pictoevents.UI
     import android.content.res.Configuration
     import android.graphics.Color
     import android.graphics.drawable.ColorDrawable
-    //import android.graphics.Camera
     import android.hardware.display.DisplayManager
     import android.media.MediaScannerConnection
     import android.net.Uri
@@ -15,7 +14,6 @@ package com.example.pictoevents.UI
     import android.view.*
     import android.webkit.MimeTypeMap
     import android.widget.ImageButton
-    import android.widget.ProgressBar
     import androidx.camera.core.AspectRatio
     import androidx.camera.core.CameraSelector
     import androidx.camera.core.ImageCapture
@@ -29,9 +27,7 @@ package com.example.pictoevents.UI
     import androidx.core.net.toFile
     import androidx.fragment.app.Fragment
     import androidx.localbroadcastmanager.content.LocalBroadcastManager
-    import androidx.navigation.fragment.NavHostFragment.findNavController
     import androidx.navigation.fragment.findNavController
-    import com.example.pictoevents.Processor.TextProcessor
     import com.example.pictoevents.R
     import com.example.pictoevents.Util.FileManager
     import kotlinx.coroutines.*
@@ -46,11 +42,6 @@ package com.example.pictoevents.UI
     import kotlin.math.max
     import kotlin.math.min
 
-    /**
-     * Main fragment for this app. Implements all camera operations including:
-     * - Viewfinder
-     * - Photo taking
-     */
     class CameraFragment : Fragment() {
 
         private lateinit var container: ConstraintLayout
@@ -242,12 +233,6 @@ package com.example.pictoevents.UI
         /** Method used to re-draw the camera UI controls, called every time configuration changes. */
         private fun updateCameraUi() {
 
-            // Remove previous UI if any
-            /*container.findViewById<ConstraintLayout>(R.id.camera_ui_container)?.let {
-                container.removeView(it)
-            }*/
-
-            //val textProcessor = TextProcessor(this.requireContext())
             // Listener for button used to capture photo
             captureButton.setOnClickListener{
                 // Get a stable reference of the modifiable image capture use case
@@ -346,14 +331,8 @@ package com.example.pictoevents.UI
         companion object {
 
             private const val TAG = "CameraXBasic"
-            private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
-            private const val PHOTO_EXTENSION = ".jpg"
             private const val RATIO_4_3_VALUE = 4.0 / 3.0
             private const val RATIO_16_9_VALUE = 16.0 / 9.0
 
-            /** Helper function used to create a timestamped file */
-            private fun createFile(baseFolder: File, format: String, extension: String) =
-                File(baseFolder, SimpleDateFormat(format, Locale.US)
-                    .format(System.currentTimeMillis()) + extension)
         }
     }

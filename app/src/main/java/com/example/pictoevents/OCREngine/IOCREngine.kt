@@ -3,13 +3,9 @@ package com.example.pictoevents.OCREngine
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Environment
-import androidx.annotation.NonNull
-import java.io.File
 
 interface IOCREngine{
 
-    //var imageFile: File
     /**
      * Prepare the OCR engine by configuring settings
      */

@@ -25,11 +25,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 import org.json.JSONObject
 import java.io.File
 
@@ -40,8 +37,6 @@ private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.
     Manifest.permission.WRITE_CALENDAR, Manifest.permission.INTERNET)
 //Class variables
 private val TAG: String? = MainActivity::class.java.simpleName
-private val OCREngine: IOCREngine = OCREngineFreeOCR()
-private val cloudStorage = Firebase.storage
 private val mainScope = MainScope()
 
 class MainActivity : AppCompatActivity(), LifecycleOwner, TitleDialogFragment.TitleDialogFragmentListener {
@@ -63,7 +58,6 @@ class MainActivity : AppCompatActivity(), LifecycleOwner, TitleDialogFragment.Ti
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            //GlobalScope.launch(Dispatchers.Main){
             mainScope.launch(Dispatchers.Main){
                 if(destination.id == R.id.image_frag || destination.id == R.id.addEventFragment) {
                     bottomNav.visibility = View.GONE
@@ -113,13 +107,6 @@ class MainActivity : AppCompatActivity(), LifecycleOwner, TitleDialogFragment.Ti
             Repository.eventTitle = selection
             Log.d(TAG, "This title was registered: ${Repository.eventTitle}")
         }
-        //displaySnackbar()
-    }
-
-    fun displaySnackbar(){
-        Log.d(TAG, "++++++++ Start displaySnackbar() +++++++")
-        Snackbar.make(findViewById(R.id.cameraFragment), getString(R.string.event_created_notification,
-            Repository.eventTitle), Snackbar.LENGTH_LONG).show()
     }
 
     fun generateTitleDialog(titleOptions : JSONObject){
@@ -132,17 +119,4 @@ class MainActivity : AppCompatActivity(), LifecycleOwner, TitleDialogFragment.Ti
         dialog.arguments = args
         dialog.show(supportFragmentManager, TitleDialogFragment.TAG)
     }
-    // Needed to make the add event fragment work when using the pickers: 10/11/20 trying to move it back to fragment
-//    fun showTimePickerDialog(v: View) {
-//        DialogTimePickerFragment().show(supportFragmentManager, "timePicker")
-//    }
-//
-//    fun showDatePickerDialog(v: View) {
-//        var datePickerFragment: DialogDatePickerFragment = DialogDatePickerFragment()
-//        DialogDatePickerFragment().show(supportFragmentManager, "datePicker")
-//    }
-//
-//    override fun onDateRecieved(year: Int, month: Int, day: Int) {
-//        TODO("Not yet implemented")
-//    }
 }

@@ -2,9 +2,7 @@ package com.example.pictoevents.UI
 
 import android.content.ActivityNotFoundException
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -20,25 +18,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pictoevents.R
-import com.example.pictoevents.Util.FileManager
 import java.io.File
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 private const val OPEN_DIRECTORY_REQUEST_CODE = 0xf11e
 private const val ARG_DIRECTORY_URI = "com.example.pictoevents.ARG_DIRECTORY_URI"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [FilesFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [FilesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FilesFragment : Fragment() {
     private lateinit var directoryUri: Uri
 
@@ -121,7 +105,7 @@ class FilesFragment : Fragment() {
         try {
             val openIntent = Intent(Intent.ACTION_VIEW).apply {
                 flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                //data = documentfile
+
                 if (document.toUri().toString().contains(".png"))
                 {
                     setDataAndType(documentfile, "image/png")

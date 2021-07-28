@@ -8,13 +8,12 @@ import com.example.pictoevents.calendar.*
 import com.example.pictoevents.OCREngine.IOCREngine
 import com.example.pictoevents.OCREngine.OCREngineFreeOCR
 import com.example.pictoevents.Repository.Repository
-import com.example.pictoevents.UI.TitleDialogFragment
 import com.example.pictoevents.Util.FileManager
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.io.File
 
-class TextProcessor (val context: Context)//Try the approach to pass in listener to constructor
+class TextProcessor (val context: Context)
 {
     private val textProcessorScope = MainScope()
     private val OCREngine: IOCREngine = OCREngineFreeOCR()
@@ -28,10 +27,8 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
     fun setTextProcessorListener(tplistener : TextProcessorListener){
         listener = tplistener
     }
-    //suspend fun processOCR() {
-    suspend fun processOCR() {
 
-        //listener = TextProcessorListener
+    suspend fun processOCR() {
 
         Log.d(TAG, "++++++++ Start processOCR +++++++")
         //Setup file directory and context for OCR
@@ -57,8 +54,7 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
                 "    Starter\n"*/
 
         val job = textProcessorScope.launch(Dispatchers.IO){
-        // val job = GlobalScope.launch(Dispatchers.IO){
-            Repository.text = OCREngine.extractText(bitmap)//TODO: make this coroutine call
+            Repository.text = OCREngine.extractText(bitmap)
 
             saveTextFile()
         }
@@ -68,39 +64,29 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
         val titleOptions = CalendarObjectTitle().generateTitles(context)
         loadTitleOptionsOntoDialog(titleOptions)
         Log.d(TAG, "========= 2 =========")
-        //GlobalScope.launch(Dispatchers.Default) {
+
         textProcessorScope.launch(Dispatchers.Default) {
             coroutineScope{
                 launch(){
-
-/*                    val job1 = launch{
-                        val titleOptions = CalendarObjectTitle().generateTitles(context)
-                        loadTitleOptionsOntoDialog(titleOptions)
-                        Log.d(TAG, "========= 2 =========")
-                    }*/
-
                     delay(3000)
-                    val formatter = identifyCalEvent()// wait for this to return
+                    val formatter = identifyCalEvent()
                     Log.d(TAG, "========= 3 =========")
 
-                    //job1.join()
                     /*Hack start*/
                     while(Repository.eventTitle == ""){
                         delay(1000)
                         Log.d(TAG, "Waiting for title")
                     }
                     /*Hack end*/
+
                     createCalEvent(formatter)
                     Log.d(TAG, "========= 4 =========")
-                    //displaySnackbar()
-                    //Log.d(TAG, "======== 5 ========")
                 }
             }
         }
     }
 
     fun processManuallyAddedEvent(){
-        //GlobalScope.launch(Dispatchers.Main) {
         textProcessorScope.launch(Dispatchers.Main) {
             val textSplit = Repository.manualText.split(",")
 
@@ -109,38 +95,19 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
             val ampm = textSplit[2]
             val calendarObjManual = CalendarObjectsManual(date, time, ampm)
             val formatter = calendarObjManual.formatCalendarComponents()
-            //val formatter = identifyCalEvent()// wait for this to return
+
             Log.d(TAG, "========= 3 =========")
             createCalEvent(formatter)
             Log.d(TAG, "========= 4 =========")
         }
     }
-    /*//Ref: https://kotlinlang.org/docs/coroutines-basics.html#scope-builder-and-concurrency
-    fun executeOnOCR() = runBlocking{
-        processForTitleAndRegex()
-        Log.d(TAG,"Completed both title and regex OCR")
-    }
-    suspend processForTitleAndRegex() = coroutineScope{
-        launch{
-            val titleOptions = CalendarObjectTitle().generateTitles(context)
-            loadTitleOptionsOntoDialog(titleOptions)
-            Log.d(TAG, "========= 2 =========")
-        }
-        launch{
-            val formatter = identifyCalEvent()// wait for this to return
-            Log.d(TAG, "========= 3 =========")
-            //join all coroutines then proceed to next step
-            Log.d(TAG, "Formatter has: $formatter")
-        }
-    }*/
+
     private fun loadTitleOptionsOntoDialog(titleOptions: JSONObject)
     {
         Log.d(TAG, "++++++++ Start loadTitleOptionsOntoDialog() +++++++")
         (context as MainActivity).generateTitleDialog(titleOptions)
-        //Present a dialog here
-        //withContext(Dispatchers.Main){ (context as MainActivity).generateTitleDialog(titleOptions) }
     }
-    /*  This method is currently not in use: not uploading image to cloud, but just makeing it base64
+    /*  This method is currently not in use: not uploading image to cloud, but just making it base64
     private fun uploadFileToStorage(file: File)
     {
         val cloudStorageRef = cloudStorage.reference.child("images/${FileManager.getFileName()}")
@@ -159,12 +126,10 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
         }
     }*/
 
-    //private suspend fun saveTextFile()
     private fun saveTextFile()
     {
         //Create txt file
-        //GlobalScope.launch(Dispatchers.IO) {
-            textProcessorScope.launch(Dispatchers.IO) {
+        textProcessorScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.IO) { FileManager.createOCRTextFile(Repository.text) }
         }
     }
@@ -176,10 +141,6 @@ class TextProcessor (val context: Context)//Try the approach to pass in listener
         return formatter
     }
 
-/*    fun identifyCalEvent_manuallyCreated(): CalendarObjectFormatter{
-        return formatter
-    }*/
-    //suspend fun createCalEvent()
     fun createCalEvent(formatter: CalendarObjectFormatter)
     {
         val calendar = PictoCalendar(this.context)

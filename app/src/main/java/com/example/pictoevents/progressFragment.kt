@@ -1,6 +1,5 @@
 package com.example.pictoevents
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.pictoevents.Processor.TextProcessor
@@ -18,28 +16,19 @@ import com.example.pictoevents.Processor.TextProcessor.TextProcessorListener
 import com.example.pictoevents.Repository.Repository
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
-import java.lang.ClassCastException
-import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [progressFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class progressFragment : Fragment(){
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private val progressFragScope = MainScope()
-    //private lateinit var spinner: ProgressBar
     private lateinit var container: FrameLayout
 
-    //private lateinit var listener: TextProcessorListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,21 +48,19 @@ class progressFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //spinner = view.findViewById(R.id.spinner)
+
         container = view as FrameLayout
 
         val context = this.requireContext()
         viewLifecycleOwner.lifecycleScope.launch{
             val textProcessor = TextProcessor(context)
-            //listener = TextProcessorListener
+
             textProcessor.setTextProcessorListener(object: TextProcessorListener{
                 override fun onEventCreatedComplete(successful: Boolean) {
-                    //GlobalScope.launch(Dispatchers.Main){
+
                     progressFragScope.launch(Dispatchers.Main){
                         val progressSpinner = view.findViewById<ProgressBar>(R.id.progressSpinner)
                         progressSpinner?.visibility = View.GONE
-                        //val progressText = view.findViewById<TextView>(R.id.textView2)
-                        //progressText.setText(R.string.eventCreatedText)
                         Repository.isNavigationFromProgressFrag = true
                         findNavController().navigate(R.id.action_progressFragment_to_calendarFragment)
                         displaySnackbar()
@@ -97,35 +84,7 @@ class progressFragment : Fragment(){
                 progressText.setText(R.string.eventCreatedText)
             }
         }
-
-        /*val textProcessor = TextProcessor(this.requireContext())
-        //listener = TextProcessorListener
-        textProcessor.setTextProcessorListener(object: TextProcessorListener{
-            override fun onEventCreatedComplete(successful: Boolean) {
-                GlobalScope.launch(Dispatchers.Main){
-                    val progressSpinner = view.findViewById<ProgressBar>(R.id.progressSpinner)
-                    progressSpinner?.visibility = View.GONE
-                    val progressText = view.findViewById<TextView>(R.id.textView2)
-                    progressText.setText(R.string.eventCreatedText)
-                    displaySnackbar()
-                }
-            }
-        })
-
-        if(!Repository.manuallyCreatedEvent)
-        {
-            textProcessor.processOCR()
-        }
-        else{
-            textProcessor.processManuallyAddedEvent()
-            Repository.manuallyCreatedEvent = false
-        }*/
    }
-    /*override fun onEventCreatedComplete(successful: Boolean) {
-        var progressSpinner = view?.findViewById<ProgressBar>(R.id.progressSpinner)
-        progressSpinner?.visibility = View.GONE
-        displaySnackbar()
-    }*/
 
     fun displaySnackbar(){
         Log.d(TAG, "++++++++ Start displaySnackbar() +++++++")

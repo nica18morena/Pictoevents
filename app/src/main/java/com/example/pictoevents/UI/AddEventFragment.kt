@@ -10,28 +10,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
-import android.widget.TextView
 import androidx.navigation.fragment.findNavController
-import com.example.pictoevents.Processor.TextProcessor
 
 import com.example.pictoevents.R
 import com.example.pictoevents.Repository.Repository
-import com.example.pictoevents.UI.AddEvent.DialogDatePickerFragment
-import org.w3c.dom.Text
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [AddEventFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [AddEventFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AddEventFragment : Fragment() {
     private val dividerChar = "/"
     private val colonChar = ":"
@@ -100,6 +83,7 @@ class AddEventFragment : Fragment() {
 
             override fun afterTextChanged(p0: Editable?) { }
         }
+
         startDate.addTextChangedListener(textWatcherStart);
 
         val textWatcherEnd = object: TextWatcher{
@@ -126,6 +110,7 @@ class AddEventFragment : Fragment() {
 
             override fun afterTextChanged(p0: Editable?) { }
         }
+
         endDate.addTextChangedListener(textWatcherEnd);
 
         val textWatcherStartTime = object: TextWatcher{
@@ -151,6 +136,7 @@ class AddEventFragment : Fragment() {
 
             override fun afterTextChanged(p0: Editable?) { }
         }
+
         startTime.addTextChangedListener(textWatcherStartTime);
 
         val textWatcherEndTime = object: TextWatcher{
@@ -176,16 +162,15 @@ class AddEventFragment : Fragment() {
 
             override fun afterTextChanged(p0: Editable?) { }
         }
+
         endTime.addTextChangedListener(textWatcherEndTime);
 
         //Buttons
         view.findViewById<Button>(R.id.cancel_add_event).setOnClickListener {
             findNavController().navigate(R.id.action_addEventFragment_to_calendarFragment)
         }
-        view.findViewById<Button>(R.id.ok_add_event).setOnClickListener {
-            //Need to gather title, start date, start time, ampm, end date, end time and ampm
 
-            //set Repository.Text to string
+        view.findViewById<Button>(R.id.ok_add_event).setOnClickListener {
             var ampmS = if(startAmPm.isChecked) startAmPm.textOn else startAmPm.textOff
 
             Repository.manualText = "${startDate.text}, ${startTime.text}, ${ampmS}"
@@ -195,66 +180,5 @@ class AddEventFragment : Fragment() {
 
             findNavController().navigate(R.id.action_addEventFragment_to_progressFragment)
         }
-
     }
-
-
-    fun showDatePickerDialog(v: View) {
-        var datePickerFragment: DialogDatePickerFragment = DialogDatePickerFragment()
-        DialogDatePickerFragment().show(childFragmentManager, "datePicker")
-    }
-    // TODO: Rename method, update argument and hook method into UI event
-    /*fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }*/
-
-    /*override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }*/
-
-    /*override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }*/
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    /*interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }*/
-
-    /*companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddEventFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddEventFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }*/
 }
