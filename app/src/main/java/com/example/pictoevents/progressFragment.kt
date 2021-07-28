@@ -19,6 +19,7 @@ import com.example.pictoevents.Repository.Repository
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import java.lang.ClassCastException
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,7 +72,7 @@ class progressFragment : Fragment(){
                     progressFragScope.launch(Dispatchers.Main){
                         val progressSpinner = view.findViewById<ProgressBar>(R.id.progressSpinner)
                         progressSpinner?.visibility = View.GONE
-                        val progressText = view.findViewById<TextView>(R.id.textView2)
+                        //val progressText = view.findViewById<TextView>(R.id.textView2)
                         //progressText.setText(R.string.eventCreatedText)
                         Repository.isNavigationFromProgressFrag = true
                         findNavController().navigate(R.id.action_progressFragment_to_calendarFragment)
@@ -80,13 +81,20 @@ class progressFragment : Fragment(){
                 }
             })
 
-            if(!Repository.manuallyCreatedEvent)
+            if(Repository.manuallyCreatedEvent)
             {
-                textProcessor.processOCR()
-            }
-            else{
                 textProcessor.processManuallyAddedEvent()
                 Repository.manuallyCreatedEvent = false
+            }
+            else if(Repository.automaticallyCreatedEvent){
+                textProcessor.processOCR()
+                Repository.automaticallyCreatedEvent = false
+            }
+            else{
+                val progressSpinner = view.findViewById<ProgressBar>(R.id.progressSpinner)
+                progressSpinner?.visibility = View.GONE
+                val progressText = view.findViewById<TextView>(R.id.textView2)
+                progressText.setText(R.string.eventCreatedText)
             }
         }
 

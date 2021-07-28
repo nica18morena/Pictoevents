@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.pictoevents.Processor.TextProcessor
 import com.example.pictoevents.R
+import com.example.pictoevents.Repository.Repository
 import com.example.pictoevents.Util.FileManager
 
 // TODO: Rename parameter arguments, choose names that match
@@ -58,6 +59,7 @@ class image : Fragment() {
             findNavController().navigate(R.id.action_image_frag_to_cameraFragment)
         }
         view.findViewById<Button>(R.id.image_ok_button).setOnClickListener {
+            Repository.automaticallyCreatedEvent = true
             findNavController().navigate(R.id.action_image_frag_to_progressFragment)
         }
     }

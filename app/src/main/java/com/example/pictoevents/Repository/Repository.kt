@@ -7,6 +7,7 @@ object Repository {
     var text = ""
     var eventCreationCompletedSuccessfully = false
     var manuallyCreatedEvent = false
+    var automaticallyCreatedEvent = false
     var manualText = ""
     lateinit var calendar: Calendar
     var isNavigationFromProgressFrag = false
