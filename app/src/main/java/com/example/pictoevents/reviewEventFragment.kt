@@ -204,6 +204,7 @@ class reviewEventFragment : Fragment() {
 
         //Buttons
         view.findViewById<Button>(R.id.review_cancel_add_event).setOnClickListener {
+            resetRepository()
             findNavController().navigate(R.id.action_reviewEventFragment_to_calendarFragment)
         }
 
@@ -254,6 +255,19 @@ class reviewEventFragment : Fragment() {
 
         return calendar
     }
+
+    fun resetRepository()
+    {
+        Repository.eventTitle = ""
+        Repository.text = ""
+        Repository.eventCreationCompletedSuccessfully = false
+        Repository.manuallyCreatedEvent = false
+        Repository.automaticallyCreatedEvent = false
+        Repository.manualText = ""
+        Repository.shouldSetCreatedDate = false
+        Repository.transitionalWorkDone = false
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
