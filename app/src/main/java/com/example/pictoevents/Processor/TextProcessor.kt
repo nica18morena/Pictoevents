@@ -79,7 +79,7 @@ class TextProcessor (val context: Context)
                     }
                     /*Hack end*/
 
-                    createCalEvent(formatter)
+                    createTransitionalCalEvent(formatter)
                     Log.d(TAG, "========= 4 =========")
                 }
             }
@@ -96,9 +96,10 @@ class TextProcessor (val context: Context)
             val calendarObjManual = CalendarObjectsManual(date, time, ampm)
             val formatter = calendarObjManual.formatCalendarComponents()
 
-            Log.d(TAG, "========= 3 =========")
+            Log.d(TAG, "manual ========= 3 =========")
             createCalEvent(formatter)
-            Log.d(TAG, "========= 4 =========")
+            //createTransitionalCalEvent(formatter)
+            Log.d(TAG, "manual ========= 4 =========")
         }
     }
 
@@ -151,9 +152,32 @@ class TextProcessor (val context: Context)
             formatter.getFormattedAMPM(), calendar.getCalId(), Repository.eventTitle)
         Log.d(TextProcessor.TAG, "Calendar object has values: ${calObject.toString()}")
 
+        //Here add new transition
+        Repository.calendarObject = calObject
+        completeCalEvent(calendar, calObject)
+    }
+
+    fun completeCalEvent(
+        calendar: PictoCalendar,
+        calObject: CalendarObject
+    ) {
         calendar.setCalObj(calObject)
-        var completed = calendar.buildCalEvent()
+        val completed = calendar.buildCalEvent()
         listener.onEventCreatedComplete(completed)
+    }
+
+    fun createTransitionalCalEvent(formatter: CalendarObjectFormatter)
+    {
+        val calendar = PictoCalendar(this.context)
+        calendar.checkCalendars()
+
+        val calObject = CalendarObject(formatter.getFormattedHour(),formatter.getFormattedMin(), 0,
+            formatter.getFormattedDay(), formatter.getFormattedMonth(), formatter.getFormattedYear(),
+            formatter.getFormattedAMPM(), calendar.getCalId(), Repository.eventTitle)
+        Log.d(TextProcessor.TAG, "Transitional Calendar object has values: ${calObject.toString()}")
+
+        Repository.calendarObject = calObject
+        Repository.transitionalWorkDone = true
     }
 
     companion object

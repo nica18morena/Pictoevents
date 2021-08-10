@@ -59,5 +59,20 @@
         <action
             android:id="@+id/action_progressFragment_to_calendarFragment"
             app:destination="@id/calendarFragment" />
+        <action
+            android:id="@+id/action_progressFragment_to_reviewEventFragment"
+            app:destination="@id/reviewEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reviewEventFragment"
+        android:name="com.example.pictoevents.reviewEventFragment"
+        android:label="fragment_review_event"
+        tools:layout="@layout/fragment_review_event" >
+        <action
+            android:id="@+id/action_reviewEventFragment_to_progressFragment"
+            app:destination="@id/progressFragment" />
+        <action
+            android:id="@+id/action_reviewEventFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
     </fragment>
 </navigation>

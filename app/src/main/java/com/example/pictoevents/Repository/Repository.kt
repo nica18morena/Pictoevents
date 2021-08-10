@@ -1,5 +1,6 @@
 package com.example.pictoevents.Repository
 
+import com.example.pictoevents.calendar.CalendarObject
 import java.util.*
 
 object Repository {
@@ -9,6 +10,8 @@ object Repository {
     var manuallyCreatedEvent = false
     var automaticallyCreatedEvent = false
     var manualText = ""
-    lateinit var calendar: Calendar
-    var isNavigationFromProgressFrag = false
+    lateinit var identifiedPictoCalValueCalendar: Calendar
+    var shouldSetCreatedDate = false
+    lateinit var calendarObject : CalendarObject //From auto event
+    var transitionalWorkDone = false
 }

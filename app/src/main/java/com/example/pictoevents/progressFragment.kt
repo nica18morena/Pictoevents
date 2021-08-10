@@ -14,8 +14,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.pictoevents.Processor.TextProcessor
 import com.example.pictoevents.Processor.TextProcessor.TextProcessorListener
 import com.example.pictoevents.Repository.Repository
+import com.example.pictoevents.calendar.CalendarObject
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,15 +56,16 @@ class progressFragment : Fragment(){
         val context = this.requireContext()
         viewLifecycleOwner.lifecycleScope.launch{
             val textProcessor = TextProcessor(context)
-
             textProcessor.setTextProcessorListener(object: TextProcessorListener{
                 override fun onEventCreatedComplete(successful: Boolean) {
 
                     progressFragScope.launch(Dispatchers.Main){
+                        Repository.shouldSetCreatedDate = true
+
+                        findNavController().navigate(R.id.action_progressFragment_to_calendarFragment)
+
                         val progressSpinner = view.findViewById<ProgressBar>(R.id.progressSpinner)
                         progressSpinner?.visibility = View.GONE
-                        Repository.isNavigationFromProgressFrag = true
-                        findNavController().navigate(R.id.action_progressFragment_to_calendarFragment)
                         displaySnackbar()
                     }
                 }
@@ -70,14 +73,17 @@ class progressFragment : Fragment(){
 
             if(Repository.manuallyCreatedEvent)
             {
+                Log.d(TAG, "++++++++ manual event creation +++++++")
                 textProcessor.processManuallyAddedEvent()
                 Repository.manuallyCreatedEvent = false
             }
             else if(Repository.automaticallyCreatedEvent){
-                textProcessor.processOCR()
-                Repository.automaticallyCreatedEvent = false
+
+                Log.d(TAG, "++++++++ auto event creation +++++++")
+                completeAutoEventCreation(textProcessor, view)
             }
             else{
+                Log.d(TAG, "++++++++ shouldn't come here +++++++")
                 val progressSpinner = view.findViewById<ProgressBar>(R.id.progressSpinner)
                 progressSpinner?.visibility = View.GONE
                 val progressText = view.findViewById<TextView>(R.id.textView2)
@@ -85,6 +91,24 @@ class progressFragment : Fragment(){
             }
         }
    }
+
+    private suspend fun completeAutoEventCreation(
+        textProcessor: TextProcessor,
+        view: View
+    ) {
+        textProcessor.processOCR()
+
+        Repository.automaticallyCreatedEvent = false
+
+        while(!Repository.transitionalWorkDone){
+            delay(500)
+        }
+        Repository.transitionalWorkDone = false
+        //val progressSpinner = view.findViewById<ProgressBar>(R.id.progressSpinner)
+        //progressSpinner?.visibility = View.GONE
+
+        findNavController().navigate(R.id.action_progressFragment_to_reviewEventFragment)
+    }
 
     fun displaySnackbar(){
         Log.d(TAG, "++++++++ Start displaySnackbar() +++++++")

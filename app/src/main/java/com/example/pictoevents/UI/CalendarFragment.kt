@@ -35,10 +35,11 @@ class CalendarFragment : Fragment() {
         val calendarView = view.findViewById<com.applandeo.materialcalendarview.CalendarView>(R.id.calendarView)
         calendarView.setEvents(events)
 
-        if(Repository.isNavigationFromProgressFrag){
-            calendarView.setDate(Repository.calendar)
-            Repository.isNavigationFromProgressFrag = false
+        if(Repository.shouldSetCreatedDate){
+            calendarView.setDate(Repository.identifiedPictoCalValueCalendar)
+            resetRepository()
         }
+
         else calendarView.setDate(calendar)
     }
 
@@ -62,5 +63,17 @@ class CalendarFragment : Fragment() {
             }
         }
         return events
+    }
+
+    fun resetRepository()
+    {
+        Repository.eventTitle = ""
+        Repository.text = ""
+        Repository.eventCreationCompletedSuccessfully = false
+        Repository.manuallyCreatedEvent = false
+        Repository.automaticallyCreatedEvent = false
+        Repository.manualText = ""
+        Repository.shouldSetCreatedDate = false
+        Repository.transitionalWorkDone = false
     }
 }

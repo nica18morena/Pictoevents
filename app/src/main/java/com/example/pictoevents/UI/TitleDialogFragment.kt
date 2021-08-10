@@ -40,8 +40,7 @@ class TitleDialogFragment : DialogFragment() {
         //Add each item to a list
         val options = arrayOf(
         getString(R.string.title_option_A, optionA),
-        getString(R.string.title_option_B, optionB),
-        getString(R.string.title_option_Custom))
+        getString(R.string.title_option_B, optionB))
 
         return AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.TitleDialogMessage))

@@ -3,12 +3,175 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".reviewEventFragment">
+    tools:context=".reviewEventFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/review_title_cardview"
+            android:layout_width="408dp"
+            android:layout_height="86dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.097">
+
+            <EditText
+                android:id="@+id/review_editText_Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:ems="10"
+                android:hint="@string/Title"
+                android:inputType="textPersonName" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/review_start_cardview"
+            android:layout_width="412dp"
+            android:layout_height="122dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/review_title_cardview"
+            app:layout_constraintVertical_bias="0.139">
+
+            <TextView
+                android:id="@+id/review_startDate_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:labelFor="@id/start_date"
+                android:text="@string/start_date"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/review_endDate_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:labelFor="@id/start_date"
+                android:text="@string/start_time"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/review_start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:ems="10"
+                android:hint="@string/eventDate"
+                android:inputType="date"/>
+
+            <EditText
+                android:id="@+id/review_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:ems="10"
+                android:hint="@string/eventTime"
+                android:inputType="time"
+                android:autofillHints="@string/start_time"/>
+
+            <Switch
+                android:id="@+id/review_ampm_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:text="@string/am_or_pm"
+                android:textOff="@string/event_am"
+                android:textOn="@string/event_pm" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/review_end_cardview"
+            android:layout_width="415dp"
+            android:layout_height="122dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/review_start_cardview"
+            app:layout_constraintVertical_bias="0.177">
+
+            <TextView
+                android:id="@+id/review_endStartDate_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:labelFor="@id/start_date"
+                android:text="@string/end_date"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/review_endEndDate_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:labelFor="@id/start_date"
+                android:text="@string/end_time"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/review_endEnd_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:ems="10"
+                android:hint="@string/eventDate"
+                android:inputType="date" />
+
+            <EditText
+                android:id="@+id/review_endEnd_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:ems="10"
+                android:hint="@string/eventTime"
+                android:inputType="time" />
+
+            <Switch
+                android:id="@+id/review_endDate_ampm_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:text="@string/am_or_pm"
+                android:textOff="@string/event_am"
+                android:textOn="@string/event_pm" />
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/review_cancel_add_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="49dp"
+            android:text="@string/cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.232"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/review_end_cardview"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/review_ok_add_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="49dp"
+            android:text="@string/ok"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/review_cancel_add_event"
+            app:layout_constraintTop_toBottomOf="@+id/review_end_cardview"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

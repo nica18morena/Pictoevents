@@ -108,7 +108,7 @@ class PictoCalendar (val context: Context){
             val builder = this.generateCalendarBuilder()
             this.getCalendarID(builder, cv)
             val calendar = this.initializeCalendar()
-            Repository.calendar = calendar
+            Repository.identifiedPictoCalValueCalendar = calendar
             val cv2 = this.createCalEvents(calendar)
             this.getCalEventID(cv2)
         }
