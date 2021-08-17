@@ -178,9 +178,9 @@ class PictoCalendar (val context: Context){
             calendar.set(Calendar.DAY_OF_MONTH, calObj.dayOfMonth)
         }
 
-        if(calObj.hour != 0){
-            calendar.set(Calendar.HOUR, calObj.hour)
-        }
+//        if(calObj.hour != 0){
+//            calendar.set(Calendar.HOUR, calObj.hour)
+//        }
 
         if(calObj.second != 0){
             calendar.set(Calendar.SECOND, calObj.second)
@@ -190,14 +190,15 @@ class PictoCalendar (val context: Context){
             TITLE = calObj.title
         }
 
-        if(calObj.AmPm == 0){
-            calendar.set(Calendar.AM_PM, Calendar.AM)
+        if(calObj.AmPm == 1){
+            calendar.set(Calendar.HOUR_OF_DAY, calObj.hour)
         }
         else{
-            calendar.set(Calendar.AM_PM, Calendar.PM)
+            calendar.set(Calendar.HOUR_OF_DAY, calObj.hour + 12)
         }
-        calendar.set(Calendar.MINUTE, calObj.minute)
-
+        if(calObj.minute != 0){
+            calendar.set(Calendar.MINUTE, calObj.minute)
+        }
         //calendar.set(Calendar.AM_PM, calObj.AmPm)
         Log.d(TAG, "Event: ${calObj.title} " +
                 "Month: ${calObj.month}, Day: ${calObj.dayOfMonth},\n" +

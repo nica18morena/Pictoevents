@@ -191,16 +191,17 @@ class reviewEventFragment : Fragment() {
         //Get text from repository
         val calObject = Repository.calendarObject
         val calendar = this.initializeACalendar((calObject))
-        val sdfDate = SimpleDateFormat("MM/dd/yyyy")
+        //val sdfDate = SimpleDateFormat("MM/dd/yyyy")
         val sdfTime = SimpleDateFormat("hh:mm")
-        val sdfAMPM = SimpleDateFormat("a")
 
         // set Text fields
         title.setText(calObject.title)
-        startDate.setText(sdfDate.format(calendar.time))
+        val sday = if(calObject.dayOfMonth < 10) "0" + calObject.dayOfMonth else calObject.dayOfMonth
+        val smonth = if(calObject.month < 10) "0" + calObject.month else calObject.month
+        startDate.setText("$smonth/$sday/${calObject.year}")
         startTime.setText(sdfTime.format(calendar.time))
-        val ampm =  sdfAMPM.format(calendar.time)
-        if(ampm.equals("AM")) startAmPm.isChecked = false
+        val ampm =  calObject.AmPm
+        if(ampm == 1) startAmPm.isChecked = true
 
         //Buttons
         view.findViewById<Button>(R.id.review_cancel_add_event).setOnClickListener {
@@ -267,6 +268,7 @@ class reviewEventFragment : Fragment() {
         Repository.shouldSetCreatedDate = false
         Repository.transitionalWorkDone = false
     }
+
 
     companion object {
         /**

@@ -44,14 +44,7 @@ class TextProcessor (val context: Context)
         val bitmap = BitmapFactory.decodeFile(FileManager.getImageFileLocation().toString())
 
         //Testing: Sample temp text: Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020
-        /*Repository.text = "16920 Pacitic Ave S\n" +
-                "    98387\n" +
-                "    (253) 537-4356\n" +
-                "    end 7/31/20\n" +
-                "    Starter\n" +
-                "    Annual Fecal Test Due 02/24/20\n" +
-                "    Special Reminder For:\n" +
-                "    Starter\n"*/
+        //Repository.text = "Stephie and Jarrot wedding at 2:00 Pm, 9/19/2020"
 
         val job = textProcessorScope.launch(Dispatchers.IO){
             Repository.text = OCREngine.extractText(bitmap)

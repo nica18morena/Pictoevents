@@ -19,7 +19,7 @@ class CalendarObjectsManual (val date: String, val time: String, val ampm: Strin
             formatter.yearFromDate = dateSplit[2]
         }
 
-        formatter.ampm = ampm
+        formatter.ampm = ampm.trim()
     }
 
     private fun identifyTime(){

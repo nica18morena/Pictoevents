@@ -202,7 +202,7 @@ class CalendarObjectsRegex(val ocrText: String)
     private fun decomposeTime(time: String){
         var time2 = time
         //If time is both digit and am/pm time this needs to be formatted differently
-        if(time.contains(Regex("\\w"))){
+        if(time.contains(Regex(RegExPatterns.AMPM))){
             formatter.ampm = Regex("\\d+").replace(time,"")
             time2 = Regex("[a-zA-Z]").replace(time, "")
         }
