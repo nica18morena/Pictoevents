@@ -87,21 +87,7 @@ class CalendarObjectFormatter {
         var formattedHour = 0
         hourFromTime = hourFromTime.trim()
         if(hourFromTime.isNotEmpty()){
-/*            if(ampm.isNotEmpty()){
-                ampm = ampm.replace(".","")
-                when (ampm){
-                    "am" -> formattedHour = Integer.parseInt(hourFromTime)
-                    "pm" -> if (Integer.parseInt(hourFromTime) == 12) {
-                        formattedHour = Integer.parseInt(hourFromTime)
-                    }else{
-                        formattedHour = Integer.parseInt(hourFromTime) + 12
-                    }
-                    else -> formattedHour = Integer.parseInt(hourFromTime)
-                }
-            }*/
-            //else{
-                formattedHour = Integer.parseInt(hourFromTime)
-            //}
+            formattedHour = Integer.parseInt(hourFromTime)
         }
         return formattedHour
     }

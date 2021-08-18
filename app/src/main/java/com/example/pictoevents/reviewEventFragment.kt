@@ -198,7 +198,8 @@ class reviewEventFragment : Fragment() {
         title.setText(calObject.title)
         val sday = if(calObject.dayOfMonth < 10) "0" + calObject.dayOfMonth else calObject.dayOfMonth
         val smonth = if(calObject.month < 10) "0" + calObject.month else calObject.month
-        startDate.setText("$smonth/$sday/${calObject.year}")
+        val syear = if(calObject.year == 0) 2021 else calObject.year
+        startDate.setText("$smonth/$sday/${syear}")
         startTime.setText(sdfTime.format(calendar.time))
         val ampm =  calObject.AmPm
         if(ampm == 1) startAmPm.isChecked = true
